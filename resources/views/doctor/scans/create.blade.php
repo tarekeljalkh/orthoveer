@@ -14,47 +14,65 @@
         </div>
 
         <div class="section-body">
+            <form action="{{ route('doctor.scans.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
 
-            <div class="row">
-
-                {{-- Doctor Section --}}
-                <div class="col-12 col-md-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="form-group col-md-6 col-12">
-                                    <label>Doctor:</label>
-                                    <label class="form-control">Dr. {{ auth()->user()->last_name }}, {{ auth()->user()->first_name }}</label>
-                                </div>
-
-                                <div class="form-group col-md-6 col-12">
-                                    <label>License:</label>
-                                    <label class="form-control">License:</label>
+                <div class="row">
+                    {{-- Doctor Section --}}
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Doctor:</label>
+                                        <label class="form-control">Dr. {{ auth()->user()->last_name }},
+                                            {{ auth()->user()->first_name }}</label>
+                                    </div>
+                                    <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>License:</label>
+                                        <label class="form-control">License:</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                {{-- End Doctor Section --}}
+                    {{-- End Doctor Section --}}
 
-                {{-- Patient Section --}}
-                <div class="col-12 col-md-12 col-lg-12">
-                    <div class="card">
-                        <form method="post" class="needs-validation" novalidate="">
+                    {{-- Patient Section --}}
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card">
                             <div class="card-header">
                                 <h4>Patient:</h4>
+                                {{-- <div class="card-header-action">
+                                    <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
+                                </div> --}}
+                                <div class="card-header-action">
+                                    <select class="form-control select2" name="patient_id" id="patientSelect">
+                                        <option value="0" disabled selected>Select Existing Patient...</option>
+                                        @foreach ($patients as $patient)
+                                            <option value="{{ $patient->id }}" data-first-name="{{ $patient->first_name }}"
+                                                data-last-name="{{ $patient->last_name }}"
+                                                data-dob="{{ $patient->dob->format('Y-m-d') }}"
+                                                data-gender="{{ $patient->gender }}">{{ $patient->last_name }},
+                                                {{ $patient->first_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a href="#" id="clearForm" class="btn btn-success"
+                                        style="pointer-events: none; opacity: 0.5;">Clear</a>
+                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>First Name</label>
-                                        <input type="text" class="form-control" value="Ujang" required="">
+                                        <input name="patient_first_name" type="text" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>Last Name</label>
-                                        <input type="text" class="form-control" value="Maman" required="">
+                                        <input name="patient_last_name" type="text" class="form-control" required="">
                                     </div>
 
                                 </div>
@@ -63,19 +81,19 @@
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>Date Of Birth</label>
-                                        <input type="date" class="form-control" value="ujang@maman.com" required="">
+                                        <input name="patient_dob" type="date" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-5 col-12">
                                         <label class="form-label">Gender</label>
                                         <div class="selectgroup w-100">
                                             <label class="selectgroup-item">
-                                                <input type="radio" name="value" value="50"
+                                                <input type="radio" name="patient_gender" value="male"
                                                     class="selectgroup-input" checked="">
                                                 <span class="selectgroup-button">Male</span>
                                             </label>
                                             <label class="selectgroup-item">
-                                                <input type="radio" name="value" value="100"
+                                                <input type="radio" name="patient_gender" value="female"
                                                     class="selectgroup-input">
                                                 <span class="selectgroup-button">Female</span>
                                             </label>
@@ -91,36 +109,172 @@
                                 </div>
 
                             </div>
-                            <div class="card-footer text-right">
-                                <button class="btn btn-primary">Create</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                {{-- End Patient Section --}}
-
-                {{-- Notes --}}
-                <div class="col-12 col-md-12 col-lg-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Notes:</h4>
                         </div>
-                        <div class="card-body">
+                    </div>
+                    {{-- End Patient Section --}}
 
-                            <div class="row">
-                                <div class="form-group col-12">
-                                    <textarea class="form-control" name="notes" id="notes" cols="30" rows="10" placeholder="Add Note"></textarea>
+
+                    {{-- Order Section --}}
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Order:</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Due Date</label>
+                                        <input type="date" name="due_date" class="form-control" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Send To</label>
+                                        <select class="form-control select2" name="lab">
+                                            @foreach ($labs as $lab)
+                                                <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                 </div>
+
+                                <div class="row">
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>STL UPPER</label>
+                                        <input type="file" name="stl_upper" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>STL LOWER</label>
+                                        <input type="file" name="stl_lower" class="form-control">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {{-- End Order Section --}}
+
+
+                    {{-- Notes --}}
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Notes:</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="form-group col-12">
+                                        <textarea class="form-control" name="notes" id="notes" cols="30" rows="10" placeholder="Add Note"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-footer text-right">
+                                <button type="submit" class="btn btn-primary">Done</button>
                             </div>
 
                         </div>
+
+
                     </div>
+                    {{-- End Notes --}}
+
                 </div>
-                {{-- End Notes --}}
-            </div>
+            </form>
+
         </div>
     </section>
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+            // Initialize select2
+            $('.select2').select2();
+
+            // Disable clear button initially
+            $('#clearForm').css({
+                'pointer-events': 'none',
+                'opacity': '0.5'
+            });
+
+            // Enable clear button on selecting an option
+            $('#patientSelect').on('select2:select', function(e) {
+                $('#clearForm').css({
+                    'pointer-events': 'auto',
+                    'opacity': '1'
+                });
+
+                var data = e.params.data;
+                var firstName = $(data.element).data('first-name');
+                var lastName = $(data.element).data('last-name');
+                var dob = $(data.element).data('dob');
+                var gender = $(data.element).data('gender');
+
+                // Fill the form fields
+                $('input[name="patient_first_name"]').val(firstName);
+                $('input[name="patient_last_name"]').val(lastName);
+                $('input[name="patient_dob"]').val(dob);
+
+                // Set gender radio button
+                $(`input[name="patient_gender"][value="${gender}"]`).prop('checked', true);
+            });
+
+            // Reset functionality when clear button is clicked
+            $('#clearForm').click(function(e) {
+                e.preventDefault();
+
+                // Clear the Select2 selection
+                $('#patientSelect').val(0).trigger('change');
+
+                // Reset text inputs and radio buttons
+                $('input[name="patient_first_name"], input[name="patient_last_name"], input[name="patient_dob"], input[type="text"]')
+                    .val('');
+                    $('input[name="patient_gender"][value="male"]').prop('checked', true);
+                //$('input[name="patient_gender"]').prop('checked', false);
+
+                // Disable clear button again
+                $(this).css({
+                    'pointer-events': 'none',
+                    'opacity': '0.5'
+                });
+            });
+
+            // Listen to changes on the Select2 to enable/disable clear button
+            $('#patientSelect').on('select2:select select2:unselect', function() {
+                var selected = !!$(this).val();
+                $('#clearForm').css({
+                    'pointer-events': selected ? 'auto' : 'none',
+                    'opacity': selected ? '1' : '0.5'
+                });
+            });
+        });
+
+        // $(document).ready(function() {
+        //     $('.select2').select2().on('select2:select', function(e) {
+        //         var data = e.params.data;
+
+        //         // Assuming the data attributes are correctly set on the option elements
+        //         var firstName = $(data.element).data('first-name');
+        //         var lastName = $(data.element).data('last-name');
+        //         var dob = $(data.element).data('dob');
+        //         var gender = $(data.element).data('gender');
+
+        //         // Fill the form fields
+        //         $('input[name="patient_first_name"]').val(firstName);
+        //         $('input[name="patient_last_name"]').val(lastName);
+        //         $('input[name="patient_dob"]').val(dob);
+
+        //         // Set gender radio button
+        //         if (gender) {
+        //             $(`input[name="patient_gender"][value=${gender}]`).prop('checked', true);
+        //         }
+        //     });
+        // });
+    </script>
 @endpush

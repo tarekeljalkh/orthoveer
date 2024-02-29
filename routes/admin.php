@@ -20,6 +20,7 @@ Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
 
 
 //Doctors section Routes
+Route::put('doctors/{id}/updatePassword', [DoctorController::class, 'updatePassword'])->name('doctors.updatePassword');
 Route::resource('doctors', DoctorController::class);
 
 //Labs section Routes

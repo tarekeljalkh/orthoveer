@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('scans', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('doctor_id');
+            $table->foreign('doctor_id')->references('id')->on('users');
+            $table->unsignedBigInteger('patient_id');
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->unsignedBigInteger('lab_id');
+            $table->foreign('lab_id')->references('id')->on('users');
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])->default('pending');
+            $table->date('due_date')->format('d/m/Y');
+            $table->string('stl_upper')->nullable();
+            $table->string('stl_lower')->nullable();
+            $table->string('pdf')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

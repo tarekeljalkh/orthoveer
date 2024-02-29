@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Lab\LabController;
+use App\Http\Controllers\Lab\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,3 +14,6 @@ use Illuminate\Support\Facades\Route;
 //Route::get('lab/dashboard', [LabController::class, 'index'])->middleware(['auth', 'role:lab'])->name('lab.dashboard');
 
 Route::get('dashboard', [LabController::class, 'index'])->name('dashboard');
+
+//Orders Routes
+Route::resource('orders', OrderController::class);

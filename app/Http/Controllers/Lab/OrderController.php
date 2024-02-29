@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Scan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $doctors = User::where('role', 'doctor')->count();
-        $labs = User::where('role', 'lab')->count();
-        $external_labs = User::where('role', 'external_lab')->count();
-        return view('admin.dashboard', compact('doctors', 'labs', 'external_labs'));
+        $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->get();
+        return view('lab.orders.index', compact('orders'));
     }
 
     /**

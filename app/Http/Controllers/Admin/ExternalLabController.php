@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ExternalLabController extends Controller
@@ -12,7 +13,8 @@ class ExternalLabController extends Controller
      */
     public function index()
     {
-        return view('admin.external_labs.index');
+        $external_labs = User::where('role', 'external_lab')->get();
+        return view('admin.external_labs.index', compact('external_labs'));
     }
 
     /**

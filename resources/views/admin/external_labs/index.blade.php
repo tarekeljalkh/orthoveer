@@ -25,7 +25,50 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {{-- {{ $dataTable->table() }} --}}
+                            <div class="table-responsive">
+                                <table id="example" class="display nowrap" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Image</th>
+                                            <th>Mobile</th>
+                                            <th>Landline</th>
+                                            <th>Address</th>
+                                            <th>Postal Code</th>
+                                            <th>Siret Number</th>
+                                            <th>Status</th>
+                                            <th>Email Verified</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($external_labs as $external_lab)
+                                            <tr onclick="window.location='{{ route('admin.external_labs.show', $external_lab->id) }}';"
+                                                style="cursor:pointer;">
+                                                <td>{{ $external_lab->first_name }}</td>
+                                                <td>{{ $external_lab->last_name }}</td>
+                                                <td>{{ $external_lab->email }}</td>
+                                                <td>{{ $external_lab->image }}</td>
+                                                <td>{{ $external_lab->mobile }}</td>
+                                                <td>{{ $external_lab->landline }}</td>
+                                                <td>{{ $external_lab->address }}</td>
+                                                <td>{{ $external_lab->postal_code }}</td>
+                                                <td>{{ $external_lab->siret_number }}</td>
+                                                <td>
+                                                    <div
+                                                        class="badge
+                                                    {{ $external_lab->status == 'active' ? 'badge-success' : 'badge-danger' }}">
+                                                        {{ $external_lab->status }}
+                                                    </div>
+                                                </td>
+                                                <td>{{ $external_lab->email_verified_at }}</td>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -35,5 +78,13 @@
 @endsection
 
 @push('scripts')
-    {{-- {{ $dataTable->scripts(attributes: ['type' => 'module']) }} --}}
+    <script>
+        new DataTable('#example', {
+            layout: {
+                topStart: {
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                }
+            }
+        });
+    </script>
 @endpush

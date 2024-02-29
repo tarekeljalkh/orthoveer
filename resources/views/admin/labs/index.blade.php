@@ -25,7 +25,42 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {{-- {{ $dataTable->table() }} --}}
+                            <div class="table-responsive">
+                                <table id="example" class="display nowrap" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Image</th>
+                                            <th>Mobile</th>
+                                            <th>Email Verified</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($labs as $lab)
+                                            <tr onclick="window.location='{{ route('admin.labs.show', $lab->id) }}';"
+                                                style="cursor:pointer;">
+                                                <td>{{ $lab->first_name }}</td>
+                                                <td>{{ $lab->last_name }}</td>
+                                                <td>{{ $lab->email }}</td>
+                                                <td><img style="width: 50px" src="{{ asset($lab->image) }}"></td>
+                                                <td>{{ $lab->mobile }}</td>
+                                                @if ($lab->email_verified_at)
+                                                    <td>
+                                                        <div class="badge badge-success">Yes</div>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <div class="badge badge-danger">No</div>
+                                                    </td>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -35,5 +70,13 @@
 @endsection
 
 @push('scripts')
-    {{-- {{ $dataTable->scripts(attributes: ['type' => 'module']) }} --}}
+    <script>
+        new DataTable('#example', {
+            layout: {
+                topStart: {
+                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                }
+            }
+        });
+    </script>
 @endpush

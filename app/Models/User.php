@@ -43,4 +43,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+
+    public function patients()
+    {
+        return $this->hasMany(\App\Models\Patient::class, 'doctor_id');
+    }
+
+
 }
