@@ -158,7 +158,7 @@
     <script>
         $(document).ready(function() {
             $('.image-preview').css({
-                'background-image': 'url({{ asset(auth()->user()->image) }})',
+                'background-image': 'url({{ asset($doctor->image) }})',
                 'background-size': 'cover',
                 'background-position': 'center center'
             })

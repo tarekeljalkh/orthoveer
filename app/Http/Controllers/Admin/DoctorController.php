@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\FileUploadTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
+    use FileUploadTrait;
     /**
      * Display a listing of the resource.
      */
@@ -45,23 +47,13 @@ class DoctorController extends Controller
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
+        $imagePath = $this->uploadImage($request, 'image');
+
         $doctor = new User();
-
-        // Check if the request has an image
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Store the image
-            $imageName = $request->email . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
-
-            // Assuming you have an Image model or a user model with an image attribute
-            // You can then save the path to the image in the database
-            $doctor->image = 'images/' . $imageName;
-        }
-
-        // Update other user information
         $doctor->first_name = $request->first_name;
         $doctor->last_name = $request->last_name;
         $doctor->email = $request->email;
+        $doctor->image = $imagePath;
         $doctor->mobile = $request->mobile;
         $doctor->landline = $request->landline;
         $doctor->address = $request->address;
@@ -106,7 +98,6 @@ class DoctorController extends Controller
 
         // Validation
         $request->validate([
-            'image' => ['nullable', 'image', 'mimes:png,jpg'],
             'first_name' => ['string', 'max:200'],
             'last_name' => ['string', 'max:200'],
             'email' => ['required', 'email', 'unique:users,email,' . $doctor->id],
@@ -116,22 +107,14 @@ class DoctorController extends Controller
             'postal_code' => ['nullable', 'string', 'max:200'],
         ]);
 
-
-        // Check if the request has an image
-        if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Store the image
-            $imageName = $request->email . '.' . $request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
-
-            // Assuming you have an Image model or a user model with an image attribute
-            // You can then save the path to the image in the database
-            $doctor->image = 'images/' . $imageName;
-        }
+        /** Handle image file */
+        $imagePath = $this->uploadImage($request, 'image', $doctor->image);
 
         // Update other user information
         $doctor->first_name = $request->first_name;
         $doctor->last_name = $request->last_name;
         $doctor->email = $request->email;
+        $doctor->image = !empty($imagePath) ? $imagePath : $doctor->image;
         $doctor->mobile = $request->mobile;
         $doctor->landline = $request->landline;
         $doctor->address = $request->address;
@@ -170,5 +153,14 @@ class DoctorController extends Controller
      */
     public function destroy(string $id)
     {
+        // try {
+        //     $slider = BannerSlider::findOrFail($id);
+        //     $this->removeImage($slider->banner);
+        //     $slider->delete();
+        //     return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
+        // } catch (\Exception $e) {
+        //     return response(['status' => 'error', 'message' => 'something went wrong!']);
+        // }
+
     }
 }

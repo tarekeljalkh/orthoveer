@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->text('image')->default('images/avatar.png');
+            $table->text('image')->default('uploads/avatar.png');
             $table->string('mobile')->unique()->nullable();
             $table->string('landline')->nullable();
             $table->text('address')->nullable();
