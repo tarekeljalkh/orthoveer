@@ -21,10 +21,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            SampleSeeder::class,
         ]);
 
         \App\Models\Patient::factory(10)->create();
 
+        $this->call([
+            ScanSeeder::class,
+        ]);
     }
 }

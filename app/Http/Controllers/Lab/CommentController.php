@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Doctor;
+namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
-use App\Models\Scan;
+use App\Models\Comment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class OrderController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-$orders = Scan::with('patient')->where('doctor_id', Auth::user()->id)->get();
-        return view('doctor.orders.index', compact('orders'));
+        //
     }
 
     /**
@@ -31,7 +29,15 @@ $orders = Scan::with('patient')->where('doctor_id', Auth::user()->id)->get();
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request, store the comment, etc.
+        $comment = new Comment;
+        $comment->user_id = auth()->user()->id;
+        $comment->scan_id = $request->order_id; // Ensure you're passing this correctly
+        $comment->date = now();
+        $comment->text = $request->comment;
+        $comment->save();
+
+        return response()->json(['success' => true, 'message' => 'Comment added successfully']);
     }
 
     /**

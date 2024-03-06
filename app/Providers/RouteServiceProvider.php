@@ -58,7 +58,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware(['web', 'auth', 'role:external_lab'])
                 ->prefix('external_lab')
-                ->as('lab.')
+                ->as('external_lab.')
                 ->group(base_path('routes/external_lab.php'));
         });
     }

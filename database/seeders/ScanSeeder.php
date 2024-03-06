@@ -8,51 +8,48 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 
-class SampleSeeder extends Seeder
+class ScanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $samples = [
+        $scans = [
             [
-                'doctor_id' => 3, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
+                'doctor_id' => 10000002, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
+                'patient_id' => 1,
                 'scan_date' => Carbon::createFromFormat('d/m/Y', '05/12/2023'),
-                'order_id' => '146186184',
-                'patient_name' => 'GARCON, Juliana',
                 'practitioner' => 'Najim, Nicolas',
                 'cabinet' => 'Orthodontie Exclusive',
                 'procedure' => 'Modèle d’étude / Record',
                 'due_date' => Carbon::createFromFormat('d/m/Y', '19/12/2023'),
-                'status' => 'return',
+                'status' => 'pending',
             ],
             [
-                'doctor_id' => 3, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
+                'doctor_id' => 10000002, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
+                'patient_id' => 1,
                 'scan_date' => Carbon::createFromFormat('d/m/Y', '05/12/2023'),
-                'order_id' => '146186184',
-                'patient_name' => 'GARCON, Juliana',
                 'practitioner' => 'Najim, Nicolas',
                 'cabinet' => 'Orthodontie Exclusive',
                 'procedure' => 'Modèle d’étude / Record',
                 'due_date' => Carbon::createFromFormat('d/m/Y', '19/12/2023'),
-                'status' => 'done',
+                'status' => 'pending',
             ],
 
             // Add more cases based on the image you provided
         ];
 
-        foreach ($samples as $sample) {
-            DB::table('samples')->insert([
-                'doctor_id' => $sample['doctor_id'],
-                'scan_date' => $sample['scan_date'],
-                'order_id' => $sample['order_id'],
-                'patient_name' => $sample['patient_name'],
-                'practitioner' => $sample['practitioner'],
-                'cabinet' => $sample['cabinet'],
-                'procedure' => $sample['procedure'],
-                'due_date' => $sample['due_date'],
-                'status' => $sample['status'],
+        foreach ($scans as $scan) {
+            DB::table('scans')->insert([
+                'doctor_id' => $scan['doctor_id'],
+                'patient_id' => $scan['patient_id'],
+                'scan_date' => $scan['scan_date'],
+                'practitioner' => $scan['practitioner'],
+                'cabinet' => $scan['cabinet'],
+                'procedure' => $scan['procedure'],
+                'due_date' => $scan['due_date'],
+                'status' => $scan['status'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

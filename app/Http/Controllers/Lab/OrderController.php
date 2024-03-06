@@ -18,12 +18,24 @@ class OrderController extends Controller
         return view('lab.orders.index', compact('orders'));
     }
 
+    public function pending()
+    {
+        $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->where('status', 'pending')->get();
+        return view('lab.orders.pending', compact('orders'));
+    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
         //
+    }
+
+    public function viewer($id)
+    {
+        //$order = Scan::findOrFail($id);
+        $order = Scan::with('comments')->findOrFail($id);
+        return view('lab.viewer.index', compact('order'));
     }
 
     /**

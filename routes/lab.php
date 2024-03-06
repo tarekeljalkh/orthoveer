@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\OrderController;
 use Illuminate\Support\Facades\Route;
@@ -16,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('dashboard', [LabController::class, 'index'])->name('dashboard');
 
 //Orders Routes
+Route::get('orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
+Route::get('orders/viewer/{id}', [OrderController::class, 'viewer'])->name('orders.viewer');
 Route::resource('orders', OrderController::class);
+
+//Comments Routes
+Route::resource('comments', CommentController::class);

@@ -64,9 +64,9 @@
                                                         <div class="badge badge-danger">No</div>
                                                     </td>
                                                 @endif
-                                                </td>
                                                 <td>
-                                                    <a href="{{ route('admin.doctors.edit', $doctor->id) }}" class="btn btn-primary">Edit</a>
+                                                    <a href="{{ route('admin.doctors.edit', $doctor->id) }}"
+                                                        class="btn btn-primary">Edit</a>
                                                 </td>
                                             </tr>
                                         @endforeach

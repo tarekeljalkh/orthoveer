@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'super_admin',
+                'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
             [
@@ -36,6 +37,7 @@ class UserSeeder extends Seeder
                 'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'admin',
+                'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
             [
@@ -48,6 +50,7 @@ class UserSeeder extends Seeder
                 'postal_code' => '12345',
                 'siret_number' => '123 456 789 00112',
                 'role' => 'doctor',
+                'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
             [
@@ -60,6 +63,7 @@ class UserSeeder extends Seeder
                 'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'lab',
+                'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
             [
@@ -72,6 +76,7 @@ class UserSeeder extends Seeder
                 'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'external_lab',
+                'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
         ]);

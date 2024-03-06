@@ -60,6 +60,7 @@ class ScanController extends Controller
         $scan->patient_id = $patient->id;
         $scan->lab_id = $request->lab;
         $scan->due_date = $request->due_date;
+        $scan->scan_date = now();
         $scan->notes = $request->notes;
         $scan->save();
 

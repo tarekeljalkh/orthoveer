@@ -19,68 +19,48 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>In progress</h4>
+                            <h4>All Orders</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
 
-                                <table id="inProgress" class="display nowrap" style="width:100%">
+                                <table id="orders" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Patient Name</th>
-                                            <th>Chart Number</th>
                                             <th>Scan Date</th>
+                                            <th>Due Date</th>
                                             <th>Procedure</th>
                                             <th>Order Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                        @foreach ($orders as $order)
+                                            <tr>
+                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
+                                                <td>{{ $order->procedure }}</td>
+                                                @if ($order->status == 'pending')
+                                                    <td>
+                                                        <div class="badge badge-info">Pending</div>
+                                                    </td>
+                                                @elseif ($order->status == 'in_progress')
+                                                    <td>
+                                                        <div class="badge badge-primary">In Progress</div>
+                                                    </td>
+                                                @elseif ($order->status == 'completed')
+                                                    <td>
+                                                        <div class="badge badge-success">Completed</div>
+                                                    </td>
+                                                @elseif ($order->status == 'canceled')
+                                                    <td>
+                                                        <div class="badge badge-danger">Canceled</div>
+                                                    </td>
+                                                @endif
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Past Orders</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-
-                                <table id="pastOrders" class="display nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Patient Name</th>
-                                            <th>Chart Number</th>
-                                            <th>Scan Date</th>
-                                            <th>Procedure</th>
-                                            <th>Order Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -95,22 +75,12 @@
 
 @push('scripts')
     <script>
-        new DataTable('#inProgress', {
+        new DataTable('#orders', {
             layout: {
                 topStart: {
                     buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
                 }
             }
         });
-
-        new DataTable('#pastOrders', {
-            layout: {
-                topStart: {
-                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
-                }
-            }
-        });
-
-
     </script>
 @endpush
