@@ -13,4 +13,10 @@ class Patient extends Model
         'dob' => 'date', // Ensure dob is cast to a date
     ];
 
+    public function scans()
+    {
+        return $this->hasMany(Scan::class);
+    }
+
+
 }

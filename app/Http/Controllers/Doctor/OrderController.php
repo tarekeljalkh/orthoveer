@@ -14,7 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-$orders = Scan::with('patient')->where('doctor_id', Auth::user()->id)->get();
+        $orders = Scan::with('patient')->where('doctor_id', Auth::user()->id)->get();
         return view('doctor.orders.index', compact('orders'));
     }
 

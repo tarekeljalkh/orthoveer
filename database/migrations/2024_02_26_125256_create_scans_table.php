@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('scans', function (Blueprint $table) {
-            $table->id();
+            //$table->id();
+            // Modify the line below to set the starting value to 1000
+            $table->bigIncrements('id')->startingValue(10000000); // Set the starting value to 1000
             $table->unsignedBigInteger('doctor_id');
             $table->foreign('doctor_id')->references('id')->on('users');
             $table->unsignedBigInteger('patient_id');
@@ -31,6 +33,10 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->timestamps();
         });
+
+        // Set the starting value for the primary key (id) to 1000
+        //\DB::statement('ALTER TABLE users AUTO_INCREMENT = 1000');
+
     }
 
     /**

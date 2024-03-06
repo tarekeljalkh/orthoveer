@@ -27,7 +27,7 @@
                             {{ $patient->last_name }}, {{ $patient->first_name }}
                             <br>
                             <br>
-                            <a href="{{ route('doctor.scans.index') }}" class="btn btn-outline-primary">New Scan</a>
+                            <a href="{{ route('doctor.scans.new', $patient->id) }}" class="btn btn-outline-primary">New Scan</a>
                         </div>
                     </div>
                 </div>
@@ -43,19 +43,42 @@
                                     <table id="example" class="display nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Chart Number</th>
-                                                <th>Date of Birth</th>
-                                                <th>Last Scan Date</th>
+                                                <th>ID</th>
+                                                <th>Scan Date</th>
+                                                <th>Procedure</th>
+                                                <th>Order Status</th>
+                                                <th>Last Modified</th>
+                                                <th>Send To</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            @foreach ($patient->scans as $scan)
+                                                <tr>
+                                                    <td>{{ $scan->id }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($scan->scan_date)->format('d/m/Y') }}</td>
+                                                    <td>{{ $scan->procedure }}</td>
+                                                    @if ($scan->status == 'pending')
+                                                        <td>
+                                                            <div class="badge badge-info">Pending</div>
+                                                        </td>
+                                                    @elseif ($order->status == 'in_progress')
+                                                        <td>
+                                                            <div class="badge badge-primary">In Progress</div>
+                                                        </td>
+                                                    @elseif ($order->status == 'completed')
+                                                        <td>
+                                                            <div class="badge badge-success">Completed</div>
+                                                        </td>
+                                                    @elseif ($order->status == 'canceled')
+                                                        <td>
+                                                            <div class="badge badge-danger">Canceled</div>
+                                                        </td>
+                                                    @endif
+
+                                                    <td>{{ \Carbon\Carbon::parse($scan->updated_at)->format('d/m/Y') }}</td>
+                                                    <td></td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>

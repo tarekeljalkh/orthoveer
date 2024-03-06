@@ -22,6 +22,32 @@ class ScanController extends Controller
         return view('doctor.scans.create', compact('patients', 'labs'));
     }
 
+    public function newScan($id)
+    {
+        $patient = Patient::findOrFail($id);
+        $labs = User::where('role', 'lab')->get();
+        return view('doctor.patients.new_scan', compact('patient', 'labs'));
+    }
+
+    public function newScanStore(Request $request, $id)
+    {
+        //find patient id
+        $patient = Patient::findOrFail($id);
+
+        // Add scan to patient
+        $scan = new Scan();
+        $scan->doctor_id = $request->doctor_id; // Ensure this doctor_id is either coming from authenticated user or safely validated
+        $scan->patient_id = $patient->id;
+        $scan->lab_id = $request->lab;
+        $scan->due_date = $request->due_date;
+        $scan->scan_date = now();
+        $scan->notes = $request->notes;
+        $scan->save();
+
+        toastr()->success('Scan Created Successfully');
+        return to_route('doctor.patients.show', $patient->id);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
