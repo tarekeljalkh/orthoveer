@@ -19,83 +19,45 @@
             <div class="row">
                 <div class="col-8 col-md-8 col-lg-8">
                     <div class="card">
-                        <div class="card-header">
-                            <h4>General Informations</h4>
-                        </div>
                         <div class="card-body">
                             <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label"
-                                        style="font-weight: bold;">Patient:</label>
-                                    <label for="site-title"
-                                        class="form-control-label">{{ $order->patient->first_name }}</label>
+                                @if ($order->stl_upper)
+                                    <div class="col-12 col-md-12 col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>Upper Stl</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="stl_upper" style="width:500px;height:500px;margin:0 auto;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
 
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label" style="font-weight: bold;">Graph
-                                        Number:</label>
-                                    <label for="site-title" class="form-control-label">safasfg</label>
-                                </div>
+                                @if ($order->stl_lower)
+                                    <div class="col-12 col-md-12 col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>Lower Stl</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="stl_lower" style="width:500px;height:500px;margin:0 auto;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if (!$order->stl_upper && !$order->stl_lower)
+                                    <div class="col-12 col-md-12 col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>No Stl Available</h4>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                @endif
                             </div>
-
-                            <hr>
-                            {{-- <div class="live-divider"></div> --}}
-
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label"
-                                        style="font-weight: bold;">Doctor:</label>
-                                    <label for="site-title" class="form-control-label">Dr. {{ $order->doctor->last_name }},
-                                        {{ $order->doctor->first_name }}</label>
-                                </div>
-                            </div>
-
-                            <hr>
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label"
-                                        style="font-weight: bold;">Procedure:</label>
-                                    <label for="site-title" class="form-control-label">safasfg</label>
-                                </div>
-                            </div>
-
-
-                            <hr>
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label d-block"
-                                        style="font-weight: bold;">Cabinet:</label>
-                                    <label for="site-title" class="form-control-label d-block">safasfg</label>
-                                    <label for="another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">Delivery Address:</label>
-                                    <label for="another-field" class="form-control-label d-block">example</label>
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <label for="site-title" class="form-control-label d-block"
-                                        style="font-weight: bold;">Scan Date:</label>
-                                    <label for="site-title"
-                                        class="form-control-label d-block">{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</label>
-                                    <label for="another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">Due Date:</label>
-                                    <label for="another-field"
-                                        class="form-control-label d-block">{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</label>
-                                    <label for="yet-another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">Status:</label>
-                                    <label for="yet-another-field"
-                                        class="form-control-label d-block">{{ $order->status }}</label>
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <label for="site-title" class="form-control-label d-block"
-                                        style="font-weight: bold;">Signature:</label>
-                                    <label for="site-title" class="form-control-label d-block">safasfg</label>
-                                    <label for="another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">License:</label>
-                                    <label for="another-field" class="form-control-label d-block">example</label>
-                                </div>
-                            </div>
-
-
-
                         </div>
                     </div>
                 </div>
@@ -193,6 +155,28 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('assets/js/stl_js/stl_viewer.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            var stl_viewer_upper = new StlViewer(
+                document.getElementById("stl_upper"), {
+                    models: [{
+                        filename: "{{ $order->stl_upper }}"
+                    }]
+                }
+            );
+
+            var stl_viewer_lower = new StlViewer(
+                document.getElementById("stl_lower"), {
+                    models: [{
+                        filename: "{{ $order->stl_lower }}"
+                    }]
+                }
+            );
+        });
+    </script>
+
+    </script>
     <script>
         $(document).ready(function() {
             $('#addCommentButton').click(function() {

@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\Scan;
 use App\Models\User;
+use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ScanController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -80,12 +83,17 @@ class ScanController extends Controller
             $patient->save();
         }
 
+        $upperPath = $this->uploadImage($request, 'stl_upper');
+        $lowerPath = $this->uploadImage($request, 'stl_lower');
+
         // Add or update scan
         $scan = new Scan();
         $scan->doctor_id = $request->doctor_id; // Ensure this doctor_id is either coming from authenticated user or safely validated
         $scan->patient_id = $patient->id;
         $scan->lab_id = $request->lab;
         $scan->due_date = $request->due_date;
+        $scan->stl_upper = $upperPath;
+        $scan->stl_lower = $lowerPath;
         $scan->scan_date = now();
         $scan->notes = $request->notes;
         $scan->save();

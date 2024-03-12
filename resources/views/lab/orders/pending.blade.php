@@ -72,7 +72,7 @@
                                                         </button>
                                                         <div class="dropdown-menu dropleft">
                                                             <a class="dropdown-item" href="{{ route('lab.orders.viewer', $order->id) }}">Open Viewer</a>
-                                                            <a class="dropdown-item" href="#">Open Prescription</a>
+                                                            <a class="dropdown-item" href="{{ route('lab.orders.prescription', $order->id) }}">Open Prescription</a>
                                                             <a class="dropdown-item" href="#">Open With OrthoCAD</a>
                                                             <div class="dropdown-divider"></div>
                                                             <a class="dropdown-item" href="#"><i class="fas fa-print"></i> Print Prescription</a>

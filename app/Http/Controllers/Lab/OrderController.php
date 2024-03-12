@@ -38,6 +38,13 @@ class OrderController extends Controller
         return view('lab.viewer.index', compact('order'));
     }
 
+    public function prescription($id)
+    {
+        //$order = Scan::findOrFail($id);
+        $order = Scan::with('comments')->findOrFail($id);
+        return view('lab.prescription.index', compact('order'));
+    }
+
     /**
      * Store a newly created resource in storage.
      */
