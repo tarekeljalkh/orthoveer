@@ -27,9 +27,6 @@
                                     <thead>
                                         <tr>
                                             <th>Doctor Name</th>
-                                            <th>STL UPPER</th>
-                                            <th>STL LOWER</th>
-                                            <th>PDF</th>
                                             <th>Due Date</th>
                                             <th>Notes</th>
                                             <th>Status</th>
@@ -40,9 +37,6 @@
                                             <tr onclick="window.location='{{ route('lab.orders.show', $order->id) }}';"
                                                 style="cursor:pointer;">
                                                 <td>Dr. {{ $order->doctor->last_name }}, {{ $order->doctor->first_name }}</td>
-                                                <td><a href="#" class="btn btn-secondary">test {{ $order->stl_upper }}</a></td>
-                                                <td>{{ $order->stl_lower }}</td>
-                                                <td>{{ $order->pdf }}</td>
                                                 <td>{{ $order->due_date->format('d/m/Y') }}</td>
                                                 <td>{{ $order->notes }}</td>
                                                 <td>
