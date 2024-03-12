@@ -161,7 +161,7 @@
             var stl_viewer_upper = new StlViewer(
                 document.getElementById("stl_upper"), {
                     models: [{
-                        filename: "{{ $order->stl_upper }}"
+                        filename: "{{ asset($order->stl_upper) }}"
                     }]
                 }
             );
@@ -169,7 +169,7 @@
             var stl_viewer_lower = new StlViewer(
                 document.getElementById("stl_lower"), {
                     models: [{
-                        filename: "{{ $order->stl_lower }}"
+                        filename: "{{ asset($order->stl_lower) }}"
                     }]
                 }
             );
