@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Orthoveer &mdash; Admin</title>
+    <title>{{ config('settings.site_name') }} | Admin</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset(config('settings.logo')) }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -12,6 +15,8 @@
 
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/modules/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
 
     <!-- DataTable CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.css">
@@ -23,6 +28,12 @@
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}">
+
+    <style>
+        :root {
+            --primary: {{ config('settings.site_color') }} !important;
+        }
+    </style>
 
 
     <!-- Start GA -->
@@ -75,6 +86,7 @@
     <script src="{{ asset('assets/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('assets/modules/moment.min.js') }}"></script>
     <script src="{{ asset('assets/js/stisla.js') }}"></script>
+    <script src="{{ asset('assets/modules/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js') }}"></script>
 
     <!-- JS Libraies -->
     <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
@@ -99,15 +111,15 @@
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
 
     <!-- Toastr Error  -->
-<script>
-    toastr.options.closeButton = true;
+    <script>
+        toastr.options.closeButton = true;
 
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            toastr.error("{{ $error }}");
-        @endforeach
-    @endif
-</script>
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+    </script>
 
     <!-- Image Preview  -->
     <script>

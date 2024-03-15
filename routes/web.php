@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // all middlewares, prefixes and suffixes are in routeserviceprovider
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/test', function () {

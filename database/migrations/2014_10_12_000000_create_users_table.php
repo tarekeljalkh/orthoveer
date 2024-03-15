@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('image')->default('uploads/avatar.png');
             $table->string('mobile')->unique()->nullable();
             $table->string('landline')->nullable();
+            $table->string('license')->nullable();
             $table->text('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('siret_number')->nullable();

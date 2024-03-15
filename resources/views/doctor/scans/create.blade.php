@@ -29,10 +29,12 @@
                                             {{ auth()->user()->first_name }}</label>
                                     </div>
                                     <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>License:</label>
-                                        <label class="form-control">License:</label>
-                                    </div>
+                                    @if (Auth::user()->license)
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>License:</label>
+                                            <label class="form-control">License:</label>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -235,7 +237,7 @@
                 // Reset text inputs and radio buttons
                 $('input[name="patient_first_name"], input[name="patient_last_name"], input[name="patient_dob"], input[type="text"]')
                     .val('');
-                    $('input[name="patient_gender"][value="male"]').prop('checked', true);
+                $('input[name="patient_gender"][value="male"]').prop('checked', true);
                 //$('input[name="patient_gender"]').prop('checked', false);
 
                 // Disable clear button again

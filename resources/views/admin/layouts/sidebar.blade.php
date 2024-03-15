@@ -36,6 +36,12 @@
             <li class="{{ request()->routeIs('admin.external_labs.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.external_labs.index') }}"><i class="fas fa-vials"></i>
                     <span>External Labs</span></a></li>
+
+            <li class="{{ request()->routeIs('admin.setting.index') ? 'active' : '' }}"><a class="nav-link"
+                    href="{{ route('admin.setting.index') }}"><i class="fas fa-cog"></i>
+                    <span>Settings</span></a></li>
+
+
         </ul>
 
     </aside>
