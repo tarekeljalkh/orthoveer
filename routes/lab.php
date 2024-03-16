@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Lab\ChatController;
 use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\OrderController;
@@ -24,3 +25,6 @@ Route::resource('orders', OrderController::class);
 
 //Comments Routes
 Route::resource('comments', CommentController::class);
+
+/** chat Routes */
+Route::get('chat', [ChatController::class, 'index'])->name('chat.index');

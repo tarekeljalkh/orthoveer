@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Doctor;
 
+use App\Events\ScanCreatedNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
 use App\Models\Scan;
@@ -97,6 +98,9 @@ class ScanController extends Controller
         $scan->scan_date = now();
         $scan->notes = $request->notes;
         $scan->save();
+
+
+        ScanCreatedNotificationEvent::dispatch($scan->id);
 
         toastr()->success('Scan Created Successfully');
         return to_route('doctor.scans.index');

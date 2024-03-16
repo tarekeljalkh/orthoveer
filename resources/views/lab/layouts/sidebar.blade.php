@@ -22,8 +22,10 @@
                     href="{{ route('lab.orders.index') }}"><i class="fas fa-briefcase"></i>
                     <span>All Orders</span></a></li>
 
-            <li class="#"><a class="nav-link" href="#"><i class="fas fa-envelope"></i>
+            <li class="#"><a class="nav-link"
+                    href="#"><i class="fas fa-envelope"></i>
                     <span>Messages</span></a></li>
+
 
 
         </ul>

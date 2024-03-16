@@ -1,9 +1,12 @@
 <?php
 
+use App\Events\ScanCreatedNotificationEvent;
 use App\Http\Controllers\Doctor\DoctorController;
+use App\Http\Controllers\Doctor\MessageController;
 use App\Http\Controllers\Doctor\OrderController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\ScanController;
+use App\Models\Scan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +25,7 @@ Route::post('new_scan/{id}/store', [ScanController::class, 'newScanStore'])->nam
 Route::resource('scans', ScanController::class);
 Route::resource('patients', PatientController::class);
 Route::resource('orders', OrderController::class);
-//Route::get('messages', [SampleController::class, 'total'])->name('sample.total');
+
+
+/** chat Routes */
+Route::resource('messages', MessageController::class);

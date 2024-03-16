@@ -161,7 +161,10 @@
             var stl_viewer_upper = new StlViewer(
                 document.getElementById("stl_upper"), {
                     models: [{
-                        filename: "{{ asset($order->stl_upper) }}"
+                        id: 1,
+                        filename: "{{ asset($order->stl_upper) }}",
+                        display: "smooth",
+                        color: "#FFC0CB"
                     }]
                 }
             );
@@ -169,14 +172,17 @@
             var stl_viewer_lower = new StlViewer(
                 document.getElementById("stl_lower"), {
                     models: [{
-                        filename: "{{ asset($order->stl_lower) }}"
+                        id: 2,
+                        filename: "{{ asset($order->stl_lower) }}",
+                        display: "smooth",
+                        color: "#FFC0CB"
                     }]
                 }
             );
+            stl_viewer.download_model(2, '{{ asset($order->stl_lower) }}');
         });
     </script>
 
-    </script>
     <script>
         $(document).ready(function() {
             $('#addCommentButton').click(function() {

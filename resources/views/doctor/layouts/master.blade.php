@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Orthoveer &mdash; Doctor</title>
+    <title>{{ config('settings.site_name') }} | Doctor</title>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset(config('settings.favicon')) }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -23,18 +23,24 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
     <!-- Start GA -->
+
+    <style>
+        :root {
+            --primary: {{ config('settings.site_color') }};
+        }
+    </style>
+
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-94034622-3');
+        var pusherKey = "{{ config('settings.pusher_key') }}";
+        var pusherCluster = "{{ config('settings.pusher_cluster') }}";
     </script>
     <!-- /END GA -->
+
+    {{-- Added for pusher real time --}}
+    @vite(['resources/js/app.js'])
+
 </head>
 
 <body>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Lab;
 
+use App\Events\ScanCreateEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Scan;
 use Illuminate\Http\Request;
@@ -84,4 +85,5 @@ class OrderController extends Controller
     {
         //
     }
+
 }

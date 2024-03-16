@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>Orthoveer &mdash; Lab</title>
+    <title>{{ config('settings.site_name') }} | Lab</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset(config('settings.favicon')) }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -21,6 +23,13 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
     <!-- Start GA -->
+
+    <style>
+        :root {
+            --primary: {{ config('settings.site_color') }};
+        }
+    </style>
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>
         window.dataLayer = window.dataLayer || [];

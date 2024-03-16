@@ -7,7 +7,7 @@
     <title>{{ config('settings.site_name') }} | Admin</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset(config('settings.logo')) }}">
+    <link rel="icon" type="image/png" href="{{ asset(config('settings.favicon')) }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/bootstrap/css/bootstrap.min.css') }}">
@@ -31,7 +31,7 @@
 
     <style>
         :root {
-            --primary: {{ config('settings.site_color') }} !important;
+            --primary: {{ config('settings.site_color') }};
         }
     </style>
 
@@ -39,16 +39,14 @@
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-94034622-3');
+        var pusherKey = "{{ config('settings.pusher_key') }}";
+        var pusherCluster = "{{ config('settings.pusher_cluster') }}";
+        var loggedInUserId = "{{ auth()->user()->id }}";
     </script>
     <!-- /END GA -->
+
+    {{-- Added for pusher real time --}}
+    @vite(['resources/js/app.js'])
 </head>
 
 <body>

@@ -23,6 +23,11 @@ class Scan extends Model
         return $this->belongsTo(Patient::class, 'patient_id');
     }
 
+    public function lab()
+    {
+        return $this->belongsTo(User::class, 'lab_id');
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);

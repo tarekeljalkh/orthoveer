@@ -101,9 +101,7 @@ class SettingController extends Controller
     {
         $validatedData = $request->validate([
             'logo' => ['nullable', 'image', 'max:1000'],
-            'footer_logo' => ['nullable', 'image', 'max:1000'],
             'favicon' => ['nullable', 'image', 'max:1000'],
-            'breadcrumb' => ['nullable', 'image', 'max:1000'],
         ]);
 
         foreach ($validatedData as $key => $value) {
@@ -151,27 +149,4 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    function UpdateSeoSetting(Request $request)
-    {
-        $validatedData = $request->validate([
-            'seo_title' => ['required', 'max:255'],
-            'seo_description' => ['nullable', 'max:600'],
-            'seo_keywords' => ['nullable']
-        ]);
-
-        foreach ($validatedData as $key => $value) {
-            Setting::updateOrCreate(
-                ['key' => $key],
-                ['value' => $value]
-            );
-        }
-
-        $settingsService = app(SettingsService::class);
-        $settingsService->clearCachedSettings();
-        Cache::forget('mail_settings');
-
-        toastr()->success('Updated Successfully!');
-
-        return redirect()->back();
-    }
 }
