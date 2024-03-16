@@ -4,7 +4,7 @@
             <a href="{{ route('lab.dashboard') }}">Orthoveer</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('lab.dashboard') }}">OV</a>
+            <a href="{{ route('lab.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}" alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
@@ -13,6 +13,10 @@
                     <span>Dashboard</span></a></li>
 
             <li class="menu-header">Starter</li>
+
+            <li class="{{ request()->routeIs('lab.orders.new') ? 'active' : '' }}"><a class="nav-link"
+                href="{{ route('lab.orders.new') }}"><i class="fas fa-truck-loading"></i>
+                <span>New Orders</span></a></li>
 
             <li class="{{ request()->routeIs('lab.orders.pending') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.orders.pending') }}"><i class="fas fa-truck-loading"></i>

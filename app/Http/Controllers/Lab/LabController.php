@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
+use App\Models\Scan;
+use App\Models\ScanCreatedNotification;
 use Illuminate\Http\Request;
 
 class LabController extends Controller
@@ -12,7 +14,18 @@ class LabController extends Controller
      */
     public function index()
     {
-        return view('lab.dashboard');
+        $todaysOrders = Scan::whereDate('created_at', now()->format('Y-m-d'))->count();
+        $pendingOrders = Scan::where('status', 'pending')->count();
+        $totalOrders = Scan::count();
+
+        return view('lab.dashboard', compact('todaysOrders', 'pendingOrders', 'totalOrders'));
+    }
+
+    function clearNotification() {
+        $notification = ScanCreatedNotification::query()->update(['seen' => 1]);
+
+        toastr()->success('Notification Cleared Successfully!');
+        return redirect()->back();
     }
 
     /**

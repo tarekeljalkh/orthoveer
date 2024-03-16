@@ -4,7 +4,7 @@
             <a href="{{ route('doctor.dashboard') }}">Orthoveer</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('doctor.dashboard') }}">OV</a>
+            <a href="{{ route('doctor.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}" alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>

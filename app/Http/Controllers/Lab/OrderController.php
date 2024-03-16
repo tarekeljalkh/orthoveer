@@ -24,6 +24,28 @@ class OrderController extends Controller
         $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->where('status', 'pending')->get();
         return view('lab.orders.pending', compact('orders'));
     }
+
+    public function new()
+    {
+        $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->whereMonth('created_at', now()->month)->get();
+        return view('lab.orders.new', compact('orders'));
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $request->validate([
+            'reject_note' => ['required', 'max:200']
+        ]);
+
+        $scan = Scan::findorFail($id);
+        $scan->status = 'rejected';
+        $scan->save();
+
+        toastr()->success('Status Updated Successfully!');
+
+        return redirect()->back();
+
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -85,5 +107,4 @@ class OrderController extends Controller
     {
         //
     }
-
 }

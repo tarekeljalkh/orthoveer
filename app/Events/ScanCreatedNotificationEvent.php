@@ -22,12 +22,11 @@ class ScanCreatedNotificationEvent implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct($scanId)
+    public function __construct(Scan $scan)
     {
-        $this->scanId = Scan::find($scanId);
-        $this->message = '#'. $scanId->id .'a new Scan has been placed';
-        $this->scanId = $scanId->id;
-        $this->date = date('h:i A | d-F-Y', strtotime($scanId->created_at));
+        $this->message = '#'. $scan->id .' a new Order has been placed';
+        $this->scanId = $scan->id;
+        $this->date = date('h:i A | d-F-Y', strtotime($scan->created_at));
     }
 
 

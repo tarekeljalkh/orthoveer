@@ -18,13 +18,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('dashboard', [LabController::class, 'index'])->name('dashboard');
 
 //Orders Routes
+Route::get('orders/new', [OrderController::class, 'new'])->name('orders.new');
 Route::get('orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
 Route::get('orders/viewer/{id}', [OrderController::class, 'viewer'])->name('orders.viewer');
 Route::get('orders/prescription/{id}', [OrderController::class, 'prescription'])->name('orders.prescription');
+//reject order
+Route::post('orders/reject/{id}', [OrderController::class, 'reject'])->name('orders.reject');
 Route::resource('orders', OrderController::class);
 
 //Comments Routes
 Route::resource('comments', CommentController::class);
+
+/** Order Notification Routes */
+Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');
 
 /** chat Routes */
 Route::get('chat', [ChatController::class, 'index'])->name('chat.index');

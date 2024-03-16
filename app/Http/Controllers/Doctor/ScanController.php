@@ -99,8 +99,7 @@ class ScanController extends Controller
         $scan->notes = $request->notes;
         $scan->save();
 
-
-        ScanCreatedNotificationEvent::dispatch($scan->id);
+        ScanCreatedNotificationEvent::dispatch($scan);
 
         toastr()->success('Scan Created Successfully');
         return to_route('doctor.scans.index');

@@ -1,10 +1,10 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="index.html">Orthoveer</a>
+            <a href="{{ route('admin.dashboard') }}">Orthoveer</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">OV</a>
+            <a href="{{ route('admin.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}" alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>

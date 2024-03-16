@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->unsignedBigInteger('lab_id')->nullable();
             $table->foreign('lab_id')->references('id')->on('users');
-            $table->enum('status', ['pending', 'in_progress', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'in_progress', 'completed', 'rejected'])->default('pending');
             $table->date('due_date')->format('d/m/Y');
             $table->date('scan_date')->format('d/m/Y');
             $table->string('stl_upper')->nullable();

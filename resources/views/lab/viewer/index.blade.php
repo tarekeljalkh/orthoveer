@@ -109,16 +109,25 @@
                         </div>
 
                         <div class="card-footer">
-                            <div class="row">
-                                <div class="form-group col-md-8 col-8">
-                                    <label>Return Cancel</label>
-                                </div>
+                            <form action="{{ route('lab.orders.reject', $order->id) }}" method="post">
+                                @csrf
+                                @method('post')
 
-                                <div class="form-group col-md-4 col-4">
-                                    <a href="#" class="btn btn-danger">Return</a>
-                                </div>
+                                <div class="row">
 
-                            </div>
+                                    <div class="form-group col-md-8 col-8">
+                                        <input class="form-control" type="text" name="reject_note"
+                                            placeholder="Enter Rejection Note" required>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-4">
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                        {{-- <a href="{{ route('lab.orders.reject', $order->id) }}" class="btn btn-danger">Reject</a> --}}
+                                    </div>
+
+                                </div>
+                            </form>
+
                         </div>
 
                     </div>

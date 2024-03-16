@@ -38,7 +38,7 @@ window.Echo.channel("scan-created").listen(
     "ScanCreatedNotificationEvent",
     (e) => {
         console.log(e);
-        let html = `<a href="/admin/orders/${e.orderId}" class="dropdown-item">
+        let html = `<a href="/lab/orders/${e.scanId}" class="dropdown-item">
             <div class="dropdown-item-icon bg-info text-white">
                 <i class="fas fa-bell"></i>
             </div>

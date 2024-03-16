@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Pending Orders</h1>
+            <h1>New Orders</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Pending Orders</a></div>
+                <div class="breadcrumb-item"><a href="#">New Orders</a></div>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Pending Orders</h4>
+                            <h4>New Orders</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -64,12 +64,18 @@
                                                             Dropleft
                                                         </button>
                                                         <div class="dropdown-menu dropleft">
-                                                            <a class="dropdown-item" href="{{ route('lab.orders.viewer', $order->id) }}">Open Viewer</a>
-                                                            <a class="dropdown-item" href="{{ route('lab.orders.prescription', $order->id) }}">Open Prescription</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('lab.orders.viewer', $order->id) }}">Open
+                                                                Viewer</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('lab.orders.prescription', $order->id) }}">Open
+                                                                Prescription</a>
                                                             <a class="dropdown-item" href="#">Open With OrthoCAD</a>
                                                             <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item" href="#"><i class="fas fa-print"></i> Print Prescription</a>
-                                                            <a class="dropdown-item" href="#"><i class="fas fa-download"></i> Download The Scan</a>
+                                                            <a class="dropdown-item" href="#"><i
+                                                                    class="fas fa-print"></i> Print Prescription</a>
+                                                            <a class="dropdown-item" href="#"><i
+                                                                    class="fas fa-download"></i> Download The Scan</a>
                                                         </div>
                                                     </div>
 
@@ -86,60 +92,3 @@
         </div>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('.orderCheckbox');
-            const printButton = document.getElementById('printSelected');
-            const downloadButton = document.getElementById('downloadSelected');
-
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    updateButtonStatus();
-                });
-            });
-
-            updateButtonStatus(); // Call the function when the page loads
-
-            function updateButtonStatus() {
-                const checkedCheckboxes = document.querySelectorAll('.orderCheckbox:checked');
-                const count = checkedCheckboxes.length;
-
-                if (count > 0) {
-                    printButton.disabled = false;
-                    downloadButton.disabled = false;
-                    printButton.textContent = `Print Selected (${count})`;
-                    downloadButton.textContent = `Download Selected (${count})`;
-                } else {
-                    printButton.disabled = true;
-                    downloadButton.disabled = true;
-                    printButton.textContent = `Print Selected`;
-                    downloadButton.textContent = `Download Selected`;
-                }
-            }
-
-            printButton.addEventListener('click', function() {
-                printSelectedOrders();
-            });
-
-            downloadButton.addEventListener('click', function() {
-                downloadSelectedOrders();
-            });
-
-            function printSelectedOrders() {
-                const checkedCheckboxes = document.querySelectorAll('.orderCheckbox:checked');
-                checkedCheckboxes.forEach(function(checkbox) {
-                    console.log('Printing order with ID: ' + checkbox.value);
-                });
-            }
-
-            function downloadSelectedOrders() {
-                const checkedCheckboxes = document.querySelectorAll('.orderCheckbox:checked');
-                checkedCheckboxes.forEach(function(checkbox) {
-                    console.log('Downloading order with ID: ' + checkbox.value);
-                });
-            }
-        });
-    </script>
-@endpush
