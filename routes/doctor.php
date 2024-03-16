@@ -1,12 +1,11 @@
 <?php
 
 use App\Events\ScanCreatedNotificationEvent;
+use App\Http\Controllers\Doctor\ChatController;
 use App\Http\Controllers\Doctor\DoctorController;
-use App\Http\Controllers\Doctor\MessageController;
 use App\Http\Controllers\Doctor\OrderController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\ScanController;
-use App\Models\Scan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +27,6 @@ Route::resource('orders', OrderController::class);
 
 
 /** chat Routes */
-Route::resource('messages', MessageController::class);
+Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
+Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
+Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');

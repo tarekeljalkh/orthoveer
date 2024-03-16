@@ -1,4 +1,4 @@
-@extends('doctor.layouts.master')
+@extends('lab.layouts.master')
 
 @section('content')
 <section class="section">
@@ -26,7 +26,6 @@
                             @php
                                 $chatUser = \App\Models\User::find($sender->sender_id);
                                 $unseenMessages = \App\Models\Chat::where(['sender_id' => $chatUser->id, 'receiver_id' => auth()->user()->id, 'seen' => 0])->count();
-
                             @endphp
                             <li class="media fp_chat_user" data-name="{{ $chatUser->first_name }}" data-user="{{ $chatUser->id }}" style="cursor: pointer">
                                 <img alt="image" class="mr-3 rounded-circle " width="50"
@@ -96,7 +95,7 @@
                 $('#receiver_id').val(senderId);
                 $.ajax({
                     method: 'GET',
-                    url: '{{ route("doctor.chat.get-conversation", ":senderId") }}'.replace(":senderId", senderId),
+                    url: '{{ route("lab.chat.get-conversation", ":senderId") }}'.replace(":senderId", senderId),
                     beforeSend: function() {
                         $('.chat-content').empty();
                         $('#chat_header').text("Chat With "+senderName);
@@ -135,7 +134,7 @@
                 let formData = $(this).serialize();
                 $.ajax({
                     method: 'POST',
-                    url: "{{ route('doctor.chat.send-message') }}",
+                    url: "{{ route('lab.chat.send-message') }}",
                     data: formData,
                     beforeSend: function(){
                     let message = $('.fp_send_message').val();

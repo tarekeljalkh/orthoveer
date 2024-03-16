@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Scan;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,25 +10,26 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ScanCreatedNotificationEvent implements ShouldBroadcast
+class ChatEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $scanId;
-    public $date;
+    public $avatar;
+    public $receiverId;
+    public $senderId;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($scanId)
+    public function __construct($message, $avatar, $receiverId, $senderId)
     {
-        $this->scanId = Scan::find($scanId);
-        $this->message = '#'. $scanId->id .'a new Scan has been placed';
-        $this->scanId = $scanId->id;
-        $this->date = date('h:i A | d-F-Y', strtotime($scanId->created_at));
-    }
+        $this->message = $message;
+        $this->avatar = $avatar;
+        $this->receiverId = $receiverId;
+        $this->senderId = $senderId;
 
+    }
 
     /**
      * Get the channels the event should broadcast on.
@@ -39,7 +39,7 @@ class ScanCreatedNotificationEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('scan-created'),
+            new PrivateChannel('chat.'.$this->receiverId),
         ];
     }
 }

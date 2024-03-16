@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Lab;
+namespace App\Http\Controllers\Doctor;
 
 use App\Events\ChatEvent;
 use App\Http\Controllers\Controller;
@@ -21,7 +21,7 @@ class ChatController extends Controller
             ->orderByDesc('latest_message_sent')
             ->get();
 
-        return view('lab.chat.index', compact('senders'));
+        return view('doctor.chat.index', compact('senders'));
     }
 
     function getConversation(string $senderId)

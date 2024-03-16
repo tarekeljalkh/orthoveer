@@ -25,8 +25,8 @@
                     href="{{ route('doctor.orders.index') }}"><i class="fas fa-briefcase"></i>
                     <span>Orders</span></a></li>
 
-            <li class="{{ request()->routeIs('doctor.messages.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('doctor.messages.index') }}"><i class="fas fa-envelope"></i>
+            <li class="{{ request()->routeIs('doctor.chat.index') ? 'active' : '' }}"><a class="nav-link"
+                    href="{{ route('doctor.chat.index') }}"><i class="fas fa-envelope"></i>
                     <span>Messages</span></a></li>
 
 
