@@ -1,6 +1,4 @@
 
-Chart Number-> same as order number 9 digits generated automatically (y - m - d - number)
-
 upper icon
 put stl files display to see the doctor before submitting
 lower icon
@@ -12,9 +10,6 @@ type of works before notes
 
 return -> cancel return to doctor with message
 
-stl file color pink
-
-doctor and lab messages
 
 viewer blade.php download button to download stl files
 

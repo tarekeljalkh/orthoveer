@@ -28,7 +28,7 @@
                                         <tr>
                                             <th>Doctor Name</th>
                                             <th>Due Date</th>
-                                            <th>Notes</th>
+                                            <th>Note</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -38,7 +38,7 @@
                                                 style="cursor:pointer;">
                                                 <td>Dr. {{ $order->doctor->last_name }}, {{ $order->doctor->first_name }}</td>
                                                 <td>{{ $order->due_date->format('d/m/Y') }}</td>
-                                                <td>{{ $order->notes }}</td>
+                                                <td>{{ $order->note }}</td>
                                                 <td>
                                                     <div class="badge
                                                     {{ $order->status == 'pending' ? 'badge-warning' : '' }}

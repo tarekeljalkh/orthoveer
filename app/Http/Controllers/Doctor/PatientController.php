@@ -44,7 +44,16 @@ class PatientController extends Controller
         $patient->last_name = $request->last_name;
         $patient->dob = $request->dob;
         $patient->gender = $request->gender;
-        $patient->chart_number = $request->chart_number;
+
+        // Step 1: Generate the date part (y-m-d)
+        $datePart = date('y-m-d');
+        // Step 2: Generate a 9-digit number
+        $nineDigitNumber = mt_rand(100000000, 999999999);
+        // Step 3: Concatenate the parts
+        $finalNumber = "{$datePart}-{$nineDigitNumber}";
+
+        $patient->chart_number = $finalNumber;
+
         $patient->doctor_id = $request->doctor_id;
         $patient->save();
 
@@ -88,7 +97,6 @@ class PatientController extends Controller
         $patient->last_name = $request->last_name;
         $patient->dob = $request->dob;
         $patient->gender = $request->gender;
-        $patient->chart_number = $request->chart_number;
         $patient->doctor_id = $request->doctor_id;
         $patient->save();
 

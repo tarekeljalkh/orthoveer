@@ -146,17 +146,17 @@
                     {{-- End Order Section --}}
 
 
-                    {{-- Notes --}}
+                    {{-- Note --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Notes:</h4>
+                                <h4>Note:</h4>
                             </div>
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <textarea class="form-control" name="notes" id="notes" cols="30" rows="10" placeholder="Add Note"></textarea>
+                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="Add Note"></textarea>
                                     </div>
                                 </div>
 
@@ -169,7 +169,7 @@
 
 
                     </div>
-                    {{-- End Notes --}}
+                    {{-- End Note --}}
 
                 </div>
             </form>

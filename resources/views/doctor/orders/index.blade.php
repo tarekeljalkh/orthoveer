@@ -30,7 +30,7 @@
                                             <th>Patient Name</th>
                                             <th>Scan Date</th>
                                             <th>Due Date</th>
-                                            <th>Procedure</th>
+                                            <th>Note</th>
                                             <th>Order Status</th>
                                         </tr>
                                     </thead>
@@ -40,7 +40,7 @@
                                                 <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
-                                                <td>{{ $order->procedure }}</td>
+                                                <td>{{ $order->note }}</td>
                                                 @if ($order->status == 'pending')
                                                     <td>
                                                         <div class="badge badge-info">Pending</div>
@@ -53,9 +53,9 @@
                                                     <td>
                                                         <div class="badge badge-success">Completed</div>
                                                     </td>
-                                                @elseif ($order->status == 'canceled')
+                                                @elseif ($order->status == 'rejected')
                                                     <td>
-                                                        <div class="badge badge-danger">Canceled</div>
+                                                        <div class="badge badge-danger">Rejected</div>
                                                     </td>
                                                 @endif
 

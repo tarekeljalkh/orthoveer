@@ -10,7 +10,7 @@
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="{{ route('lab.orders.index') }}">Orders</a></div>
-                <div class="breadcrumb-item"><a href="#">Order</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ $order->id }}</a></div>
             </div>
         </div>
 
@@ -26,6 +26,9 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>Upper Stl</h4>
+                                                <div class="card-header-action">
+                                                    <a href="{{ $order->stl_upper }}" download class="btn btn-success">Download <i class="fas fa-download"></i></a>
+                                                </div>
                                             </div>
                                             <div class="card-body">
                                                 <div id="stl_upper" style="width:500px;height:500px;margin:0 auto;"></div>
@@ -39,6 +42,9 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>Lower Stl</h4>
+                                                <div class="card-header-action">
+                                                    <a href="{{ $order->stl_lower }}" download class="btn btn-success">Download <i class="fas fa-download"></i></a>
+                                                </div>
                                             </div>
                                             <div class="card-body">
                                                 <div id="stl_lower" style="width:500px;height:500px;margin:0 auto;"></div>
@@ -46,6 +52,23 @@
                                         </div>
                                     </div>
                                 @endif
+
+                                @if ($order->pdf)
+                                <div class="col-12 col-md-12 col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Image Or Pdf</h4>
+                                            <div class="card-header-action">
+                                                <a href="{{ $order->pdf }}" download class="btn btn-success">Download <i class="fas fa-download"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <img src="{{ $order->pdf }}" style="width:200px;height:200px;margin:0 auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
 
                                 @if (!$order->stl_upper && !$order->stl_lower)
                                     <div class="col-12 col-md-12 col-lg-12">

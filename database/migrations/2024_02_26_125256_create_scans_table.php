@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('practitioner')->nullable();
             $table->string('cabinet')->nullable();
             $table->string('procedure')->nullable();
-            $table->text('notes')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
 

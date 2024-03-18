@@ -3,6 +3,7 @@
 use App\Http\Controllers\Lab\ChatController;
 use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
+use App\Http\Controllers\Lab\NotificationController;
 use App\Http\Controllers\Lab\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +37,7 @@ Route::get('clear-notification', [LabController::class, 'clearNotification'])->n
 Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
 Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
 Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
+
+/** Notification Routes */
+Route::get('/notifications/seen/{notification}', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');
+Route::resource('notifications', NotificationController::class);

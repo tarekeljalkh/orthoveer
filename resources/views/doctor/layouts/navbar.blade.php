@@ -10,38 +10,54 @@
     <ul class="navbar-nav navbar-right">
 
         @php
-            $notifications = \App\Models\ScanCreatedNotification::where('seen', 0)->latest()->take(10)->get();
+            $notifications = \App\Models\Notification::where(['receiver_id' => auth()->user()->id, 'seen' => 0])
+                ->latest()
+                ->take(10)
+                ->get();
+            $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
         @endphp
 
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Notifications
-                    <div class="float-right">
-                        <a href="#">Mark All As Read</a>
+        @if (auth()->user()->role === 'doctor')
+            <li class="dropdown dropdown-list-toggle">
+                <a href="{{ route('doctor.chat.index') }}" class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i
+                        class="far fa-envelope"></i></a>
+            </li>
+        @endif
+
+        @if (count($notifications) > 0)
+            <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+                    class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+                <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                    <div class="dropdown-header">Notifications
+                        <div class="float-right">
+                            <a href="{{ route('doctor.clear-notification') }}">Mark All As Read</a>
+                        </div>
+                    </div>
+                    <div class="dropdown-list-content dropdown-list-icons notification">
+
+                        @foreach ($notifications as $notification)
+                            <a href="{{ route('doctor.notifications.seen', $notification->id) }}"
+                                class="dropdown-item dropdown-item-unread">
+                                <div class="dropdown-item-icon bg-primary text-white">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="dropdown-item-desc">
+                                    #{{ $notification->scan_id }}, {{ $notification->message }}
+                                    <div class="time text-primary">
+                                        {{ date('h:i A | d-F-Y', strtotime($notification->created_at)) }}</div>
+                                </div>
+                            </a>
+                        @endforeach
+
+                    </div>
+                    <div class="dropdown-footer text-center">
+                        <a href="{{ route('doctor.notifications.index') }}">View All <i
+                                class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
-                <div class="dropdown-list-content dropdown-list-icons notification">
+            </li>
+        @endif
 
-                    @foreach ($notifications as $notification)
-                        <a href="#" class="dropdown-item dropdown-item-unread">
-                            <div class="dropdown-item-icon bg-primary text-white">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <div class="dropdown-item-desc">
-                                {{ $notification->message }}
-                                <div class="time text-primary">
-                                    {{ date('h:i A | d-F-Y', strtotime($notification->created_at)) }}</div>
-                            </div>
-                        </a>
-                    @endforeach
-
-                </div>
-                <div class="dropdown-footer text-center">
-                    <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-                </div>
-            </div>
-        </li>
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="{{ asset(Auth::user()->image) }}" class="rounded-circle mr-1">

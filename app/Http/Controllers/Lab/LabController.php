@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\Scan;
 use App\Models\ScanCreatedNotification;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class LabController extends Controller
     }
 
     function clearNotification() {
-        $notification = ScanCreatedNotification::query()->update(['seen' => 1]);
+        $notification = Notification::query()->update(['seen' => 1]);
 
         toastr()->success('Notification Cleared Successfully!');
         return redirect()->back();

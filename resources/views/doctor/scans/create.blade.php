@@ -103,13 +103,6 @@
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <label>Chart Number:</label>
-                                        <input class="form-control" type="text" name="chart_number">
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
@@ -164,18 +157,38 @@
                     </div>
                     {{-- End Order Section --}}
 
-
-                    {{-- Notes --}}
+                    {{-- Image --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Notes:</h4>
+                                <h4>Upload Image Or PDF if Needed:</h4>
                             </div>
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <textarea class="form-control" name="notes" id="notes" cols="30" rows="10" placeholder="Add Note"></textarea>
+                                        <input type="file" name="pdf" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    {{-- End Image --}}
+
+
+                    {{-- Note --}}
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Note:</h4>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="form-group col-12">
+                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="Add Note"></textarea>
                                     </div>
                                 </div>
 
@@ -188,7 +201,7 @@
 
 
                     </div>
-                    {{-- End Notes --}}
+                    {{-- End Note --}}
 
                 </div>
             </form>
@@ -213,10 +226,10 @@
                     var stl_viewer_upper = new StlViewer(
                         document.getElementById("stl_upper"), {
                             models: [{
-                                id:1,
+                                id: 1,
                                 filename: url,
                                 display: "smooth",
-                                color:"#FFC0CB"
+                                color: "#FFC0CB"
                             }]
                         }
                     );
@@ -236,10 +249,10 @@
                     var stl_viewer_lower = new StlViewer(
                         document.getElementById("stl_lower"), {
                             models: [{
-                                id:2,
+                                id: 2,
                                 filename: url,
                                 display: "smooth",
-                                color:"#FFC0CB"
+                                color: "#FFC0CB"
                             }]
                         }
                     );

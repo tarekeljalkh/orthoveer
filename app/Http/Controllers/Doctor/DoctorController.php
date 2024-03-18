@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cas;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
@@ -15,6 +15,15 @@ class DoctorController extends Controller
     {
         return view('doctor.dashboard');
     }
+
+    function clearNotification()
+    {
+        $notification = Notification::query()->update(['seen' => 1]);
+
+        toastr()->success('Notification Cleared Successfully!');
+        return redirect()->back();
+    }
+
 
     public function pending()
     {

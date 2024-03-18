@@ -65,13 +65,6 @@
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <label>Chart Number:</label>
-                                        <input class="form-control" name="chart_number" type="text">
-                                    </div>
-                                </div>
-
                                 <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
 
                             </div>

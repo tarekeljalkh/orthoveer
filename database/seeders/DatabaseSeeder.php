@@ -25,11 +25,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
 
-        \App\Models\Patient::factory(10)->create();
+        \App\Models\Patient::factory(4)->create();
 
         $this->call([
             ScanSeeder::class,
             SettingSeeder::class,
+            ChatSeeder::class,
         ]);
     }
 }

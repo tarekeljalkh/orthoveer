@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Doctor;
 
-use App\Events\ScanCreatedNotificationEvent;
 use App\Http\Controllers\Controller;
+use App\Mail\OrderPlaced;
+use App\Models\Notification;
 use App\Models\Patient;
 use App\Models\Scan;
 use App\Models\User;
 use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ScanController extends Controller
 {
@@ -45,7 +47,7 @@ class ScanController extends Controller
         $scan->lab_id = $request->lab;
         $scan->due_date = $request->due_date;
         $scan->scan_date = now();
-        $scan->notes = $request->notes;
+        $scan->note = $request->note;
         $scan->save();
 
         toastr()->success('Scan Created Successfully');
@@ -81,11 +83,21 @@ class ScanController extends Controller
             $patient->last_name = $request->patient_last_name;
             $patient->dob = $request->patient_dob;
             $patient->gender = $request->patient_gender;
+
+            // Step 1: Generate the date part (y-m-d)
+            $datePart = date('y-m-d');
+            // Step 2: Generate a 9-digit number
+            $nineDigitNumber = mt_rand(100000000, 999999999);
+            // Step 3: Concatenate the parts
+            $finalNumber = "{$datePart}-{$nineDigitNumber}";
+
+            $patient->chart_number = $finalNumber;
             $patient->save();
         }
 
         $upperPath = $this->uploadImage($request, 'stl_upper');
         $lowerPath = $this->uploadImage($request, 'stl_lower');
+        $pdf = $this->uploadImage($request, 'pdf');
 
         // Add or update scan
         $scan = new Scan();
@@ -95,11 +107,29 @@ class ScanController extends Controller
         $scan->due_date = $request->due_date;
         $scan->stl_upper = $upperPath;
         $scan->stl_lower = $lowerPath;
+        $scan->pdf = $pdf;
         $scan->scan_date = now();
-        $scan->notes = $request->notes;
+        $scan->note = $request->note;
         $scan->save();
 
-        ScanCreatedNotificationEvent::dispatch($scan);
+
+        // Send Email
+        $lab = User::findorFail($request->lab);
+        $content = [
+            'doctorName' => 'Dr. ' .Auth::user()->last_name,
+            'dueDate' => $scan->due_date->format('d-m-y'),
+            'scanDate' => now()->format('d-m-y'),
+            // Include other data as needed
+        ];
+        Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' .Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+
+        //send Notification
+        $notification = new Notification();
+        $notification->sender_id = Auth::user()->id;
+        $notification->receiver_id = $lab->id;
+        $notification->message = 'test';
+        $notification->scan_id = $scan->id;
+        $notification->save();
 
         toastr()->success('Scan Created Successfully');
         return to_route('doctor.scans.index');

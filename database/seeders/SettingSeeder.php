@@ -16,7 +16,7 @@ class SettingSeeder extends Seeder
             array(
                 "id" => 1,
                 "key" => "site_name",
-                "value" => "Food Park",
+                "value" => "Orthoveer",
                 "created_at" => "2023-08-05 10:31:55",
                 "updated_at" => "2023-08-06 06:19:16",
             ),
