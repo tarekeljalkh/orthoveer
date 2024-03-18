@@ -137,14 +137,14 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>STL UPPER</label>
+                                        <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
                                         <div id="stl_upper"
                                             style="width:300px; height:300px; margin:0 auto; display: none;"></div>
                                         <input type="file" name="stl_upper" class="form-control">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>STL LOWER</label>
+                                        <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
                                         <div id="stl_lower"
                                             style="width:300px; height:300px; margin:0 auto; display: none;"></div>
                                         <input type="file" name="stl_lower" class="form-control">

@@ -8,16 +8,6 @@ upload image with comment
 type of works before notes
 3 to 4 items
 
-return -> cancel return to doctor with message
-
-
-viewer blade.php download button to download stl files
-
-patient::(sidebar)
-new orders
-pending orders
-all orders
-messages
 
 once external lab reject the case lab should be notified
 

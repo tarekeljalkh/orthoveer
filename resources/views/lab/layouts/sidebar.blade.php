@@ -15,7 +15,7 @@
             <li class="menu-header">Starter</li>
 
             <li class="{{ request()->routeIs('lab.orders.new') ? 'active' : '' }}"><a class="nav-link"
-                href="{{ route('lab.orders.new') }}"><i class="fas fa-truck-loading"></i>
+                href="{{ route('lab.orders.new') }}"><i class="fas fa-folder-open"></i>
                 <span>New Orders</span></a></li>
 
             <li class="{{ request()->routeIs('lab.orders.pending') ? 'active' : '' }}"><a class="nav-link"

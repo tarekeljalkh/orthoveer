@@ -19,7 +19,8 @@
 
         @if (auth()->user()->role === 'doctor')
             <li class="dropdown dropdown-list-toggle">
-                <a href="{{ route('doctor.chat.index') }}" class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i
+                <a href="{{ route('doctor.chat.index') }}"
+                    class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i
                         class="far fa-envelope"></i></a>
             </li>
         @endif

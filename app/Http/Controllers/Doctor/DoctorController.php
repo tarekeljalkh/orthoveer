@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Models\Scan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorController extends Controller
 {
@@ -13,7 +15,12 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        return view('doctor.dashboard');
+        $currentScans = Scan::where('doctor_id', Auth::user()->id)->where('status', 'completed')->count();
+        $pendingScans = Scan::where('doctor_id', Auth::user()->id)->where('status', 'pending')->count();
+        $totalScans = Scan::where('doctor_id', Auth::user()->id)->count();
+        $rejectedScans = Scan::where('doctor_id', Auth::user()->id)->where('status', 'rejected')->count();
+
+        return view('doctor.dashboard', compact('currentScans', 'pendingScans', 'totalScans', 'rejectedScans'));
     }
 
     function clearNotification()
