@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\Scan;
 use App\Models\ScanCreatedNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LabController extends Controller
 {
@@ -15,9 +16,9 @@ class LabController extends Controller
      */
     public function index()
     {
-        $todaysOrders = Scan::whereDate('created_at', now()->format('Y-m-d'))->count();
-        $pendingOrders = Scan::where('status', 'pending')->count();
-        $totalOrders = Scan::count();
+        $todaysOrders = Scan::where('lab_id', Auth::user()->id)->whereDate('created_at', now()->format('Y-m-d'))->count();
+        $pendingOrders = Scan::where('lab_id', Auth::user()->id)->where('status', 'pending')->count();
+        $totalOrders = Scan::where('lab_id', Auth::user()->id)->count();
 
         return view('lab.dashboard', compact('todaysOrders', 'pendingOrders', 'totalOrders'));
     }

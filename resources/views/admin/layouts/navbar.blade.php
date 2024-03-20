@@ -76,7 +76,7 @@
             </div>
         </li>
         @php
-            $notifications = \App\Models\ScanCreatedNotification::where('seen', 0)->latest()->take(10)->get();
+            $notifications = \App\Models\Notification::where('seen', 0)->latest()->take(10)->get();
         @endphp
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>

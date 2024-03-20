@@ -1,0 +1,78 @@
+License Number -> nullable
+
+Chart Number-> same as order number 9 digits generated automatically (y - m - d - number)
+
+upper icon
+put stl files display to see the doctor before submitting
+lower icon
+
+upload image 
+
+type of works before notes
+3 to 4 items
+
+return -> cancel return to doctor with message
+
+stl file color pink
+
+doctor and lab messages
+
+viewer blade.php download button to download stl files
+
+patient::(sidebar)
+new orders
+pending orders
+all orders
+messages
+
+
+two stl files download at same time 
+if order rejected correct same file and resend it
+
+localization frensh
+alert before 3 days of due date
+
+upload multiple images
+
+check lower stl viewer doctor
+
+dhl
+generate ticket to put it on box
+
+doctor can see orders
+disable csv file export
+and copy
+
+select orders and make excel files of it
+
+send to lab -> type of works
+once external lab reject the case lab should be notified
+
+every 2 days queue email
+
+make a map pipeline
+
+lab can create new order
+with specific id number
+
+dhl tracking number for osrder
+
+invoice is based on tracking number
+every 
+due date mandatory
+
+
+lab: upload orders
+
+remove comments
+add photo on behalf
+only admin can modify the orders payment
+admin can duplicate
+
+notification rejection one not multiple
+
+id numbers and stl files and 
+notes
+
+procedure = type of works
+notes in prescription
