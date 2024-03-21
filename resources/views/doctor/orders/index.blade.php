@@ -36,8 +36,8 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($orders as $order)
-                                            <tr>
-                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
+                                        <tr onclick="window.location='{{ route('doctor.orders.edit', $order->id) }}';" style="cursor:pointer;">
+                                            <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
                                                 <td>{{ $order->note }}</td>
@@ -78,7 +78,7 @@
         new DataTable('#orders', {
             layout: {
                 topStart: {
-                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    buttons: ['excel', 'pdf', 'print']
                 }
             }
         });

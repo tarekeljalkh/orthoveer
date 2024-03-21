@@ -1,29 +1,9 @@
-License Number -> nullable
-
-Chart Number-> same as order number 9 digits generated automatically (y - m - d - number)
-
-upper icon
-put stl files display to see the doctor before submitting
-lower icon
 
 upload image 
 
 type of works before notes
 3 to 4 items
 
-return -> cancel return to doctor with message
-
-stl file color pink
-
-doctor and lab messages
-
-viewer blade.php download button to download stl files
-
-patient::(sidebar)
-new orders
-pending orders
-all orders
-messages
 
 
 two stl files download at same time 
@@ -38,10 +18,6 @@ check lower stl viewer doctor
 
 dhl
 generate ticket to put it on box
-
-doctor can see orders
-disable csv file export
-and copy
 
 select orders and make excel files of it
 

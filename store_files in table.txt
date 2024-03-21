@@ -1,0 +1,27 @@
+2. Storing Paths in a Related Table
+Another approach is to create a related table specifically for storing file paths. This method is more normalized and allows for more flexibility in managing individual files. For example, you could have a scan_files table with scan_id, file_path, and file_type columns.
+
+Migration for scan_files Table:
+php
+Copy code
+Schema::create('scan_files', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('scan_id');
+    $table->string('file_path');
+    $table->string('file_type')->default('pdf'); // or 'image'
+    $table->foreign('scan_id')->references('id')->on('scans')->onDelete('cascade');
+    $table->timestamps();
+});
+Storing File Paths:
+After creating a Scan instance and saving it, you can loop through the $pdfPaths array and store each path in the scan_files table:
+
+php
+Copy code
+foreach ($pdfPaths as $path) {
+    $scanFile = new ScanFile(); // Assuming you have a ScanFile model
+    $scanFile->scan_id = $scan->id;
+    $scanFile->file_path = $path;
+    $scanFile->file_type = 'pdf'; // Assuming you might want to differentiate file types
+    $scanFile->save();
+}
+This approach provides more granular control over the files associated with each scan, making tasks like file deletion, metadata storage, or file type differentiation easier to manage.

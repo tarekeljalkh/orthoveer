@@ -30,6 +30,21 @@ trait FileUploadTrait
         return NULL;
     }
 
+    public function uploadFiles(Request $request, $inputName, $path = "/uploads")
+    {
+        $paths = [];
+        if ($request->hasFile($inputName)) {
+            foreach ($request->file($inputName) as $file) {
+                $ext = $file->getClientOriginalExtension();
+                $fileName = 'media_' . uniqid() . '.' . $ext;
+                $file->move(public_path($path), $fileName);
+                $paths[] = $path . '/' . $fileName;
+            }
+        }
+        return $paths ? $paths : NULL;
+    }
+
+
     /**
      * Remove file
      */

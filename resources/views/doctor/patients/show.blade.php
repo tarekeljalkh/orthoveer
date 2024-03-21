@@ -53,23 +53,23 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($patient->scans as $scan)
-                                                <tr>
-                                                    <td>{{ $scan->id }}</td>
+                                            <tr onclick="window.location='{{ route('doctor.orders.edit', $scan->id) }}';" style="cursor:pointer;">
+                                                <td>{{ $scan->id }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($scan->scan_date)->format('d/m/Y') }}</td>
                                                     <td>{{ $scan->procedure }}</td>
                                                     @if ($scan->status == 'pending')
                                                         <td>
                                                             <div class="badge badge-info">Pending</div>
                                                         </td>
-                                                    @elseif ($order->status == 'in_progress')
+                                                    @elseif ($scan->status == 'in_progress')
                                                         <td>
                                                             <div class="badge badge-primary">In Progress</div>
                                                         </td>
-                                                    @elseif ($order->status == 'completed')
+                                                    @elseif ($scan->status == 'completed')
                                                         <td>
                                                             <div class="badge badge-success">Completed</div>
                                                         </td>
-                                                    @elseif ($order->status == 'canceled')
+                                                    @elseif ($scan->status == 'canceled')
                                                         <td>
                                                             <div class="badge badge-danger">Canceled</div>
                                                         </td>

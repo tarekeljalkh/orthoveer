@@ -6,16 +6,17 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>New Scan</h1>
+            <h1>Show Scan</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">New Scan</a></div>
+                <div class="breadcrumb-item"><a href="#">Order: {{ $order->id }}</a></div>
             </div>
         </div>
 
         <div class="section-body">
-            <form action="{{ route('doctor.scans.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('doctor.scans.update', $order->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
 
                 <div class="row">
                     {{-- Doctor Section --}}
@@ -49,32 +50,20 @@
                                 {{-- <div class="card-header-action">
                                     <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
                                 </div> --}}
-                                <div class="card-header-action">
-                                    <select class="form-control select2" name="patient_id" id="patientSelect">
-                                        <option value="0" disabled selected>Select Existing Patient...</option>
-                                        @foreach ($patients as $patient)
-                                            <option value="{{ $patient->id }}" data-first-name="{{ $patient->first_name }}"
-                                                data-last-name="{{ $patient->last_name }}"
-                                                data-dob="{{ $patient->dob->format('Y-m-d') }}"
-                                                data-gender="{{ $patient->gender }}">{{ $patient->last_name }},
-                                                {{ $patient->first_name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <a href="#" id="clearForm" class="btn btn-success"
-                                        style="pointer-events: none; opacity: 0.5;">Clear</a>
-                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>First Name</label>
-                                        <input name="patient_first_name" type="text" class="form-control" required="">
+                                        <input name="patient_first_name" type="text" class="form-control"
+                                            value="{{ $order->patient->first_name }}" disabled>
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>Last Name</label>
-                                        <input name="patient_last_name" type="text" class="form-control" required="">
+                                        <input name="patient_last_name" type="text" class="form-control"
+                                            value="{{ $order->patient->last_name }}" disabled>
                                     </div>
 
                                 </div>
@@ -83,7 +72,8 @@
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>Date Of Birth</label>
-                                        <input name="patient_dob" type="date" class="form-control" required="">
+                                        <input name="patient_dob" type="text" class="form-control"
+                                            value="{{ $order->patient->dob->format('d/m/y') }}" disabled>
                                     </div>
 
                                     <div class="form-group col-md-5 col-12">
@@ -91,12 +81,12 @@
                                         <div class="selectgroup w-100">
                                             <label class="selectgroup-item">
                                                 <input type="radio" name="patient_gender" value="male"
-                                                    class="selectgroup-input" checked="">
+                                                    class="selectgroup-input" checked="" disabled>
                                                 <span class="selectgroup-button">Male</span>
                                             </label>
                                             <label class="selectgroup-item">
                                                 <input type="radio" name="patient_gender" value="female"
-                                                    class="selectgroup-input">
+                                                    class="selectgroup-input" disabled>
                                                 <span class="selectgroup-button">Female</span>
                                             </label>
                                         </div>
@@ -120,7 +110,8 @@
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>Due Date</label>
-                                        <input type="date" name="due_date" class="form-control" required="">
+                                        <input type="date" name="due_date" class="form-control"
+                                            value="{{ $order->due_date->format('d/m/y') }}">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
@@ -139,14 +130,16 @@
                                     <div class="form-group col-md-6 col-12">
                                         <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
                                         <div id="stl_upper"
-                                            style="width:300px; height:300px; margin:0 auto; display: none;"></div>
+                                            style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
+                                        </div>
                                         <input type="file" name="stl_upper" class="form-control">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
                                         <div id="stl_lower"
-                                            style="width:300px; height:300px; margin:0 auto; display: none;"></div>
+                                            style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
+                                        </div>
                                         <input type="file" name="stl_lower" class="form-control">
                                     </div>
 
@@ -158,6 +151,10 @@
                     {{-- End Order Section --}}
 
                     {{-- Image --}}
+                    @php
+                        // Ensure $order->pdf is not null and is a valid JSON string before decoding
+                        $filePaths = $order->pdf ? json_decode($order->pdf, true) : [];
+                    @endphp
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
@@ -167,9 +164,33 @@
 
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <div class="form-group col-12" id="previewContainer"></div> {{-- Preview Container --}}
-                                    </div>
+                                        <div class="form-group col-12">
+                                            <div class="form-group col-12" id="previewContainer"></div>
+                                            {{-- Preview Container --}}
+                                        </div>
 
+                                        <div
+                                            style="display: flex; align-items: center; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
+                                            <!-- Flex container with spacing -->
+                                            @if (!empty($filePaths))
+                                                @foreach ($filePaths as $filePath)
+                                                    @if (pathinfo($filePath, PATHINFO_EXTENSION) === 'pdf')
+                                                        {{-- PDF: Display as a downloadable link --}}
+                                                        <a href="{{ asset($filePath) }}" download
+                                                            style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                        </a>
+                                                    @else
+                                                        {{-- Image: Display and make it downloadable --}}
+                                                        <a href="{{ asset($filePath) }}" download
+                                                            style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                            <img src="{{ asset($filePath) }}" alt="Uploaded Image"
+                                                                style="height: 40px; width: auto;">
+                                                        </a>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="form-group col-12">
                                         <input type="file" name="pdf[]" id="pdfInput" class="form-control"
                                             multiple>
@@ -177,10 +198,9 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     {{-- End Image --}}
+
 
 
                     {{-- Note --}}
@@ -193,7 +213,7 @@
 
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="Add Note"></textarea>
+                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="Add Note">{{ $order->note }}</textarea>
                                     </div>
                                 </div>
 
@@ -220,113 +240,58 @@
 
     <script>
         $(document).ready(function() {
+            var stl_viewer_upper, stl_viewer_lower;
 
-            // Listen for changes on the STL UPPER file input
+            // Function to initialize or update STL viewer
+            function initializeOrUpdateStlViewer(viewerId, fileUrl, existingViewer = null) {
+                // If an existing viewer is passed, update it. Otherwise, create a new viewer.
+                if (existingViewer) {
+                    existingViewer.clear();
+                    existingViewer.add_model({
+                        filename: fileUrl,
+                        display: "smooth",
+                        color: "#FFC0CB"
+                    });
+                } else {
+                    return new StlViewer(document.getElementById(viewerId), {
+                        models: [{
+                            filename: fileUrl,
+                            display: "smooth",
+                            color: "#FFC0CB"
+                        }]
+                    });
+                }
+            }
+
+            // Initialize viewers for existing STL files
+            @if ($order->stl_upper)
+                $('#stl_upper').show();
+                stl_viewer_upper = initializeOrUpdateStlViewer("stl_upper", "{{ asset($order->stl_upper) }}");
+            @endif
+
+            @if ($order->stl_lower)
+                $('#stl_lower').show();
+                stl_viewer_lower = initializeOrUpdateStlViewer("stl_lower", "{{ asset($order->stl_lower) }}");
+            @endif
+
+            // Update viewer on new file selection
             $('input[name="stl_upper"]').change(function(e) {
                 if (this.files && this.files[0]) {
-                    // Create a URL for the selected file
                     var url = URL.createObjectURL(this.files[0]);
-
-                    // Add new model to viewer
-                    var stl_viewer_upper = new StlViewer(
-                        document.getElementById("stl_upper"), {
-                            models: [{
-                                id: 1,
-                                filename: url,
-                                display: "smooth",
-                                color: "#FFC0CB"
-                            }]
-                        }
-                    );
-                    // Show the stl_upper div
-                    $('#stl_upper').css('display', 'block');
-
+                    $('#stl_upper').show();
+                    stl_viewer_upper = initializeOrUpdateStlViewer("stl_upper", url, stl_viewer_upper);
                 }
             });
 
-            // Listen for changes on the STL Lower file input
             $('input[name="stl_lower"]').change(function(e) {
                 if (this.files && this.files[0]) {
-                    // Create a URL for the selected file
                     var url = URL.createObjectURL(this.files[0]);
-
-                    // Add new model to viewer
-                    var stl_viewer_lower = new StlViewer(
-                        document.getElementById("stl_lower"), {
-                            models: [{
-                                id: 2,
-                                filename: url,
-                                display: "smooth",
-                                color: "#FFC0CB"
-                            }]
-                        }
-                    );
-                    // Show the stl_lower div
-                    $('#stl_lower').css('display', 'block');
-
+                    $('#stl_lower').show();
+                    stl_viewer_lower = initializeOrUpdateStlViewer("stl_lower", url, stl_viewer_lower);
                 }
             });
 
 
-            // Initialize select2
-            $('.select2').select2();
-
-            // Disable clear button initially
-            $('#clearForm').css({
-                'pointer-events': 'none',
-                'opacity': '0.5'
-            });
-
-            // Enable clear button on selecting an option
-            $('#patientSelect').on('select2:select', function(e) {
-                $('#clearForm').css({
-                    'pointer-events': 'auto',
-                    'opacity': '1'
-                });
-
-                var data = e.params.data;
-                var firstName = $(data.element).data('first-name');
-                var lastName = $(data.element).data('last-name');
-                var dob = $(data.element).data('dob');
-                var gender = $(data.element).data('gender');
-
-                // Fill the form fields
-                $('input[name="patient_first_name"]').val(firstName);
-                $('input[name="patient_last_name"]').val(lastName);
-                $('input[name="patient_dob"]').val(dob);
-
-                // Set gender radio button
-                $(`input[name="patient_gender"][value="${gender}"]`).prop('checked', true);
-            });
-
-            // Reset functionality when clear button is clicked
-            $('#clearForm').click(function(e) {
-                e.preventDefault();
-
-                // Clear the Select2 selection
-                $('#patientSelect').val(0).trigger('change');
-
-                // Reset text inputs and radio buttons
-                $('input[name="patient_first_name"], input[name="patient_last_name"], input[name="patient_dob"], input[type="text"]')
-                    .val('');
-                $('input[name="patient_gender"][value="male"]').prop('checked', true);
-                //$('input[name="patient_gender"]').prop('checked', false);
-
-                // Disable clear button again
-                $(this).css({
-                    'pointer-events': 'none',
-                    'opacity': '0.5'
-                });
-            });
-
-            // Listen to changes on the Select2 to enable/disable clear button
-            $('#patientSelect').on('select2:select select2:unselect', function() {
-                var selected = !!$(this).val();
-                $('#clearForm').css({
-                    'pointer-events': selected ? 'auto' : 'none',
-                    'opacity': selected ? '1' : '0.5'
-                });
-            });
         });
 
         // Form submission event
@@ -373,7 +338,6 @@
                 })(files[i]);
             }
         });
-
 
         // $(document).ready(function() {
         //     $('.select2').select2().on('select2:select', function(e) {
