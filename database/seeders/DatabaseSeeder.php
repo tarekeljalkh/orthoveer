@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
             ScanSeeder::class,
             SettingSeeder::class,
             ChatSeeder::class,
+            CategorySeeder::class,
+            TypeofWorkSeeder::class,
         ]);
     }
 }

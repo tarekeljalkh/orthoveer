@@ -47,6 +47,7 @@ class DoctorController extends Controller
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
+        //handle Image Upload
         $imagePath = $this->uploadImage($request, 'image');
 
         $doctor = new User();
@@ -120,7 +121,6 @@ class DoctorController extends Controller
         $doctor->address = $request->address;
         $doctor->postal_code = $request->postal_code;
         $doctor->role = 'doctor';
-        $doctor->password = bcrypt($request->password);
         if ($request->verified === 'yes') {
             $doctor->email_verified_at = Carbon::now();
         }

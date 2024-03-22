@@ -1,18 +1,14 @@
 
-upload image 
-
 type of works before notes
 3 to 4 items
 
 
 
-two stl files download at same time 
+two stl files download at same time
 if order rejected correct same file and resend it
 
 localization frensh
 alert before 3 days of due date
-
-upload multiple images
 
 check lower stl viewer doctor
 
@@ -34,7 +30,7 @@ with specific id number
 dhl tracking number for osrder
 
 invoice is based on tracking number
-every 
+every
 due date mandatory
 
 
@@ -47,7 +43,7 @@ admin can duplicate
 
 notification rejection one not multiple
 
-id numbers and stl files and 
+id numbers and stl files and
 notes
 
 procedure = type of works

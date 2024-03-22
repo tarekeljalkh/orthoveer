@@ -4,7 +4,8 @@
             <a href="{{ route('admin.dashboard') }}">Orthoveer</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('admin.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}" alt="OV"></a>
+            <a href="{{ route('admin.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}"
+                    alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
@@ -36,6 +37,15 @@
             <li class="{{ request()->routeIs('admin.external_labs.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.external_labs.index') }}"><i class="fas fa-vials"></i>
                     <span>External Labs</span></a></li>
+
+            <li class="{{ request()->routeIs('admin.categories.index') ? 'active' : '' }}" class="dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
+                    <span>Type of Works</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('admin.categories.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.categories.index') }}">Categories</a></li>
+                    <li class="{{ request()->routeIs('admin.type-of-works.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.type-of-works.index') }}">Type of Works</a></li>
+                </ul>
+            </li>
 
             <li class="{{ request()->routeIs('admin.setting.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.setting.index') }}"><i class="fas fa-cog"></i>

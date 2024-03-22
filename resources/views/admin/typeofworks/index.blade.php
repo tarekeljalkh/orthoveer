@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Labs</h1>
+            <h1>Type of Works</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Labs</a></div>
+                <div class="breadcrumb-item"><a href="#">Type of Works</a></div>
             </div>
         </div>
 
@@ -19,9 +19,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Labs</h4>
+                            <h4>Type of Works</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('admin.labs.create') }}" class="btn btn-success">Create New <i class="fas fa-plus"></i></a>
+                                <a href="{{ route('admin.type-of-works.create') }}" class="btn btn-success">Create New <i
+                                        class="fas fa-plus"></i></a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -29,37 +30,26 @@
                                 <table id="example" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Email</th>
-                                            <th>Image</th>
-                                            <th>Mobile</th>
-                                            <th>Email Verified</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Lab</th>
+                                            <th>Category</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($labs as $lab)
+                                        @foreach ($typeofworks as $typeofwork)
                                             <tr>
-                                                <td>{{ $lab->first_name }}</td>
-                                                <td>{{ $lab->last_name }}</td>
-                                                <td>{{ $lab->email }}</td>
-                                                <td><img style="width: 50px" src="{{ asset($lab->image) }}"></td>
-                                                <td>{{ $lab->mobile }}</td>
-                                                @if ($lab->email_verified_at)
-                                                    <td>
-                                                        <div class="badge badge-success">Yes</div>
-                                                    </td>
-                                                @else
-                                                    <td>
-                                                        <div class="badge badge-danger">No</div>
-                                                    </td>
-                                                @endif
+                                                <td>{{ $typeofwork->name }}</td>
+                                                <td>{{ $typeofwork->price }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td><span class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span></td>
+                                                <td><span class="badge badge-info">{{ $typeofwork->category->name }}</span></td>
                                                 <td>
-                                                    <a href="{{ route('admin.labs.edit', $lab->id) }}"
+                                                    <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}"
                                                         class="btn btn-primary">Edit</a>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('admin.labs.destroy', $lab->id) }}"
+                                                    <a href="{{ route('admin.type-of-works.destroy', $typeofwork->id) }}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>
@@ -80,7 +70,7 @@
         new DataTable('#example', {
             layout: {
                 topStart: {
-                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    buttons: ['excel', 'pdf', 'print']
                 }
             }
         });
