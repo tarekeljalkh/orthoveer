@@ -16,11 +16,11 @@ return new class extends Migration
             // Modify the line below to set the starting value to 1000
             $table->bigIncrements('id')->startingValue(10000000); // Set the starting value to 1000
             $table->unsignedBigInteger('doctor_id');
-            $table->foreign('doctor_id')->references('id')->on('users');
+            $table->foreign('doctor_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('patient_id');
-            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->unsignedBigInteger('lab_id')->nullable();
-            $table->foreign('lab_id')->references('id')->on('users');
+            $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('status', ['pending', 'in_progress', 'completed', 'rejected'])->default('pending');
             $table->date('due_date')->format('d/m/Y');
             $table->date('scan_date')->format('d/m/Y');

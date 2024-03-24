@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sender_id');
-            $table->foreign('sender_id')->references('id')->on('users');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('receiver_id');
-            $table->foreign('receiver_id')->references('id')->on('users');
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('message')->nullable();
             $table->integer('scan_id')->nullable();
             $table->boolean('seen')->default(0);

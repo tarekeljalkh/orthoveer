@@ -101,6 +101,9 @@
     <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
 
+    <!-- Sweet Alert JS File -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Template JS File -->
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
@@ -130,6 +133,50 @@
             no_label: false, // Default: false
             success_callback: null // Default: null
         });
+
+        $(document).ready(function() {
+
+            $('body').on('click', '.delete-item', function(e) {
+                e.preventDefault()
+
+                let url = $(this).attr('href');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        $.ajax({
+                            method: 'DELETE',
+                            url: url,
+                            data: {
+                                _token: "{{ csrf_token() }}"
+                            },
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    toastr.success(response.message)
+
+                                    window.location.reload();
+
+                                } else if (response.status === 'error') {
+                                    toastr.error(response.message)
+                                }
+                            },
+                            error: function(error) {
+                                console.error(error);
+                            }
+                        })
+                    }
+                })
+            })
+
+        })
     </script>
     @stack('scripts')
 </body>

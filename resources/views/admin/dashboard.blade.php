@@ -7,6 +7,8 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('admin.doctors.index') }}"
+                    style="text-decoration:none; color: inherit;">
                 <div class="card card-statistic-1">
                     <div class="card-icon bg-warning">
                         <i class="fas fa-user-md"></i>
@@ -20,9 +22,13 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('admin.labs.index') }}"
+                style="text-decoration:none; color: inherit;">
+
                 <div class="card card-statistic-1">
                     <div class="card-icon bg-danger">
                         <i class="fas fa-flask"></i>
@@ -36,8 +42,12 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('admin.external_labs.index') }}"
+                style="text-decoration:none; color: inherit;">
+
                 <div class="card card-statistic-1">
                     <div class="card-icon bg-success">
                         <i class="fas fa-vials"></i>
@@ -51,6 +61,7 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
         </div>
         <div class="section-body">

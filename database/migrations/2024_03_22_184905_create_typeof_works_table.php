@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->double('price');
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->unsignedBigInteger('lab_id');
-            $table->foreign('lab_id')->references('id')->on('users');
+            $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

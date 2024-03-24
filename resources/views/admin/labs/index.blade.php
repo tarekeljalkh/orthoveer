@@ -35,6 +35,7 @@
                                             <th>Image</th>
                                             <th>Mobile</th>
                                             <th>Email Verified</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,10 +58,9 @@
                                                 <td>
                                                     <a href="{{ route('admin.labs.edit', $lab->id) }}"
                                                         class="btn btn-primary">Edit</a>
-                                                </td>
-                                                <td>
+
                                                     <a href="{{ route('admin.labs.destroy', $lab->id) }}"
-                                                        class="btn btn-danger">Delete</a>
+                                                        class="btn btn-danger delete-item">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach

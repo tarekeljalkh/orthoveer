@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('doctor_id');
-            $table->foreign('doctor_id')->references('id')->on('users');
+            $table->foreign('doctor_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->date('dob')->format('d/m/Y');
