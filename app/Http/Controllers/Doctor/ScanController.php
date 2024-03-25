@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Patient;
 use App\Models\Scan;
+use App\Models\TypeofWork;
 use App\Models\User;
 use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
@@ -68,7 +69,6 @@ class ScanController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         // Check if a patient is selected and exists
         if ($request->has('patient_id') && $patient = Patient::findOrFail($request->patient_id)) {
             // Update the existing patient
@@ -109,7 +109,13 @@ class ScanController extends Controller
         $scan = new Scan();
         $scan->doctor_id = $request->doctor_id; // Ensure this doctor_id is either coming from authenticated user or safely validated
         $scan->patient_id = $patient->id;
-        $scan->lab_id = $request->lab;
+
+        //add lab id from type of work id
+        $type = TypeofWork::findOrFail($request->typeofwork_id);
+        $scan->type_id = $request->typeofwork_id;
+        $scan->lab_id = $type->lab_id;
+        //
+
         $scan->due_date = $request->due_date;
         $scan->stl_upper = $upperPath;
         $scan->stl_lower = $lowerPath;
@@ -118,9 +124,8 @@ class ScanController extends Controller
         $scan->note = $request->note;
         $scan->save();
 
-
         // Send Email
-        $lab = User::findorFail($request->lab);
+        $lab = User::findorFail($type->lab_id);
         $content = [
             'doctorName' => 'Dr. ' . Auth::user()->last_name,
             'dueDate' => $scan->due_date->format('d-m-y'),

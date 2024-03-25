@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use ZipArchive;
 
 class OrderController extends Controller
 {
@@ -33,6 +34,43 @@ class OrderController extends Controller
     {
         $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->whereMonth('created_at', now()->month)->where('status', '!=', 'rejected')->get();
         return view('lab.orders.new', compact('orders'));
+    }
+
+    public function downloadStl(Scan $order)
+    {
+        $zip = new ZipArchive;
+        $zipFileName = "stl-files-{$order->id}.zip";
+        $zipFilePath = public_path($zipFileName); // Adjust based on where you want to save the zip temporarily
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            $upperFilePath = public_path('uploads/' . basename($order->stl_upper)); // Adjust path as needed
+            $lowerFilePath = public_path('uploads/' . basename($order->stl_lower)); // Adjust path as needed
+
+            if (file_exists($upperFilePath)) {
+                $zip->addFile($upperFilePath, basename($order->stl_upper));
+            }
+            if (file_exists($lowerFilePath)) {
+                $zip->addFile($lowerFilePath, basename($order->stl_lower));
+            }
+
+            // Decode the JSON string containing PDF paths to an array
+            $pdfPaths = json_decode($order->pdf, true) ?? [];
+
+            foreach ($pdfPaths as $pdfPath) {
+                // Adjust the path and add each PDF file to the ZIP archive
+                $pdfFilePath = public_path($pdfPath);
+                if (file_exists($pdfFilePath)) {
+                    $zip->addFile($pdfFilePath, basename($pdfPath));
+                }
+            }
+
+            $zip->close();
+
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+            return redirect()->back();
+        } else {
+            return back()->withError('Could not create ZIP file.');
+        }
     }
 
     public function reject(Request $request, $id)

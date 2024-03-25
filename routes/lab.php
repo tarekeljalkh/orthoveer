@@ -26,6 +26,8 @@ Route::get('orders/prescription/{id}', [OrderController::class, 'prescription'])
 //reject order
 Route::post('orders/reject/{id}', [OrderController::class, 'reject'])->name('orders.reject');
 Route::resource('orders', OrderController::class);
+/** Download Order */
+Route::get('/orders/{order}/download-stl', [OrderController::class, 'downloadStl'])->name('orders.downloadStl');
 
 //Comments Routes
 Route::resource('comments', CommentController::class);
@@ -41,3 +43,4 @@ Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('
 /** Notification Routes */
 Route::get('/notifications/seen/{notification}', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');
 Route::resource('notifications', NotificationController::class);
+

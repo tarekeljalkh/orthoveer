@@ -21,70 +21,67 @@
                             <h4>New Orders</h4>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <div class="mb-3">
-                                    <button class="btn btn-primary" id="printSelected">Print Selected</button>
-                                    <button class="btn btn-primary" id="downloadSelected">Download Selected</button>
-                                </div>
-                                <table id="example" class="display nowrap" style="width:100%">
-                                    <thead>
+                            <div class="mb-3">
+                                <button class="btn btn-primary" id="printSelected">Print Selected</button>
+                                <button class="btn btn-primary" id="downloadSelected">Download Selected</button>
+                            </div>
+                            <table id="example" class="display nowrap" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Doctor Name</th>
+                                        <th>Due Date</th>
+                                        <th>Note</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($orders as $order)
                                         <tr>
-                                            <th>Select</th>
-                                            <th>Doctor Name</th>
-                                            <th>Due Date</th>
-                                            <th>Note</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($orders as $order)
-                                            <tr>
-                                                <td><input type="checkbox" class="orderCheckbox"
-                                                        value="{{ $order->id }}"></td>
-                                                <td>Dr. {{ $order->doctor->last_name }}, {{ $order->doctor->first_name }}
-                                                </td>
-                                                <td>{{ $order->due_date->format('d/m/Y') }}</td>
-                                                <td>{{ $order->note }}</td>
-                                                <td>
-                                                    <div
-                                                        class="badge
+                                            <td><input type="checkbox" class="orderCheckbox" value="{{ $order->id }}">
+                                            </td>
+                                            <td>Dr. {{ $order->doctor->last_name }}, {{ $order->doctor->first_name }}
+                                            </td>
+                                            <td>{{ $order->due_date->format('d/m/Y') }}</td>
+                                            <td>{{ $order->note }}</td>
+                                            <td>
+                                                <div
+                                                    class="badge
                                                         {{ $order->status == 'pending' ? 'badge-warning' : '' }}
                                                         {{ $order->status == 'in_progress' ? 'badge-info' : '' }}
                                                         {{ $order->status == 'completed' ? 'badge-success' : '' }}
                                                         {{ $order->status == 'cancelled' ? 'badge-danger' : '' }}">
-                                                        {{ $order->status }}
+                                                    {{ $order->status }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group dropleft">
+                                                    <button type="button" class="btn btn-dark dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Dropleft
+                                                    </button>
+                                                    <div class="dropdown-menu dropleft">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('lab.orders.viewer', $order->id) }}">Open
+                                                            Viewer</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('lab.orders.prescription', $order->id) }}">Open
+                                                            Prescription</a>
+                                                        <a class="dropdown-item" href="#">Open With OrthoCAD</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#"><i class="fas fa-print"></i>
+                                                            Print Prescription</a>
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="fas fa-download"></i> Download The Scan</a>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group dropleft">
-                                                        <button type="button" class="btn btn-dark dropdown-toggle"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                            Dropleft
-                                                        </button>
-                                                        <div class="dropdown-menu dropleft">
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('lab.orders.viewer', $order->id) }}">Open
-                                                                Viewer</a>
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('lab.orders.prescription', $order->id) }}">Open
-                                                                Prescription</a>
-                                                            <a class="dropdown-item" href="#">Open With OrthoCAD</a>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item" href="#"><i
-                                                                    class="fas fa-print"></i> Print Prescription</a>
-                                                            <a class="dropdown-item" href="#"><i
-                                                                    class="fas fa-download"></i> Download The Scan</a>
-                                                        </div>
-                                                    </div>
+                                                </div>
 
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

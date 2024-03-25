@@ -21,7 +21,6 @@
                             <h4>Pending Orders</h4>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
                                 <div class="mb-3">
                                     <button class="btn btn-primary" id="printSelected">Print Selected</button>
                                     <button class="btn btn-primary" id="downloadSelected">Download Selected</button>
@@ -78,7 +77,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
                         </div>
                     </div>
                 </div>

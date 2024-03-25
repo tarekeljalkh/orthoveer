@@ -21,6 +21,8 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group row align-items-center">
+                                <a href="{{ route('lab.orders.downloadStl', $order->id) }}" class="btn btn-primary">Download Files <i class="fas fa-download"></i></a>
+
                                 @if ($order->stl_upper)
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">

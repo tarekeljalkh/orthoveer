@@ -32,4 +32,10 @@ class Scan extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function typeofwork()
+    {
+        return $this->belongsTo(TypeofWork::class, 'type_id');
+    }
+
 }

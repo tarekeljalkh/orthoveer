@@ -55,7 +55,7 @@
                                 <div class="col-sm-6 col-md-6">
                                     <label for="site-title" class="form-control-label"
                                         style="font-weight: bold;">Procedure:</label>
-                                    <label for="site-title" class="form-control-label">safasfg</label>
+                                    <label for="site-title" class="form-control-label">{{ $order->typeofwork->name }}</label>
                                 </div>
                             </div>
 
@@ -68,7 +68,7 @@
                                     <label for="site-title" class="form-control-label d-block">safasfg</label>
                                     <label for="another-field" class="form-control-label d-block"
                                         style="font-weight: bold;">Delivery Address:</label>
-                                    <label for="another-field" class="form-control-label d-block">example</label>
+                                    <label for="another-field" class="form-control-label d-block">{{ $order->doctor->address }}</label>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
                                     <label for="site-title" class="form-control-label d-block"
@@ -147,16 +147,25 @@
                         </div>
 
                         <div class="card-footer">
-                            <div class="row">
-                                <div class="form-group col-md-8 col-8">
-                                    <label>Return Cancel</label>
-                                </div>
+                            <form action="{{ route('lab.orders.reject', $order->id) }}" method="post">
+                                @csrf
+                                @method('post')
 
-                                <div class="form-group col-md-4 col-4">
-                                    <a href="#" class="btn btn-danger">Return</a>
-                                </div>
+                                <div class="row">
 
-                            </div>
+                                    <div class="form-group col-md-8 col-8">
+                                        <input class="form-control" type="text" name="reject_note"
+                                            placeholder="Enter Rejection Note" required>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-4">
+                                        <button type="submit" class="btn btn-danger">Reject</button>
+                                        {{-- <a href="{{ route('lab.orders.reject', $order->id) }}" class="btn btn-danger">Reject</a> --}}
+                                    </div>
+
+                                </div>
+                            </form>
+
                         </div>
 
                     </div>

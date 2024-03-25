@@ -22,7 +22,6 @@
                             <h4>All Orders</h4>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
                                 <table id="example" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
@@ -52,7 +51,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
                         </div>
                     </div>
                 </div>

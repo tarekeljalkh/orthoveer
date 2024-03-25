@@ -148,15 +148,17 @@
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
-                                        <div id="stl_upper"
-                                            style="width:300px; height:300px; margin:0 auto; display: none;"></div>
+                                        <div id="stl_upper_container">
+                                            <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
+                                        </div>
                                         <input type="file" name="stl_upper" class="form-control">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
-                                        <div id="stl_lower"
-                                            style="width:300px; height:300px; margin:0 auto; display: none;"></div>
+                                        <div id="stl_lower_container">
+                                            <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
+                                        </div>
                                         <input type="file" name="stl_lower" class="form-control">
                                     </div>
 
@@ -229,51 +231,41 @@
     <script src="{{ asset('assets/js/stl_js/stl_viewer.min.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
+        function initializeOrUpdateStlViewer(containerId, fileUrl) {
+            // Check if the viewer container already exists
+            let container = $(`#${containerId}`);
 
-            // Listen for changes on the STL UPPER file input
+            if (!container.length) {
+                // If it doesn't exist, create it
+                $('body').append(`<div id="${containerId}" style="width:300px; height:300px;"></div>`);
+                container = $(`#${containerId}`);
+            } else {
+                // If it exists, clear its contents (assuming it might contain a previous STL viewer instance)
+                container.empty();
+            }
+
+            // Initialize a new STL viewer in the container with the new STL file
+            const viewerElement = document.getElementById(containerId);
+            new StlViewer(viewerElement, {
+                models: [{
+                    filename: fileUrl,
+                    color: "#FFC0CB"
+                }]
+            });
+        }
+
+        $(document).ready(function() {
             $('input[name="stl_upper"]').change(function(e) {
                 if (this.files && this.files[0]) {
-                    // Create a URL for the selected file
-                    var url = URL.createObjectURL(this.files[0]);
-
-                    // Add new model to viewer
-                    var stl_viewer_upper = new StlViewer(
-                        document.getElementById("stl_upper"), {
-                            models: [{
-                                id: 1,
-                                filename: url,
-                                display: "smooth",
-                                color: "#FFC0CB"
-                            }]
-                        }
-                    );
-                    // Show the stl_upper div
-                    $('#stl_upper').css('display', 'block');
-
+                    const url = URL.createObjectURL(this.files[0]);
+                    initializeOrUpdateStlViewer("stl_upper_viewer", url);
                 }
             });
 
-            // Listen for changes on the STL Lower file input
             $('input[name="stl_lower"]').change(function(e) {
                 if (this.files && this.files[0]) {
-                    // Create a URL for the selected file
-                    var url = URL.createObjectURL(this.files[0]);
-
-                    // Add new model to viewer
-                    var stl_viewer_lower = new StlViewer(
-                        document.getElementById("stl_lower"), {
-                            models: [{
-                                id: 2,
-                                filename: url,
-                                display: "smooth",
-                                color: "#FFC0CB"
-                            }]
-                        }
-                    );
-                    // Show the stl_lower div
-                    $('#stl_lower').css('display', 'block');
-
+                    const url = URL.createObjectURL(this.files[0]);
+                    initializeOrUpdateStlViewer("stl_lower_viewer", url);
                 }
             });
 
