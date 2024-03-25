@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->unsignedBigInteger('lab_id')->nullable();
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('type_id')->nullable();
+            $table->foreign('type_id')->references('id')->on('typeof_works')->onDelete('cascade');
             $table->enum('status', ['pending', 'in_progress', 'completed', 'rejected'])->default('pending');
             $table->date('due_date')->format('d/m/Y');
             $table->date('scan_date')->format('d/m/Y');

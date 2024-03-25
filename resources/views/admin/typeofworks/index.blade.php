@@ -34,6 +34,7 @@
                                             <th>Price</th>
                                             <th>Lab</th>
                                             <th>Category</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -44,13 +45,13 @@
                                                     {{ config('settings.site_currency_icon') }}</td>
                                                 <td><span class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span></td>
                                                 <td><span class="badge badge-info">{{ $typeofwork->category->name }}</span></td>
+
                                                 <td>
                                                     <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}"
                                                         class="btn btn-primary">Edit</a>
-                                                </td>
-                                                <td>
+
                                                     <a href="{{ route('admin.type-of-works.destroy', $typeofwork->id) }}"
-                                                        class="btn btn-danger">Delete</a>
+                                                        class="btn btn-danger delete-item">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach

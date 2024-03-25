@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OrderPlaced;
+use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Patient;
 use App\Models\Scan;
@@ -24,8 +25,8 @@ class ScanController extends Controller
     {
         //dd(Auth::user()->patients); relationship inside User Model
         $patients = Patient::where('doctor_id', Auth::user()->id)->get();
-        $labs = User::where('role', 'lab')->get();
-        return view('doctor.scans.create', compact('patients', 'labs'));
+        $categories = Category::with('TypeOfWorks')->get();
+        return view('doctor.scans.create', compact('patients', 'categories'));
     }
 
     public function newScan($id)
@@ -67,6 +68,7 @@ class ScanController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         // Check if a patient is selected and exists
         if ($request->has('patient_id') && $patient = Patient::findOrFail($request->patient_id)) {
             // Update the existing patient

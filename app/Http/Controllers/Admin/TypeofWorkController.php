@@ -103,6 +103,13 @@ class TypeofWorkController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $typeofwork = TypeofWork::findOrFail($id);
+            $typeofwork->delete();
+            return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
+        } catch (\Exception $e) {
+            //return response(['status' => 'error', 'message' =>  $e->getMessage()]);
+            return response(['status' => 'error', 'message' => 'something went wrong!']);
+        }
     }
 }

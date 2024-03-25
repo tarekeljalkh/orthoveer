@@ -118,19 +118,29 @@
                             <div class="card-body">
                                 <div class="row">
 
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-12 col-12">
                                         <label>Due Date</label>
                                         <input type="date" name="due_date" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Send To</label>
-                                        <select class="form-control select2" name="lab">
-                                            @foreach ($labs as $lab)
-                                                <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
+                                        <label>Procedure</label>
+                                        <select class="form-control select2" id="categorySelect" name="category_id">
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Type</label>
+                                        <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
+                                            {{-- @foreach ($labs as $lab)
+                                                <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
+
 
                                 </div>
 
@@ -333,6 +343,29 @@
         $('form').on('submit', function() {
             $('#submitBtn').prop('disabled', true).text('Submitting...');
         });
+
+
+        // convert this data into a JavaScript variable within your Blade template
+        var categoriesAndTypes = @json(
+            $categories->mapWithKeys(function ($category) {
+                return [$category->id => $category->TypeOfWorks->pluck('name', 'id')];
+            }));
+
+        $('#categorySelect').on('change', function() {
+            var categoryId = $(this).val();
+            var typesOfWork = categoriesAndTypes[categoryId] || {};
+            var $typeOfWorkSelect = $('#typeOfWorkSelect');
+
+            $typeOfWorkSelect.empty().append('<option value="">Select Type</option>'); // Reset and add placeholder
+
+            $.each(typesOfWork, function(id, name) {
+                $typeOfWorkSelect.append('<option value="' + id + '">' + name + '</option>');
+            });
+        });
+
+        //
+
+
 
         //preview files before submitting
         document.getElementById('pdfInput').addEventListener('change', function(event) {
