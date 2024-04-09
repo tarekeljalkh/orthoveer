@@ -15,12 +15,12 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $currentScans = Scan::where('doctor_id', Auth::user()->id)->where('status', 'completed')->count();
-        $pendingScans = Scan::where('doctor_id', Auth::user()->id)->where('status', 'pending')->count();
-        $totalScans = Scan::where('doctor_id', Auth::user()->id)->count();
-        $rejectedScans = Scan::where('doctor_id', Auth::user()->id)->where('status', 'rejected')->count();
+        $currentOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'completed')->count();
+        $pendingOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'pending')->count();
+        $totalOrders = Scan::where('doctor_id', Auth::user()->id)->count();
+        $rejectedOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'rejected')->count();
 
-        return view('doctor.dashboard', compact('currentScans', 'pendingScans', 'totalScans', 'rejectedScans'));
+        return view('doctor.dashboard', compact('currentOrders', 'pendingOrders', 'totalOrders', 'rejectedOrders'));
     }
 
     function clearNotification()

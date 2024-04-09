@@ -6,6 +6,7 @@ use App\Http\Controllers\Doctor\NotificationController;
 use App\Http\Controllers\Doctor\OrderController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\ScanController;
+use App\Http\Controllers\Doctor\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,3 +38,8 @@ Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('
 
 /** Notification Routes */
 Route::get('clear-notification', [DoctorController::class, 'clearNotification'])->name('clear-notification');
+
+/** Profile Routes */
+Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');

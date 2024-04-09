@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
-use App\Mail\OrderPlaced;
+use App\Mail\ScanCreated;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Patient;
@@ -139,7 +139,7 @@ class ScanController extends Controller
         //     // Handle email sending failure, log error, etc.
         // }
 
-        Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
 
         //send Notification
         $notification = new Notification();
@@ -211,7 +211,7 @@ class ScanController extends Controller
             'scanDate' => now()->format('d-m-y'),
             // Include other data as needed
         ];
-        Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
 
         //send Notification
         $notification = new Notification();

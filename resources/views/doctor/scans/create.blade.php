@@ -120,7 +120,8 @@
 
                                     <div class="form-group col-md-12 col-12">
                                         <label>Due Date</label>
-                                        <input type="date" name="due_date" class="form-control" required="">
+                                        <input type="date" name="due_date" class="form-control" required="" min="{{ now()->toDateString() }}">
+                                    </div>
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">

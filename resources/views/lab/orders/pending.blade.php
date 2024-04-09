@@ -65,10 +65,9 @@
                                                         <div class="dropdown-menu dropleft">
                                                             <a class="dropdown-item" href="{{ route('lab.orders.viewer', $order->id) }}">Open Viewer</a>
                                                             <a class="dropdown-item" href="{{ route('lab.orders.prescription', $order->id) }}">Open Prescription</a>
-                                                            <a class="dropdown-item" href="#">Open With OrthoCAD</a>
                                                             <div class="dropdown-divider"></div>
                                                             <a class="dropdown-item" href="#"><i class="fas fa-print"></i> Print Prescription</a>
-                                                            <a class="dropdown-item" href="#"><i class="fas fa-download"></i> Download The Scan</a>
+                                                            <a class="dropdown-item" href="{{ route('lab.orders.downloadStl', $order->id) }}"><i class="fas fa-download"></i> Download The Scan</a>
                                                         </div>
                                                     </div>
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
 use App\Http\Controllers\Lab\OrderController;
+use App\Http\Controllers\Lab\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,3 +45,8 @@ Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('
 Route::get('/notifications/seen/{notification}', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');
 Route::resource('notifications', NotificationController::class);
 
+
+/** Profile Routes */
+Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');

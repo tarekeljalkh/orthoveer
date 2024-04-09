@@ -21,15 +21,19 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group row align-items-center">
-                                <a href="{{ route('lab.orders.downloadStl', $order->id) }}" class="btn btn-primary">Download Files <i class="fas fa-download"></i></a>
-
+                                @if ($order->stl_upper || $order->stl_lower)
+                                    <a href="{{ route('lab.orders.downloadStl', $order->id) }}"
+                                        class="btn btn-primary">Download
+                                        Files <i class="fas fa-download"></i></a>
+                                @endif
                                 @if ($order->stl_upper)
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>Upper Stl</h4>
                                                 <div class="card-header-action">
-                                                    <a href="{{ $order->stl_upper }}" download class="btn btn-success">Download <i class="fas fa-download"></i></a>
+                                                    <a href="{{ $order->stl_upper }}" download
+                                                        class="btn btn-success">Download <i class="fas fa-download"></i></a>
                                                 </div>
                                             </div>
                                             <div class="card-body">
@@ -45,7 +49,8 @@
                                             <div class="card-header">
                                                 <h4>Lower Stl</h4>
                                                 <div class="card-header-action">
-                                                    <a href="{{ $order->stl_lower }}" download class="btn btn-success">Download <i class="fas fa-download"></i></a>
+                                                    <a href="{{ $order->stl_lower }}" download
+                                                        class="btn btn-success">Download <i class="fas fa-download"></i></a>
                                                 </div>
                                             </div>
                                             <div class="card-body">
@@ -55,21 +60,23 @@
                                     </div>
                                 @endif
 
-                                @if ($order->pdf)
-                                <div class="col-12 col-md-12 col-lg-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4>Image Or Pdf</h4>
-                                            <div class="card-header-action">
-                                                <a href="{{ $order->pdf }}" download class="btn btn-success">Download <i class="fas fa-download"></i></a>
+                                @if (!$order->pdf)
+                                    <div class="col-12 col-md-12 col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4>Image Or Pdf</h4>
+                                                <div class="card-header-action">
+                                                    <a href="{{ $order->pdf }}" download class="btn btn-success">Download
+                                                        <i class="fas fa-download"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <img src="{{ $order->pdf }}"
+                                                    style="width:200px;height:200px;margin:0 auto;">
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <img src="{{ $order->pdf }}" style="width:200px;height:200px;margin:0 auto;">
-                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
 
 
                                 @if (!$order->stl_upper && !$order->stl_lower)
@@ -90,11 +97,7 @@
                 <div class="col-4 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Comments ({{ count($order->comments) }})</h4>
-                            <div class="card-header-action">
-                                <a href="#" data-toggle="modal" data-target="#commentModal"
-                                    class="btn btn-success">Add <i class="fas fa-plus"></i></a>
-                            </div>
+                            <h4>Rejection Notes ({{ count($order->comments) }})</h4>
                         </div>
                         <div class="card-body">
 
@@ -166,26 +169,6 @@
 
 
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="commentModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Comment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <textarea class="form-control" name="comment" id="" cols="30" rows="10"></textarea>
-                </div>
-                <div class="modal-footer bg-whitesmoke br">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addCommentButton">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')

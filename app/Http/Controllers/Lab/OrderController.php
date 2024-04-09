@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Lab;
 use App\Events\ScanCreateEvent;
 use App\Http\Controllers\Controller;
 use App\Mail\scanRejected;
+use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Scan;
 use App\Models\User;
@@ -80,8 +81,17 @@ class OrderController extends Controller
         ]);
 
         $scan = Scan::findOrFail($id);
+
+        // Validate the request, store the comment, etc.
+        $comment = new Comment();
+        $comment->user_id = auth()->user()->id;
+        $comment->scan_id = $scan->id; // Ensure you're passing this correctly
+        $comment->date = now();
+        $comment->text = $request->reject_note;
+        $comment->save();
+
         $scan->status = 'rejected';
-        $scan->note = $request->reject_note;
+        //$scan->note = $request->reject_note;
         $scan->save();
 
 
@@ -92,7 +102,7 @@ class OrderController extends Controller
             'note' => $scan->note,
             // Include other data as needed
         ];
-        Mail::to($doctor->email)->send(new scanRejected($content, Auth::user()->email, 'Lab. ' . Auth::user()->first_name)); //$content, 'custom@example.com', 'Custom Name'
+        Mail::to($doctor->email)->send(new ScanRejected($content, Auth::user()->email, 'Lab. ' . Auth::user()->first_name)); //$content, 'custom@example.com', 'Custom Name'
 
         //send Notification
         $notification = new Notification();

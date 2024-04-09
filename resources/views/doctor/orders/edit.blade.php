@@ -203,23 +203,61 @@
 
 
 
+
                     {{-- Note --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h4>Note:</h4>
-                            </div>
-                            <div class="card-body">
+                            @if (count($order->comments) > 0)
+                                <div class="card-header">
+                                    <h4>Rejection Notes ({{ count($order->comments) }})</h4>
+                                </div>
+                                <div class="card-body">
 
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="Add Note">{{ $order->note }}</textarea>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="activities">
+
+                                                @foreach ($order->comments as $comment)
+                                                    <div class="activity">
+                                                        <div class="activity-icon bg-primary text-white shadow-primary">
+                                                            <i class="fas fa-comment-alt"></i>
+                                                        </div>
+                                                        <div class="activity-detail">
+                                                            <div class="mb-2">
+                                                                <span class="text-job text-primary">
+                                                                    @if ($comment->user->role === 'admin')
+                                                                        Admin,
+                                                                    @elseif ($comment->user->role === 'doctor')
+                                                                        Dr.
+                                                                    @elseif ($comment->user->role === 'lab')
+                                                                        Lab,
+                                                                    @endif
+                                                                    {{ $comment->user->last_name }},
+                                                                    {{ $comment->user->first_name }},
+                                                                </span>
+                                                                <span class="bullet"></span>
+                                                                <span
+                                                                    class="text-job text-info">{{ \Carbon\Carbon::parse($comment->scan_date)->format('d/m/Y') }}</span>
+                                                            </div>
+                                                            <p>{{ $comment->text }}</p>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
-                            </div>
+                            @endif
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary" id="submitBtn">Done</button>
+                                @if (count($order->comments) > 0)
+
+                                <div class="form-group col-md-8 col-8">
+                                    <input class="form-control" type="text" name="reject_note"
+                                        placeholder="Enter New Note" required>
+                                </div>
+                                @endif
+                                <button type="submit" class="btn btn-primary" id="submitBtn">Update</button>
+
                             </div>
 
                         </div>
@@ -227,6 +265,8 @@
 
                     </div>
                     {{-- End Note --}}
+
+
 
                 </div>
             </form>

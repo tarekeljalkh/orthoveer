@@ -28,8 +28,6 @@
             <li class="{{ request()->routeIs('doctor.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.chat.index') }}"><i class="fas fa-envelope"></i>
                     <span>Messages</span></a></li>
-
-
         </ul>
 
     </aside>

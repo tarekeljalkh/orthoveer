@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExternalLabController;
 use App\Http\Controllers\Admin\LabController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\admin\TypeofWorkController;
 use Illuminate\Support\Facades\Route;
@@ -44,3 +45,9 @@ Route::put('/pusher-setting', [SettingController::class, 'UpdatePusherSetting'])
 Route::put('/mail-setting', [SettingController::class, 'UpdateMailSetting'])->name('mail-setting.update');
 Route::put('/logo-setting', [SettingController::class, 'UpdateLogoSetting'])->name('logo-setting.update');
 Route::put('/appearance-setting', [SettingController::class, 'UpdateAppearanceSetting'])->name('appearance-setting.update');
+
+
+/** Profile Routes */
+Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
+Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');

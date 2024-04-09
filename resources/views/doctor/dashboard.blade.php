@@ -21,10 +21,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Current Cases</h4>
+                                <h4>Current Orders</h4>
                             </div>
                             <div class="card-body">
-                                {{ $currentScans }}
+                                {{ $currentOrders }}
                             </div>
                         </div>
                     </div>
@@ -41,10 +41,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Pending Casess</h4>
+                                <h4>Pending Orders</h4>
                             </div>
                             <div class="card-body">
-                                {{ $pendingScans }}
+                                {{ $pendingOrders }}
                             </div>
                         </div>
                     </div>
@@ -59,10 +59,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Cases</h4>
+                                <h4>Total Orders</h4>
                             </div>
                             <div class="card-body">
-                                {{ $totalScans }}
+                                {{ $totalOrders }}
                             </div>
                         </div>
                     </div>
@@ -79,10 +79,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Rejected Cases</h4>
+                                <h4>Rejected Orders</h4>
                             </div>
                             <div class="card-body">
-                                {{ $rejectedScans }}
+                                {{ $rejectedOrders }}
                             </div>
                         </div>
                     </div>

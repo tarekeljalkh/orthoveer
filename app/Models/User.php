@@ -55,4 +55,13 @@ class User extends Authenticatable implements MustVerifyEmail
             ->orWhere('receiver_id', $this->id);
     }
 
+    public function notificationsReceived()
+    {
+        return $this->hasMany(Notification::class, 'receiver_id');
+    }
+
+    public function notificationsSent()
+    {
+        return $this->hasMany(Notification::class, 'sender_id');
+    }
 }
