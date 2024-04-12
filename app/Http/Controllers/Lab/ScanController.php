@@ -8,33 +8,70 @@ use App\Mail\scanRejected;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Scan;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use ZipArchive;
 
-class OrderController extends Controller
+class ScanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->get();
-        return view('lab.orders.index', compact('orders'));
+        $labId = Auth::user()->id;
+
+        // First, retrieve all scans for the lab within the current month.
+        $scans = Scan::with(['doctor', 'latestStatus']) // Assuming 'status' relation loads necessary data to determine current status
+            ->where('lab_id', $labId)
+            ->get();
+
+        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
+        // Note: This filtering happens in memory, not in the database.
+
+
+        return view('lab.scans.index', compact('scans'));
     }
 
     public function pending()
     {
-        $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->where('status', 'pending')->get();
-        return view('lab.orders.pending', compact('orders'));
+        $labId = Auth::user()->id;
+
+        // First, retrieve all scans for the lab within the current month.
+        $scans = Scan::with(['doctor', 'status']) // Assuming 'status' relation loads necessary data to determine current status
+            ->where('lab_id', $labId)
+            ->get();
+
+        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
+        // Note: This filtering happens in memory, not in the database.
+        $pendingScans = $scans->filter(function ($scan) {
+            return $scan->current_status == 'pending';
+        });
+
+
+        return view('lab.scans.pending', compact('pendingScans'));
     }
 
     public function new()
     {
-        $orders = Scan::with('doctor')->where('lab_id', Auth::user()->id)->whereMonth('created_at', now()->month)->where('status', '!=', 'rejected')->get();
-        return view('lab.orders.new', compact('orders'));
+        $labId = Auth::user()->id;
+
+        // First, retrieve all scans for the lab within the current month.
+        $scans = Scan::with(['doctor', 'status']) // Assuming 'status' relation loads necessary data to determine current status
+            ->where('lab_id', $labId)
+            ->whereMonth('created_at', now()->month)
+            ->get();
+
+        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
+        // Note: This filtering happens in memory, not in the database.
+        $newScans = $scans->filter(function ($scan) {
+            return $scan->current_status == 'pending';
+        });
+
+        return view('lab.scans.new', compact('newScans'));
     }
 
     public function downloadStl(Scan $order)
@@ -74,26 +111,28 @@ class OrderController extends Controller
         }
     }
 
-    public function reject(Request $request, $id)
+    public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'reject_note' => ['required', 'max:200']
+            'note' => 'required|max:200',
+            'action' => 'required|in:reject,complete',
         ]);
 
         $scan = Scan::findOrFail($id);
 
-        // Validate the request, store the comment, etc.
-        $comment = new Comment();
-        $comment->user_id = auth()->user()->id;
-        $comment->scan_id = $scan->id; // Ensure you're passing this correctly
-        $comment->date = now();
-        $comment->text = $request->reject_note;
-        $comment->save();
+        $action = $request->input('action');
+        $status = $action === 'reject' ? 'rejected' : 'completed';
 
-        $scan->status = 'rejected';
-        //$scan->note = $request->reject_note;
-        $scan->save();
+        // Create a new status update for the scan
+        $statusUpdate = new Status([
+            'scan_id' => $scan->id,
+            'status' => $status,
+            'note' => $request->input('note'), // Use the same input for the note, regardless of action
+            'updated_by' => auth()->user()->id,
+        ]);
+        $statusUpdate->save();
 
+        // Your existing logic for notifications and emails continues here...
 
         // Send Email
         $doctor = User::findOrFail($scan->doctor_id);
@@ -114,7 +153,7 @@ class OrderController extends Controller
 
         toastr()->success('Scan Returned to Doctor Successfully!');
 
-        return to_route('lab.orders.pending');
+        return back();
     }
     /**
      * Show the form for creating a new resource.
@@ -127,15 +166,15 @@ class OrderController extends Controller
     public function viewer($id)
     {
         //$order = Scan::findOrFail($id);
-        $order = Scan::with('comments')->findOrFail($id);
-        return view('lab.viewer.index', compact('order'));
+        $scan = Scan::with('status')->findOrFail($id); // Assuming the correct relationship name is 'status'
+        return view('lab.viewer.index', compact('scan'));
     }
 
     public function prescription($id)
     {
         //$order = Scan::findOrFail($id);
-        $order = Scan::with('comments')->findOrFail($id);
-        return view('lab.prescription.index', compact('order'));
+        $scan = Scan::with('status')->findOrFail($id);
+        return view('lab.prescription.index', compact('scan'));
     }
 
     /**

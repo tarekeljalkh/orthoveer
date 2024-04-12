@@ -43,7 +43,7 @@
                                     <i class="fas fa-code"></i>
                                 </div>
                                 <div class="dropdown-item-desc">
-                                    #{{ $notification->scan_id }}, {{ $notification->message }}
+                                    #{{ $notification->scan_id }}: Rejected
                                     <div class="time text-primary">
                                         {{ date('h:i A | d-F-Y', strtotime($notification->created_at)) }}</div>
                                 </div>

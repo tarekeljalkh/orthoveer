@@ -45,7 +45,7 @@
                                     <i class="fas fa-code"></i>
                                 </div>
                                 <div class="dropdown-item-desc">
-                                    {{ $notification->message }}
+                                    {{ $notification->message }}<br>From: dr {{ $notification->sender->first_name }} {{ $notification->sender->last_name }}
                                     <div class="time text-primary">
                                         {{ date('h:i A | d-F-Y', strtotime($notification->created_at)) }}</div>
                                 </div>

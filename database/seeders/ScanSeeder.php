@@ -24,7 +24,6 @@ class ScanSeeder extends Seeder
                 'cabinet' => 'Orthodontie Exclusive',
                 'procedure' => 'Modèle d’étude / Record',
                 'due_date' => Carbon::createFromFormat('d/m/Y', '19/12/2023'),
-                'status' => 'pending',
             ],
             [
                 'doctor_id' => 3, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
@@ -34,7 +33,6 @@ class ScanSeeder extends Seeder
                 'cabinet' => 'Orthodontie Exclusive',
                 'procedure' => 'Modèle d’étude / Record',
                 'due_date' => Carbon::createFromFormat('d/m/Y', '19/12/2023'),
-                'status' => 'pending',
             ],
 
             // Add more cases based on the image you provided
@@ -49,7 +47,6 @@ class ScanSeeder extends Seeder
                 'cabinet' => $scan['cabinet'],
                 'procedure' => $scan['procedure'],
                 'due_date' => $scan['due_date'],
-                'status' => $scan['status'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

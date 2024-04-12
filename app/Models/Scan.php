@@ -38,4 +38,31 @@ class Scan extends Model
         return $this->belongsTo(TypeofWork::class, 'type_id');
     }
 
+    /**
+     * Get the notifications for the scan.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'scan_id');
+    }
+
+
+    public function status()
+    {
+        return $this->hasMany(Status::class);
+    }
+
+
+    public function getCurrentStatusAttribute()
+    {
+        // Assuming 'status' is the relationship name for all related status updates
+        return $this->status()->latest('created_at')->first()->status ?? 'pending';
+    }
+
+    public function latestStatus()
+{
+    return $this->hasOne(Status::class)->latestOfMany();
+}
+
+
 }

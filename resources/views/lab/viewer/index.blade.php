@@ -6,11 +6,11 @@
             <div class="section-header-back">
                 <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Order ID: {{ $order->id }}</h1>
+            <h1>Scan ID: {{ $scan->id }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('lab.orders.index') }}">Orders</a></div>
-                <div class="breadcrumb-item"><a href="#">{{ $order->id }}</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('lab.scans.index') }}">Scans</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ $scan->id }}</a></div>
             </div>
         </div>
 
@@ -21,18 +21,18 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="form-group row align-items-center">
-                                @if ($order->stl_upper || $order->stl_lower)
-                                    <a href="{{ route('lab.orders.downloadStl', $order->id) }}"
+                                @if ($scan->stl_upper || $scan->stl_lower)
+                                    <a href="{{ route('lab.scans.downloadStl', $scan->id) }}"
                                         class="btn btn-primary">Download
                                         Files <i class="fas fa-download"></i></a>
                                 @endif
-                                @if ($order->stl_upper)
+                                @if ($scan->stl_upper)
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>Upper Stl</h4>
                                                 <div class="card-header-action">
-                                                    <a href="{{ $order->stl_upper }}" download
+                                                    <a href="{{ $scan->stl_upper }}" download
                                                         class="btn btn-success">Download <i class="fas fa-download"></i></a>
                                                 </div>
                                             </div>
@@ -43,13 +43,13 @@
                                     </div>
                                 @endif
 
-                                @if ($order->stl_lower)
+                                @if ($scan->stl_lower)
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>Lower Stl</h4>
                                                 <div class="card-header-action">
-                                                    <a href="{{ $order->stl_lower }}" download
+                                                    <a href="{{ $scan->stl_lower }}" download
                                                         class="btn btn-success">Download <i class="fas fa-download"></i></a>
                                                 </div>
                                             </div>
@@ -60,18 +60,18 @@
                                     </div>
                                 @endif
 
-                                @if (!$order->pdf)
+                                @if (!$scan->pdf)
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
                                             <div class="card-header">
                                                 <h4>Image Or Pdf</h4>
                                                 <div class="card-header-action">
-                                                    <a href="{{ $order->pdf }}" download class="btn btn-success">Download
+                                                    <a href="{{ $scan->pdf }}" download class="btn btn-success">Download
                                                         <i class="fas fa-download"></i></a>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <img src="{{ $order->pdf }}"
+                                                <img src="{{ $scan->pdf }}"
                                                     style="width:200px;height:200px;margin:0 auto;">
                                             </div>
                                         </div>
@@ -79,7 +79,7 @@
                                 @endif
 
 
-                                @if (!$order->stl_upper && !$order->stl_lower)
+                                @if (!$scan->stl_upper && !$scan->stl_lower)
                                     <div class="col-12 col-md-12 col-lg-12">
                                         <div class="card">
                                             <div class="card-header">
@@ -97,66 +97,63 @@
                 <div class="col-4 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Rejection Notes ({{ count($order->comments) }})</h4>
+                            <p>Status Updates: {{ $scan->status->count() }}</p>
                         </div>
                         <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="activities">
-
-                                        @foreach ($order->comments as $comment)
-                                            <div class="activity">
-                                                <div class="activity-icon bg-primary text-white shadow-primary">
-                                                    <i class="fas fa-comment-alt"></i>
-                                                </div>
-                                                <div class="activity-detail">
-                                                    <div class="mb-2">
-                                                        <span class="text-job text-primary">
-                                                            @if ($comment->user->role === 'admin')
-                                                                Admin,
-                                                            @elseif ($comment->user->role === 'doctor')
-                                                                Dr.
-                                                            @elseif ($comment->user->role === 'lab')
-                                                                Lab,
-                                                            @endif
-                                                            {{ $comment->user->last_name }},
-                                                            {{ $comment->user->first_name }},
-                                                        </span>
-                                                        <span class="bullet"></span>
-                                                        <span
-                                                            class="text-job text-info">{{ \Carbon\Carbon::parse($comment->scan_date)->format('d/m/Y') }}</span>
-                                                    </div>
-                                                    <p>{{ $comment->text }}</p>
-                                                </div>
+                            <div class="activities">
+                                @forelse ($scan->status as $status)
+                                    <div class="activity">
+                                        <div class="activity-icon bg-primary text-white shadow-primary">
+                                            <i class="fas fa-comment-alt"></i>
+                                        </div>
+                                        <div class="activity-detail">
+                                            <div class="mb-2">
+                                                <span
+                                                    class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                    {{ $status->updatedBy->last_name }},
+                                                    {{ $status->updatedBy->first_name }},
+                                                </span>
+                                                <span class="bullet"></span>
+                                                <span
+                                                    class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
                                             </div>
-                                        @endforeach
+                                            <p><span style="font-weight: bold">Status:</span> {{ $status->status }}</p>
+                                            <p><span style="font-weight: bold">Note:</span> {{ $status->note }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @empty
+                                    <p>No status updates available.</p>
+                                @endforelse
                             </div>
                         </div>
+                        @php
+                            $lastStatus = $scan->status->sortByDesc('created_at')->first()?->status ?? '';
+                        @endphp
 
-                        <div class="card-footer">
-                            <form action="{{ route('lab.orders.reject', $order->id) }}" method="post">
-                                @csrf
-                                @method('post')
 
-                                <div class="row">
 
-                                    <div class="form-group col-md-8 col-8">
-                                        <input class="form-control" type="text" name="reject_note"
-                                            placeholder="Enter Rejection Note" required>
+                        {{-- Only show "Complete" and "Reject" buttons for "pending" or "resubmitted" statuses --}}
+                        @if ($lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                            <div class="card-footer">
+                                <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
+                                    @csrf
+                                    @method('post')
+
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="note" placeholder="Enter Note"
+                                            required>
                                     </div>
 
-                                    <div class="form-group col-md-4 col-4">
-                                        <button type="submit" class="btn btn-danger">Reject</button>
-                                        {{-- <a href="{{ route('lab.orders.reject', $order->id) }}" class="btn btn-danger">Reject</a> --}}
-                                    </div>
+                                    <button type="submit" name="action" value="reject" class="btn btn-danger">
+                                        Reject
+                                    </button>
 
-                                </div>
-                            </form>
-
-                        </div>
+                                    <button type="submit" name="action" value="complete" class="btn btn-success">
+                                        Complete
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
 
                     </div>
                 </div>
@@ -166,9 +163,6 @@
 
         </div>
     </section>
-
-
-
 @endsection
 
 @push('scripts')
@@ -179,7 +173,7 @@
                 document.getElementById("stl_upper"), {
                     models: [{
                         id: 1,
-                        filename: "{{ asset($order->stl_upper) }}",
+                        filename: "{{ asset($scan->stl_upper) }}",
                         display: "smooth",
                         color: "#FFC0CB"
                     }]
@@ -190,13 +184,13 @@
                 document.getElementById("stl_lower"), {
                     models: [{
                         id: 2,
-                        filename: "{{ asset($order->stl_lower) }}",
+                        filename: "{{ asset($scan->stl_lower) }}",
                         display: "smooth",
                         color: "#FFC0CB"
                     }]
                 }
             );
-            stl_viewer.download_model(2, '{{ asset($order->stl_lower) }}');
+            stl_viewer.download_model(2, '{{ asset($scan->stl_lower) }}');
         });
     </script>
 
@@ -206,7 +200,7 @@
                 var formData = new FormData();
                 formData.append('comment', $('textarea[name="comment"]').val());
                 // Correctly include the order ID in your request
-                formData.append('order_id', '{{ $order->id }}');
+                formData.append('scan_id', '{{ $scan->id }}');
 
                 $.ajax({
                     url: "{{ route('lab.comments.store') }}",

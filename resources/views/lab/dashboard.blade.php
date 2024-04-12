@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.orders.new') }}" style="text-decoration:none; color: inherit;">
+                <a href="{{ route('lab.scans.new') }}" style="text-decoration:none; color: inherit;">
 
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-warning">
@@ -15,10 +15,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>New Orders</h4>
+                                <h4>New Scans</h4>
                             </div>
                             <div class="card-body">
-                                {{ $todaysOrders }}
+                                {{ $todaysScans }}
                             </div>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.orders.pending') }}" style="text-decoration:none; color: inherit;">
+                <a href="{{ route('lab.scans.pending') }}" style="text-decoration:none; color: inherit;">
 
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-danger">
@@ -34,17 +34,17 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Pending Orders</h4>
+                                <h4>Pending Scans</h4>
                             </div>
                             <div class="card-body">
-                                {{ $pendingOrders }}
+                                {{ $pendingScans }}
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.orders.index') }}" style="text-decoration:none; color: inherit;">
+                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
 
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
@@ -52,10 +52,10 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Orders</h4>
+                                <h4>Total Scans</h4>
                             </div>
                             <div class="card-body">
-                                {{ $totalOrders }}
+                                {{ $totalScans }}
                             </div>
                         </div>
                     </div>

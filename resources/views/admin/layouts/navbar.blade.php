@@ -76,7 +76,7 @@
             </div>
         </li>
         @php
-            $notifications = \App\Models\Notification::where('seen', 0)->latest()->take(10)->get();
+            $notifications = \App\Models\Notification::latest()->take(10)->get();
         @endphp
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
@@ -94,14 +94,17 @@
                                 <i class="fas fa-code"></i>
                             </div>
                             <div class="dropdown-item-desc">
-                                {{ $notification }}
-                                <div class="time text-primary">2 Min Ago</div>
-                            </div>
+                                Sender: {{ $notification->sender->first_name }}<br>
+                                Receiver: {{ $notification->receiver->first_name }}<br>
+                                ID: {{ $notification->scan_id }}
+                                <div class="time text-primary">
+                                    {{ date('h:i A | d-F-Y', strtotime($notification->created_at)) }}</div>
+                        </div>
                         </a>
                     @endforeach
                 </div>
                 <div class="dropdown-footer text-center">
-                    <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+                    <a href="{{ route('admin.notifications.index') }}">View All <i class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
         </li>

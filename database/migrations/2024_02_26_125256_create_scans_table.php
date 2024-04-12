@@ -23,7 +23,6 @@ return new class extends Migration
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('type_id')->nullable();
             $table->foreign('type_id')->references('id')->on('typeof_works')->onDelete('cascade');
-            $table->enum('status', ['pending', 'in_progress', 'completed', 'rejected'])->default('pending');
             $table->date('due_date')->format('d/m/Y');
             $table->date('scan_date')->format('d/m/Y');
             $table->string('stl_upper')->nullable();
@@ -32,7 +31,6 @@ return new class extends Migration
             $table->string('practitioner')->nullable();
             $table->string('cabinet')->nullable();
             $table->string('procedure')->nullable();
-            $table->text('note')->nullable();
             $table->timestamps();
         });
 

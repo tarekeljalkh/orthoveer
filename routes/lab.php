@@ -4,7 +4,7 @@ use App\Http\Controllers\Lab\ChatController;
 use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
-use App\Http\Controllers\Lab\OrderController;
+use App\Http\Controllers\Lab\ScanController;
 use App\Http\Controllers\Lab\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,21 +19,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('dashboard', [LabController::class, 'index'])->name('dashboard');
 
-//Orders Routes
-Route::get('orders/new', [OrderController::class, 'new'])->name('orders.new');
-Route::get('orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
-Route::get('orders/viewer/{id}', [OrderController::class, 'viewer'])->name('orders.viewer');
-Route::get('orders/prescription/{id}', [OrderController::class, 'prescription'])->name('orders.prescription');
+//Scans Routes
+Route::get('scans/new', [ScanController::class, 'new'])->name('scans.new');
+Route::get('scans/pending', [ScanController::class, 'pending'])->name('scans.pending');
+Route::get('scans/viewer/{id}', [ScanController::class, 'viewer'])->name('scans.viewer');
+Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->name('scans.prescription');
 //reject order
-Route::post('orders/reject/{id}', [OrderController::class, 'reject'])->name('orders.reject');
-Route::resource('orders', OrderController::class);
+Route::post('scans/{id}/update-status', [ScanController::class, 'updateStatus'])->name('scans.updateStatus');
+
+Route::resource('scans', ScanController::class);
 /** Download Order */
-Route::get('/orders/{order}/download-stl', [OrderController::class, 'downloadStl'])->name('orders.downloadStl');
+Route::get('/scans/{scan}/download-stl', [ScanController::class, 'downloadStl'])->name('scans.downloadStl');
 
 //Comments Routes
 Route::resource('comments', CommentController::class);
 
-/** Order Notification Routes */
+/** Scan Notification Routes */
 Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');
 
 /** chat Routes */

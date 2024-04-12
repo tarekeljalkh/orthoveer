@@ -15,10 +15,25 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $currentOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'completed')->count();
-        $pendingOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'pending')->count();
-        $totalOrders = Scan::where('doctor_id', Auth::user()->id)->count();
-        $rejectedOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'rejected')->count();
+        // $currentOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'completed')->count();
+        // $pendingOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'pending')->count();
+        // $totalOrders = Scan::where('doctor_id', Auth::user()->id)->count();
+        // $rejectedOrders = Scan::where('doctor_id', Auth::user()->id)->where('status', 'rejected')->count();
+
+        $doctorId = Auth::user()->id;
+
+        // Retrieve all scans for the doctor
+        $scans = Scan::with(['status'])
+                     ->where('doctor_id', $doctorId)
+                     ->get();
+
+        // Filter based on the current status accessor
+        $currentOrders = $scans->where('current_status', 'completed')->count();
+        $pendingOrders = $scans->where('current_status', 'pending')->count();
+        $rejectedOrders = $scans->where('current_status', 'rejected')->count();
+        $totalOrders = $scans->count();
+
+
 
         return view('doctor.dashboard', compact('currentOrders', 'pendingOrders', 'totalOrders', 'rejectedOrders'));
     }

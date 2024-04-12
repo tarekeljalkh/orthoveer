@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>New Orders</h1>
+            <h1>New Scans</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">New Orders</a></div>
+                <div class="breadcrumb-item"><a href="#">New Scans</a></div>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>New Orders</h4>
+                            <h4>New Scans</h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
@@ -37,22 +37,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($orders as $order)
+                                    @foreach ($newScans as $scan)
                                         <tr>
-                                            <td><input type="checkbox" class="orderCheckbox" value="{{ $order->id }}">
+                                            <td><input type="checkbox" class="orderCheckbox" value="{{ $scan->id }}">
                                             </td>
-                                            <td>Dr. {{ $order->doctor->last_name }}, {{ $order->doctor->first_name }}
+                                            <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
                                             </td>
-                                            <td>{{ $order->due_date->format('d/m/Y') }}</td>
-                                            <td>{{ $order->note }}</td>
+                                            <td>{{ $scan->due_date->format('d/m/Y') }}</td>
+                                            <td>{{ $scan->note }}</td>
                                             <td>
                                                 <div
                                                     class="badge
-                                                        {{ $order->status == 'pending' ? 'badge-warning' : '' }}
-                                                        {{ $order->status == 'in_progress' ? 'badge-info' : '' }}
-                                                        {{ $order->status == 'completed' ? 'badge-success' : '' }}
-                                                        {{ $order->status == 'cancelled' ? 'badge-danger' : '' }}">
-                                                    {{ $order->status }}
+                                                        {{ $scan->status == 'pending' ? 'badge-warning' : '' }}
+                                                        {{ $scan->status == 'in_progress' ? 'badge-info' : '' }}
+                                                        {{ $scan->status == 'completed' ? 'badge-success' : '' }}
+                                                        {{ $scan->status == 'cancelled' ? 'badge-danger' : '' }}">
+                                                    {{ $scan->status }}
                                                 </div>
                                             </td>
                                             <td>
@@ -63,15 +63,15 @@
                                                     </button>
                                                     <div class="dropdown-menu dropleft">
                                                         <a class="dropdown-item"
-                                                            href="{{ route('lab.orders.viewer', $order->id) }}">Open
+                                                            href="{{ route('lab.scans.viewer', $scan->id) }}">Open
                                                             Viewer</a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('lab.orders.prescription', $order->id) }}">Open
+                                                            href="{{ route('lab.scans.prescription', $scan->id) }}">Open
                                                             Prescription</a>
                                                         <div class="dropdown-divider"></div>
                                                         <a class="dropdown-item" href="#"><i class="fas fa-print"></i>
                                                             Print Prescription</a>
-                                                        <a class="dropdown-item" href="{{ route('lab.orders.downloadStl', $order->id) }}"><i
+                                                        <a class="dropdown-item" href="{{ route('lab.scans.downloadStl', $scan->id) }}"><i
                                                                 class="fas fa-download"></i> Download The Scan</a>
 
                                                     </div>

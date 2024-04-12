@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Patient;
 use App\Models\Scan;
+use App\Models\Status;
 use App\Models\TypeofWork;
 use App\Models\User;
 use App\Traits\FileUploadTrait;
@@ -121,8 +122,18 @@ class ScanController extends Controller
         $scan->stl_lower = $lowerPath;
         $scan->pdf = json_encode($pdfPaths);
         $scan->scan_date = now();
-        $scan->note = $request->note;
+        //$scan->note = $request->note;
         $scan->save();
+
+        // Create a new status update for the scan
+        $statusUpdate = new Status([
+            'scan_id' => $scan->id,
+            'status' => 'pending', // Setting the initial status to 'pending'
+            'note' => $request->note, // Assuming the note comes from the request
+            'updated_by' => Auth::id(), // Assuming the current user made this update
+        ]);
+
+        $statusUpdate->save();
 
         // Send Email
         $lab = User::findorFail($type->lab_id);
@@ -145,7 +156,7 @@ class ScanController extends Controller
         $notification = new Notification();
         $notification->sender_id = Auth::user()->id;
         $notification->receiver_id = $lab->id;
-        $notification->message = 'test';
+        $notification->message = 'New Scan Created';
         $notification->scan_id = $scan->id;
         $notification->save();
 
