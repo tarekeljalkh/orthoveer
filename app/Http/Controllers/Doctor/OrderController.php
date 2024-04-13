@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Patient;
 use App\Models\Scan;
 use App\Models\User;
@@ -17,23 +18,33 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        // Retrieve the 'status' query parameter from the request, if any
+        // Retrieve the 'status' and 'due_date' query parameters from the request, if any
         $status = $request->query('status');
+        $dueDate = $request->query('due_date');
 
         // Start building the query to get scans for the logged-in doctor
-        $ordersQuery = Scan::with('patient')->where('doctor_id', Auth::user()->id);
+        $ordersQuery = Scan::with(['patient', 'latestStatus'])->where('doctor_id', Auth::user()->id);
 
-        // If a status is provided in the query parameters, add a where condition
+        // If a status is provided in the query parameters, filter scans based on latest status attributes
         if (!empty($status)) {
-            $ordersQuery->where('status', $status);
+            $ordersQuery->whereHas('latestStatus', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
+
+        // If a due_date is provided in the query parameters, add a where condition
+        if (!empty($dueDate)) {
+            $ordersQuery->whereDate('due_date', $dueDate);
         }
 
         // Execute the query to get the results
         $orders = $ordersQuery->get();
 
-        // Return the view with the orders (filtered by status if applicable)
+        // Return the view with the orders (filtered by status and due_date if applicable)
         return view('doctor.orders.index', compact('orders'));
     }
+
+
 
     // public function index()
     // {
@@ -72,8 +83,8 @@ class OrderController extends Controller
     {
         $order = Scan::findOrFail($id);
         $patients = Patient::where('doctor_id', Auth::user()->id)->get();
-        $labs = User::where('role', 'lab')->get();
-        return view('doctor.orders.edit', compact('order', 'patients', 'labs'));
+        $categories = Category::with('TypeOfWorks')->get();
+        return view('doctor.orders.edit', compact('order', 'patients', 'categories'));
     }
 
     /**

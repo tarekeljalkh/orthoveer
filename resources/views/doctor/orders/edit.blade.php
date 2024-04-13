@@ -111,17 +111,28 @@
                                     <div class="form-group col-md-6 col-12">
                                         <label>Due Date</label>
                                         <input type="date" name="due_date" class="form-control"
-                                            value="{{ $order->due_date->format('d/m/y') }}">
+                                            value="{{ $order->due_date instanceof \DateTime ? $order->due_date->format('Y-m-d') : \Carbon\Carbon::parse($order->due_date)->format('Y-m-d') }}"
+                                            min="{{ now()->toDateString() }}">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Send To</label>
-                                        <select class="form-control select2" name="lab">
-                                            @foreach ($labs as $lab)
-                                                <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
+                                        <label>Procedure</label>
+                                        <select class="form-control select2" id="categorySelect" name="category_id">
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Type</label>
+                                        <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
+                                            {{-- @foreach ($labs as $lab)
+                                                                                <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
+                                                                            @endforeach --}}
+                                        </select>
+                                    </div>
+
 
                                 </div>
 
@@ -207,55 +218,51 @@
                     {{-- Note --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
-                            @if (count($order->comments) > 0)
+                            @if (count($order->status) > 0)
                                 <div class="card-header">
-                                    <h4>Rejection Notes ({{ count($order->comments) }})</h4>
+                                    <h4>Notes ({{ count($order->status) }})</h4>
                                 </div>
                                 <div class="card-body">
 
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="activities">
-
-                                                @foreach ($order->comments as $comment)
+                                                @forelse ($order->status as $status)
                                                     <div class="activity">
                                                         <div class="activity-icon bg-primary text-white shadow-primary">
                                                             <i class="fas fa-comment-alt"></i>
                                                         </div>
                                                         <div class="activity-detail">
                                                             <div class="mb-2">
-                                                                <span class="text-job text-primary">
-                                                                    @if ($comment->user->role === 'admin')
-                                                                        Admin,
-                                                                    @elseif ($comment->user->role === 'doctor')
-                                                                        Dr.
-                                                                    @elseif ($comment->user->role === 'lab')
-                                                                        Lab,
-                                                                    @endif
-                                                                    {{ $comment->user->last_name }},
-                                                                    {{ $comment->user->first_name }},
+                                                                <span
+                                                                    class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                                    {{ $status->updatedBy->last_name }},
+                                                                    {{ $status->updatedBy->first_name }},
                                                                 </span>
                                                                 <span class="bullet"></span>
                                                                 <span
-                                                                    class="text-job text-info">{{ \Carbon\Carbon::parse($comment->scan_date)->format('d/m/Y') }}</span>
+                                                                    class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
                                                             </div>
-                                                            <p>{{ $comment->text }}</p>
+                                                            <p><span style="font-weight: bold">Status:</span>
+                                                                {{ $status->status }}</p>
+                                                            <p><span style="font-weight: bold">Note:</span>
+                                                                {{ $status->note }}</p>
                                                         </div>
                                                     </div>
-                                                @endforeach
+                                                @empty
+                                                    <p>No status updates available.</p>
+                                                @endforelse
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             @endif
                             <div class="card-footer text-right">
-                                @if (count($order->comments) > 0)
 
                                 <div class="form-group col-md-8 col-8">
-                                    <input class="form-control" type="text" name="reject_note"
+                                    <input class="form-control" type="text" name="note"
                                         placeholder="Enter New Note" required>
                                 </div>
-                                @endif
                                 <button type="submit" class="btn btn-primary" id="submitBtn">Update</button>
 
                             </div>
@@ -338,6 +345,29 @@
         $('form').on('submit', function() {
             $('#submitBtn').prop('disabled', true).text('Submitting...');
         });
+
+
+
+        // convert this data into a JavaScript variable within your Blade template
+        var categoriesAndTypes = @json(
+            $categories->mapWithKeys(function ($category) {
+                return [$category->id => $category->TypeOfWorks->pluck('name', 'id')];
+            }));
+
+        $('#categorySelect').on('change', function() {
+            var categoryId = $(this).val();
+            var typesOfWork = categoriesAndTypes[categoryId] || {};
+            var $typeOfWorkSelect = $('#typeOfWorkSelect');
+
+            $typeOfWorkSelect.empty().append('<option value="">Select Type</option>'); // Reset and add placeholder
+
+            $.each(typesOfWork, function(id, name) {
+                $typeOfWorkSelect.append('<option value="' + id + '">' + name + '</option>');
+            });
+        });
+
+        //
+
 
         //preview files before submitting
         document.getElementById('pdfInput').addEventListener('change', function(event) {

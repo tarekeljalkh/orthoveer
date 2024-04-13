@@ -34,8 +34,8 @@ class ScanController extends Controller
     public function newScan($id)
     {
         $patient = Patient::findOrFail($id);
-        $labs = User::where('role', 'lab')->get();
-        return view('doctor.patients.new_scan', compact('patient', 'labs'));
+        $categories = Category::with('TypeOfWorks')->get();
+        return view('doctor.patients.new_scan', compact('patient', 'categories'));
     }
 
     public function newScanStore(Request $request, $id)
@@ -43,15 +43,56 @@ class ScanController extends Controller
         //find patient id
         $patient = Patient::findOrFail($id);
 
+        $upperPath = $this->uploadImage($request, 'stl_upper');
+        $lowerPath = $this->uploadImage($request, 'stl_lower');
+
+        // Handling multiple file uploads
+        $pdfPaths = $this->uploadFiles($request, 'pdf');
+
+
         // Add scan to patient
         $scan = new Scan();
         $scan->doctor_id = $request->doctor_id; // Ensure this doctor_id is either coming from authenticated user or safely validated
         $scan->patient_id = $patient->id;
-        $scan->lab_id = $request->lab;
+        //add lab id from type of work id
+        $type = TypeofWork::findOrFail($request->typeofwork_id);
+        $scan->type_id = $request->typeofwork_id;
+        $scan->lab_id = $type->lab_id;
+        //
         $scan->due_date = $request->due_date;
+        $scan->stl_upper = $upperPath;
+        $scan->stl_lower = $lowerPath;
+        $scan->pdf = json_encode($pdfPaths);
+
         $scan->scan_date = now();
-        $scan->note = $request->note;
+        //$scan->note = $request->note;
         $scan->save();
+
+        // Send Email
+        $lab = User::findorFail($type->lab_id);
+        $content = [
+            'doctorName' => 'Dr. ' . Auth::user()->last_name,
+            'dueDate' => $scan->due_date->format('d-m-y'),
+            'scanDate' => now()->format('d-m-y'),
+            // Include other data as needed
+        ];
+
+        // try {
+        //     Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
+        // } catch (\Exception $e) {
+        //     // Handle email sending failure, log error, etc.
+        // }
+
+        Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+
+        //send Notification
+        $notification = new Notification();
+        $notification->sender_id = Auth::user()->id;
+        $notification->receiver_id = $lab->id;
+        $notification->message = 'New Scan Created';
+        $notification->scan_id = $scan->id;
+        $notification->save();
+
 
         toastr()->success('Scan Created Successfully');
         return to_route('doctor.patients.show', $patient->id);
@@ -185,56 +226,76 @@ class ScanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $scan = Scan::findOrFail($id);
-        $upperPath = $this->uploadImage($request, 'stl_upper', $scan->upperPath);
-        $lowerPath = $this->uploadImage($request, 'stl_lower', $scan->lowerPath);
+        try {
+            // Find the scan by ID
+            $scan = Scan::findOrFail($id);
 
+            // Upload upper and lower images
+            $upperPath = $this->uploadImage($request, 'stl_upper', $scan->upperPath);
+            $lowerPath = $this->uploadImage($request, 'stl_lower', $scan->lowerPath);
 
-        // Decode existing PDF paths into an array
-        $existingPdfPaths = json_decode($scan->pdf, true) ?? [];
+            // Decode existing PDF paths into an array
+            $existingPdfPaths = json_decode($scan->pdf, true) ?? [];
 
-        // Use uploadFiles to handle multiple file uploads for 'pdf'
-        // This returns an array of new paths or NULL if no files were uploaded
-        $newPdfPaths = $this->uploadFiles($request, 'pdf');
+            // Use uploadFiles to handle multiple file uploads for 'pdf'
+            // This returns an array of new paths or NULL if no files were uploaded
+            $newPdfPaths = $this->uploadFiles($request, 'pdf');
 
-        // If there are new paths, merge them with the existing paths
-        if (!is_null($newPdfPaths)) {
-            $updatedPdfPaths = array_merge($existingPdfPaths, $newPdfPaths);
-            $scan->pdf = json_encode($updatedPdfPaths); // Save the merged paths
+            // If there are new paths, merge them with the existing paths
+            if (!is_null($newPdfPaths)) {
+                $updatedPdfPaths = array_merge($existingPdfPaths, $newPdfPaths);
+                $scan->pdf = json_encode($updatedPdfPaths); // Save the merged paths
+            }
+
+            // Update scan details
+            $scan->doctor_id = $request->doctor_id; // Ensure this doctor_id is either coming from authenticated user or safely validated
+            $type = TypeofWork::findOrFail($request->typeofwork_id);
+            $scan->type_id = $request->typeofwork_id;
+            $scan->lab_id = $type->lab_id;
+            $scan->due_date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->due_date);
+            $scan->stl_upper = !empty($upperPath) ? $upperPath : $scan->stl_upper;
+            $scan->stl_lower = !empty($lowerPath) ? $lowerPath : $scan->lowerPath;
+
+            // Save the scan
+            $scan->save();
+
+            // Create a new status update for the scan
+            $statusUpdate = new Status([
+                'scan_id' => $scan->id,
+                'status' => 'pending', // Setting the initial status to 'pending'
+                'note' => $request->note, // Assuming the note comes from the request
+                'updated_by' => Auth::id(), // Assuming the current user made this update
+            ]);
+            $statusUpdate->save();
+
+            // Send Email
+            $lab = User::findOrFail($type->lab_id);
+
+            $content = [
+                'doctorName' => 'Dr. ' . Auth::user()->last_name,
+                'dueDate' => $scan->due_date->format('d-m-y'),
+                'scanDate' => now()->format('d-m-y'),
+                // Include other data as needed
+            ];
+            Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+
+            // Send Notification
+            $notification = new Notification();
+            $notification->sender_id = Auth::user()->id;
+            $notification->receiver_id = $lab->id;
+            $notification->message = 'test';
+            $notification->scan_id = $scan->id;
+            $notification->save();
+
+            toastr()->success('Scan Updated Successfully');
+            return redirect()->route('doctor.scans.index');
+        } catch (\Exception $e) {
+            // Handle any exceptions (e.g., ModelNotFoundException)
+            toastr()->error('Failed to update scan: ' . $e->getMessage());
+            return back();
         }
-
-        // update scan
-        $scan->lab_id = $request->lab;
-        //$scan->due_date = $request->due_date;
-        $scan->stl_upper = !empty($upperPath) ? $upperPath : $scan->stl_upper;
-        $scan->stl_lower = !empty($lowerPath) ? $lowerPath : $scan->lowerPath;
-        $scan->pdf = !empty($pdfPaths) ? $pdfPaths : $scan->pdf;
-        $scan->scan_date = now();
-        $scan->note = $request->note;
-        $scan->save();
-
-
-        // Send Email
-        $lab = User::findorFail($request->lab);
-        $content = [
-            'doctorName' => 'Dr. ' . Auth::user()->last_name,
-            'dueDate' => $scan->due_date->format('d-m-y'),
-            'scanDate' => now()->format('d-m-y'),
-            // Include other data as needed
-        ];
-        Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
-
-        //send Notification
-        $notification = new Notification();
-        $notification->sender_id = Auth::user()->id;
-        $notification->receiver_id = $lab->id;
-        $notification->message = 'test';
-        $notification->scan_id = $scan->id;
-        $notification->save();
-
-        toastr()->success('Scan Created Successfully');
-        return to_route('doctor.scans.index');
     }
+
 
     /**
      * Remove the specified resource from storage.

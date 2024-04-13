@@ -28,11 +28,6 @@ class Scan extends Model
         return $this->belongsTo(User::class, 'lab_id');
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
-
     public function typeofwork()
     {
         return $this->belongsTo(TypeofWork::class, 'type_id');
@@ -60,9 +55,7 @@ class Scan extends Model
     }
 
     public function latestStatus()
-{
-    return $this->hasOne(Status::class)->latestOfMany();
-}
-
-
+    {
+        return $this->hasOne(Status::class)->latestOfMany();
+    }
 }

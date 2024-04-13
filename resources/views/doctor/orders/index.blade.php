@@ -36,29 +36,19 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($orders as $order)
-                                        <tr onclick="window.location='{{ route('doctor.orders.edit', $order->id) }}';" style="cursor:pointer;">
-                                            <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
+                                            <tr onclick="window.location='{{ route('doctor.orders.edit', $order->id) }}';"
+                                                style="cursor:pointer;">
+                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
-                                                <td>{{ $order->note }}</td>
-                                                @if ($order->status == 'pending')
-                                                    <td>
-                                                        <div class="badge badge-info">Pending</div>
-                                                    </td>
-                                                @elseif ($order->status == 'in_progress')
-                                                    <td>
-                                                        <div class="badge badge-primary">In Progress</div>
-                                                    </td>
-                                                @elseif ($order->status == 'completed')
-                                                    <td>
-                                                        <div class="badge badge-success">Completed</div>
-                                                    </td>
-                                                @elseif ($order->status == 'rejected')
-                                                    <td>
-                                                        <div class="badge badge-danger">Rejected</div>
-                                                    </td>
-                                                @endif
-
+                                                <td> @isset($order->latestStatus)
+                                                        {{ $order->latestStatus->note }}
+                                                    @endisset
+                                                </td>
+                                                <td> @isset($order->latestStatus)
+                                                        {{ $order->latestStatus->status }}
+                                                    @endisset
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

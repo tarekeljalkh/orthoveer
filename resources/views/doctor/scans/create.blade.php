@@ -120,30 +120,32 @@
 
                                     <div class="form-group col-md-12 col-12">
                                         <label>Due Date</label>
-                                        <input type="date" name="due_date" class="form-control" required="" min="{{ now()->toDateString() }}">
-                                    </div>
-                                    </div>
+                                        <input type="date" name="due_date" class="form-control"
+                                            value="{{ now()->toDateString() }}" min="{{ now()->toDateString() }}">
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Procedure</label>
-                                        <select class="form-control select2" id="categorySelect" name="category_id">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Type</label>
-                                        <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
-                                            {{-- @foreach ($labs as $lab)
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12 col-6">
+                                    <label>Procedure</label>
+                                    <select class="form-control select2" id="categorySelect" name="category_id">
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-md-12 col-12">
+                                    <label>Type</label>
+                                    <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
+                                        {{-- @foreach ($labs as $lab)
                                                 <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
                                             @endforeach --}}
-                                        </select>
-                                    </div>
-
-
+                                    </select>
                                 </div>
+
+
 
                                 <div class="row">
 
