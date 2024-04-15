@@ -24,10 +24,10 @@ class NotificationController extends Controller
 
             // Assuming the 'lab.orders.viewer' route expects a parameter named 'id' that should be the scan_id of the notification.
             // Redirect to the desired route with the notification's scan_id.
-            return redirect()->route('lab.orders.viewer', ['id' => $notification->scan_id]);
+            return redirect()->route('lab.scans.viewer', ['id' => $notification->scan_id]);
         }
         return abort(404); // Notification not found
-        }
+    }
 
 
     /**

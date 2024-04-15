@@ -1,237 +1,290 @@
 @extends('lab.layouts.master')
 
+
+@push('styles')
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .invoice,
+            .invoice * {
+                visibility: visible;
+            }
+
+            .invoice {
+                position: fixed;
+                left: 50%;
+                top: 0;
+                transform: translateX(-50%);
+                /* Centers the div horizontally */
+                width: 100%;
+                max-width: 210mm;
+                /* Assuming you want an A4 width or adjust accordingly */
+                margin: 0;
+                padding: 0;
+            }
+
+            #invoicePrint {
+                border: none;
+            }
+
+            @page {
+                size: auto;
+                /* Auto scale the page */
+                margin: 0mm;
+                /* Adjust margin to zero */
+            }
+        }
+    </style>
+@endpush
+
+
 @section('content')
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
                 <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Order ID: {{ $order->id }}</h1>
+            <h1>Scan ID: {{ $scan->id }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('lab.orders.index') }}">Orders</a></div>
-                <div class="breadcrumb-item"><a href="#">Order</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('lab.scans.index') }}">Scans</a></div>
+                <div class="breadcrumb-item"><a href="#">Scan</a></div>
             </div>
         </div>
 
         <div class="section-body">
 
-            <div class="row">
-                <div class="col-8 col-md-8 col-lg-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>General Informations</h4>
+            <div class="card">
+                <div class="card-header">
+                    <h4>Adjust Invoice Size & Upload Image</h4>
+                </div>
+                <div class="card-body">
+                    <div class="form-inline justify-content-center">
+                        <div class="form-group mb-2">
+                            <label for="invoiceWidth" class="mr-2">Width (mm):</label>
+                            <input type="number" class="form-control" id="invoiceWidth" placeholder="Width in mm"
+                                value="210">
                         </div>
-                        <div class="card-body">
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label"
-                                        style="font-weight: bold;">Patient:</label>
-                                    <label for="site-title"
-                                        class="form-control-label">{{ $order->patient->first_name }}</label>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="invoiceHeight" class="mr-2">Height (mm):</label>
+                            <input type="number" class="form-control" id="invoiceHeight" placeholder="Height in mm"
+                                value="297">
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="invoiceImage" class="btn btn-info">Choose Image</label>
+                            <input type="file" id="invoiceImage" class="form-control-file d-none"
+                                onchange="adjustSize()">
+                        </div>
+                        <button type="button" class="btn btn-primary mb-2" onclick="adjustSize()">Apply Size</button>
+                    </div>
+                </div>
+                <div class="card-footer text-md-right">
+                    <button class="btn btn-primary btn-icon icon-left" onclick="window.print()"><i class="fas fa-print"></i>
+                        Print</button>
+                </div>
+            </div>
 
+            <div class="row">
+
+                <div class="col-8 col-md-8 col-lg-8">
+
+                    <div class="invoice">
+                        <div class="invoice-print" id="invoicePrint">
+
+                            <div class="card">
+
+                                <div id="imageContainer" style="text-align: center; margin: 20px 0;">
+                                    <!-- Image will be displayed here -->
                                 </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label" style="font-weight: bold;">Graph
-                                        Number:</label>
-                                    <label for="site-title" class="form-control-label">safasfg</label>
+
+                                <div class="card-header">
+                                    <h4>General Informations</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="site-title" class="form-control-label"
+                                                style="font-weight: bold;">Patient:</label>
+                                            <label for="site-title"
+                                                class="form-control-label">{{ $scan->patient->first_name }}</label>
+
+                                        </div>
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="site-title" class="form-control-label"
+                                                style="font-weight: bold;">Graph
+                                                Number:</label>
+                                            <label for="site-title" class="form-control-label">safasfg</label>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    {{-- <div class="live-divider"></div> --}}
+
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="site-title" class="form-control-label"
+                                                style="font-weight: bold;">Doctor:</label>
+                                            <label for="site-title" class="form-control-label">Dr.
+                                                {{ $scan->doctor->last_name }},
+                                                {{ $scan->doctor->first_name }}</label>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="site-title" class="form-control-label"
+                                                style="font-weight: bold;">Procedure:</label>
+                                            <label for="site-title"
+                                                class="form-control-label">{{ $scan->typeofwork->name }}</label>
+                                        </div>
+                                    </div>
+
+
+                                    <hr>
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-sm-6 col-md-6">
+                                            <label for="site-title" class="form-control-label d-block"
+                                                style="font-weight: bold;">Cabinet:</label>
+                                            <label for="site-title" class="form-control-label d-block">safasfg</label>
+                                            <label for="another-field" class="form-control-label d-block"
+                                                style="font-weight: bold;">Delivery Address:</label>
+                                            <label for="another-field"
+                                                class="form-control-label d-block">{{ $scan->doctor->address }}</label>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <label for="site-title" class="form-control-label d-block"
+                                                style="font-weight: bold;">Scan Date:</label>
+                                            <label for="site-title"
+                                                class="form-control-label d-block">{{ \Carbon\Carbon::parse($scan->scan_date)->format('d/m/Y') }}</label>
+                                            <label for="another-field" class="form-control-label d-block"
+                                                style="font-weight: bold;">Due Date:</label>
+                                            <label for="another-field"
+                                                class="form-control-label d-block">{{ \Carbon\Carbon::parse($scan->due_date)->format('d/m/Y') }}</label>
+                                            <label for="yet-another-field" class="form-control-label d-block"
+                                                style="font-weight: bold;">Status:</label>
+                                            <label for="yet-another-field"
+                                                class="form-control-label d-block">{{ $scan->latestStatus->status }}</label>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <label for="site-title" class="form-control-label d-block"
+                                                style="font-weight: bold;">Signature:</label>
+                                            <label for="site-title" class="form-control-label d-block">safasfg</label>
+                                            <label for="another-field" class="form-control-label d-block"
+                                                style="font-weight: bold;">License:</label>
+                                            <label for="another-field" class="form-control-label d-block">example</label>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-
-                            <hr>
-                            {{-- <div class="live-divider"></div> --}}
-
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label"
-                                        style="font-weight: bold;">Doctor:</label>
-                                    <label for="site-title" class="form-control-label">Dr. {{ $order->doctor->last_name }},
-                                        {{ $order->doctor->first_name }}</label>
-                                </div>
-                            </div>
-
-                            <hr>
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label"
-                                        style="font-weight: bold;">Procedure:</label>
-                                    <label for="site-title" class="form-control-label">{{ $order->typeofwork->name }}</label>
-                                </div>
-                            </div>
-
-
-                            <hr>
-                            <div class="form-group row align-items-center">
-                                <div class="col-sm-6 col-md-6">
-                                    <label for="site-title" class="form-control-label d-block"
-                                        style="font-weight: bold;">Cabinet:</label>
-                                    <label for="site-title" class="form-control-label d-block">safasfg</label>
-                                    <label for="another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">Delivery Address:</label>
-                                    <label for="another-field" class="form-control-label d-block">{{ $order->doctor->address }}</label>
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <label for="site-title" class="form-control-label d-block"
-                                        style="font-weight: bold;">Scan Date:</label>
-                                    <label for="site-title"
-                                        class="form-control-label d-block">{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</label>
-                                    <label for="another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">Due Date:</label>
-                                    <label for="another-field"
-                                        class="form-control-label d-block">{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</label>
-                                    <label for="yet-another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">Status:</label>
-                                    <label for="yet-another-field"
-                                        class="form-control-label d-block">{{ $order->status }}</label>
-                                </div>
-                                <div class="col-sm-3 col-md-3">
-                                    <label for="site-title" class="form-control-label d-block"
-                                        style="font-weight: bold;">Signature:</label>
-                                    <label for="site-title" class="form-control-label d-block">safasfg</label>
-                                    <label for="another-field" class="form-control-label d-block"
-                                        style="font-weight: bold;">License:</label>
-                                    <label for="another-field" class="form-control-label d-block">example</label>
-                                </div>
-                            </div>
-
-
 
                         </div>
                     </div>
                 </div>
+
 
                 <div class="col-4 col-md-4 col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Comments ({{ count($order->comments) }})</h4>
-                            <div class="card-header-action">
-                                <a href="#" data-toggle="modal" data-target="#commentModal"
-                                    class="btn btn-success">Add <i class="fas fa-plus"></i></a>
-                            </div>
+                            <p>Status Updates: {{ $scan->status->count() }}</p>
                         </div>
                         <div class="card-body">
-
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="activities">
-
-                                        @foreach ($order->comments as $comment)
-                                            <div class="activity">
-                                                <div class="activity-icon bg-primary text-white shadow-primary">
-                                                    <i class="fas fa-comment-alt"></i>
-                                                </div>
-                                                <div class="activity-detail">
-                                                    <div class="mb-2">
-                                                        <span class="text-job text-primary">
-                                                            @if ($comment->user->role === 'admin')
-                                                                Admin,
-                                                            @elseif ($comment->user->role === 'doctor')
-                                                                Dr.
-                                                            @elseif ($comment->user->role === 'lab')
-                                                                Lab,
-                                                            @endif
-                                                            {{ $comment->user->last_name }},
-                                                            {{ $comment->user->first_name }},
-                                                        </span>
-                                                        <span class="bullet"></span>
-                                                        <span
-                                                            class="text-job text-info">{{ \Carbon\Carbon::parse($comment->scan_date)->format('d/m/Y') }}</span>
-                                                    </div>
-                                                    <p>{{ $comment->text }}</p>
-                                                </div>
+                            <div class="activities">
+                                @forelse ($scan->status as $status)
+                                    <div class="activity">
+                                        <div class="activity-icon bg-primary text-white shadow-primary">
+                                            <i class="fas fa-comment-alt"></i>
+                                        </div>
+                                        <div class="activity-detail">
+                                            <div class="mb-2">
+                                                <span
+                                                    class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                    {{ $status->updatedBy->last_name }},
+                                                    {{ $status->updatedBy->first_name }},
+                                                </span>
+                                                <span class="bullet"></span>
+                                                <span
+                                                    class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
                                             </div>
-                                        @endforeach
+                                            <p><span style="font-weight: bold">Status:</span> {{ $status->status }}</p>
+                                            <p><span style="font-weight: bold">Note:</span> {{ $status->note }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                @empty
+                                    <p>No status updates available.</p>
+                                @endforelse
                             </div>
                         </div>
+                        @php
+                            $lastStatus = $scan->status->sortByDesc('created_at')->first()?->status ?? '';
+                        @endphp
 
-                        <div class="card-footer">
-                            <form action="{{ route('lab.orders.reject', $order->id) }}" method="post">
-                                @csrf
-                                @method('post')
 
-                                <div class="row">
 
-                                    <div class="form-group col-md-8 col-8">
-                                        <input class="form-control" type="text" name="reject_note"
-                                            placeholder="Enter Rejection Note" required>
+                        {{-- Only show "Complete" and "Reject" buttons for "pending" or "resubmitted" statuses --}}
+                        @if ($lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                            <div class="card-footer">
+                                <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
+                                    @csrf
+                                    @method('post')
+
+                                    <div class="form-group">
+                                        <input class="form-control" type="text" name="note"
+                                            placeholder="Enter Note" required>
                                     </div>
 
-                                    <div class="form-group col-md-4 col-4">
-                                        <button type="submit" class="btn btn-danger">Reject</button>
-                                        {{-- <a href="{{ route('lab.orders.reject', $order->id) }}" class="btn btn-danger">Reject</a> --}}
-                                    </div>
+                                    <button type="submit" name="action" value="reject" class="btn btn-danger">
+                                        Reject
+                                    </button>
 
-                                </div>
-                            </form>
-
-                        </div>
+                                    <button type="submit" name="action" value="complete" class="btn btn-success">
+                                        Complete
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
 
                     </div>
                 </div>
-
             </div>
 
 
         </div>
     </section>
-
-
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="commentModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Comment</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <textarea class="form-control" name="comment" id="" cols="30" rows="10"></textarea>
-                </div>
-                <div class="modal-footer bg-whitesmoke br">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addCommentButton">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $('#addCommentButton').click(function() {
-                var formData = new FormData();
-                formData.append('comment', $('textarea[name="comment"]').val());
-                // Correctly include the order ID in your request
-                formData.append('order_id', '{{ $order->id }}');
+        function adjustSize() {
+            const width = document.getElementById('invoiceWidth').value || 210; // Default A4 width in mm
+            const height = document.getElementById('invoiceHeight').value || 297; // Default A4 height in mm
+            const invoicePrint = document.getElementById('invoicePrint');
 
-                $.ajax({
-                    url: "{{ route('lab.comments.store') }}",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            // Comment added successfully, reload or update the page accordingly
-                            window.location.reload();
-                        } else {
-                            // Handle failure
-                            alert("Failed to add comment.");
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle errors
-                        console.error(xhr.responseText);
-                        alert("An error occurred.");
-                    }
-                });
-            });
-        });
+            // Convert mm to pixels for on-screen display (approximation, 1mm = 3.78px)
+            invoicePrint.style.width = `${width * 3.78}px`;
+            invoicePrint.style.height = `${height * 3.78}px`;
+
+            const imageInput = document.getElementById('invoiceImage');
+            const imageContainer = document.getElementById('imageContainer');
+            imageContainer.innerHTML = ''; // Clear previous image
+
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100%'; // Ensure the image fits in the invoice
+                    img.style.height = 'auto';
+                    imageContainer.appendChild(img);
+                };
+
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+        }
     </script>
 @endpush

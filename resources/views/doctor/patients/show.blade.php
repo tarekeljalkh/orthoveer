@@ -46,9 +46,8 @@
                                                 <th>ID</th>
                                                 <th>Scan Date</th>
                                                 <th>Procedure</th>
-                                                <th>Order Status</th>
-                                                <th>Last Modified</th>
-                                                <th>Send To</th>
+                                                <th>Status</th>
+                                                <th>Note</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,27 +55,9 @@
                                             <tr onclick="window.location='{{ route('doctor.orders.edit', $scan->id) }}';" style="cursor:pointer;">
                                                 <td>{{ $scan->id }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($scan->scan_date)->format('d/m/Y') }}</td>
-                                                    <td>{{ $scan->procedure }}</td>
-                                                    @if ($scan->status == 'pending')
-                                                        <td>
-                                                            <div class="badge badge-info">Pending</div>
-                                                        </td>
-                                                    @elseif ($scan->status == 'in_progress')
-                                                        <td>
-                                                            <div class="badge badge-primary">In Progress</div>
-                                                        </td>
-                                                    @elseif ($scan->status == 'completed')
-                                                        <td>
-                                                            <div class="badge badge-success">Completed</div>
-                                                        </td>
-                                                    @elseif ($scan->status == 'canceled')
-                                                        <td>
-                                                            <div class="badge badge-danger">Canceled</div>
-                                                        </td>
-                                                    @endif
-
-                                                    <td>{{ \Carbon\Carbon::parse($scan->updated_at)->format('d/m/Y') }}</td>
-                                                    <td></td>
+                                                    <td>{{ $scan->typeofwork->name }}</td>
+                                                    <td>{{ optional($scan->latestStatus)->status }}</td>
+                                                    <td>{{ optional($scan->latestStatus)->note }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

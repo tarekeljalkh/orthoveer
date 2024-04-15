@@ -74,25 +74,25 @@ class ScanController extends Controller
         return view('lab.scans.new', compact('newScans'));
     }
 
-    public function downloadStl(Scan $order)
+    public function downloadStl(Scan $scan)
     {
         $zip = new ZipArchive;
-        $zipFileName = "stl-files-{$order->id}.zip";
+        $zipFileName = "stl-files-{$scan->id}.zip";
         $zipFilePath = public_path($zipFileName); // Adjust based on where you want to save the zip temporarily
 
         if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
-            $upperFilePath = public_path('uploads/' . basename($order->stl_upper)); // Adjust path as needed
-            $lowerFilePath = public_path('uploads/' . basename($order->stl_lower)); // Adjust path as needed
+            $upperFilePath = public_path('uploads/' . basename($scan->stl_upper)); // Adjust path as needed
+            $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower)); // Adjust path as needed
 
             if (file_exists($upperFilePath)) {
-                $zip->addFile($upperFilePath, basename($order->stl_upper));
+                $zip->addFile($upperFilePath, basename($scan->stl_upper));
             }
             if (file_exists($lowerFilePath)) {
-                $zip->addFile($lowerFilePath, basename($order->stl_lower));
+                $zip->addFile($lowerFilePath, basename($scan->stl_lower));
             }
 
             // Decode the JSON string containing PDF paths to an array
-            $pdfPaths = json_decode($order->pdf, true) ?? [];
+            $pdfPaths = json_decode($scan->pdf, true) ?? [];
 
             foreach ($pdfPaths as $pdfPath) {
                 // Adjust the path and add each PDF file to the ZIP archive
@@ -215,5 +215,46 @@ class ScanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function downloadMultiple(Request $request)
+    {
+        $ids = $request->ids; // Array of Scan IDs
+        $zip = new ZipArchive;
+        $zipFileName = "stl-files-" . now()->format('Ymd-His') . ".zip";
+        $zipFilePath = public_path($zipFileName);
+
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            foreach ($ids as $id) {
+                $scan = Scan::findOrFail($id); // Make sure to handle the case where ID is invalid
+                $this->addFilesToZip($scan, $zip);
+            }
+
+            $zip->close();
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            return back()->withError('Could not create ZIP file.');
+        }
+    }
+
+    protected function addFilesToZip($scan, $zip)
+    {
+        $upperFilePath = public_path('uploads/' . basename($scan->stl_upper));
+        $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower));
+
+        if (file_exists($upperFilePath)) {
+            $zip->addFile($upperFilePath, basename($scan->stl_upper));
+        }
+        if (file_exists($lowerFilePath)) {
+            $zip->addFile($lowerFilePath, basename($scan->stl_lower));
+        }
+
+        $pdfPaths = json_decode($scan->pdf, true) ?? [];
+        foreach ($pdfPaths as $pdfPath) {
+            $pdfFilePath = public_path($pdfPath);
+            if (file_exists($pdfFilePath)) {
+                $zip->addFile($pdfFilePath, basename($pdfPath));
+            }
+        }
     }
 }

@@ -32,6 +32,7 @@
                                             <th>Name</th>
                                             <th>Chart Number</th>
                                             <th>Date of Birth</th>
+                                            <th>Scans Count</th>
                                             <th>Last Scan Date</th>
                                         </tr>
                                     </thead>
@@ -41,7 +42,8 @@
                                             <td>{{ $patient->last_name }}, {{ $patient->first_name }}</td>
                                                 <td>{{ $patient->chart_number }}</td>
                                                 <td>{{ $patient->dob->format('d/m/Y') }}</td>
-                                                <td></td>
+                                                <td>{{ count($patient->scans) }}</td>
+                                                <td>{{ optional($patient->lastScan)->scan_date }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

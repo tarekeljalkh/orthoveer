@@ -194,36 +194,4 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#addCommentButton').click(function() {
-                var formData = new FormData();
-                formData.append('comment', $('textarea[name="comment"]').val());
-                // Correctly include the order ID in your request
-                formData.append('scan_id', '{{ $scan->id }}');
-
-                $.ajax({
-                    url: "{{ route('lab.comments.store') }}",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            // Comment added successfully, reload or update the page accordingly
-                            window.location.reload();
-                        } else {
-                            // Handle failure
-                            alert("Failed to add comment.");
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle errors
-                        console.error(xhr.responseText);
-                        alert("An error occurred.");
-                    }
-                });
-            });
-        });
-    </script>
 @endpush

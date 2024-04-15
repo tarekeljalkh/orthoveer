@@ -28,11 +28,9 @@ Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->
 Route::post('scans/{id}/update-status', [ScanController::class, 'updateStatus'])->name('scans.updateStatus');
 
 Route::resource('scans', ScanController::class);
-/** Download Order */
+/** Download Scan */
 Route::get('/scans/{scan}/download-stl', [ScanController::class, 'downloadStl'])->name('scans.downloadStl');
-
-//Comments Routes
-Route::resource('comments', CommentController::class);
+Route::post('/scans/downloadMultiple', [ScanController::class, 'downloadMultiple'])->name('scans.downloadMultiple');
 
 /** Scan Notification Routes */
 Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');

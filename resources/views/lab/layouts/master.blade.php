@@ -37,6 +37,8 @@
          var pusherCluster = "{{ config('settings.pusher_cluster') }}";
          var loggedInUserId = "{{ auth()->user()->id }}";
      </script>
+
+     @stack('styles')
      <!-- /END GA -->
      @vite(['resources/js/app.js', 'resources/js/doctor.js'])
 </head>

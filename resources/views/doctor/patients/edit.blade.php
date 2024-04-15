@@ -46,7 +46,7 @@
 
                                     <div class="form-group col-md-6 col-12">
                                         <label>Date Of Birth</label>
-                                        <input type="date" name="dob" class="form-control" value="{{ $patient->dob->format('d/m/y') }}" required="">
+                                        <input type="date" name="dob" class="form-control" value="{{ date('Y-m-d', strtotime($patient->dob)) }}" required="">
                                     </div>
 
                                     <div class="form-group col-md-5 col-12">
@@ -71,7 +71,7 @@
 
                             </div>
                             <div class="card-footer text-right">
-                                <button class="btn btn-primary">Add</button>
+                                <button class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>

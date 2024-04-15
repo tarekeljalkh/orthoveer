@@ -18,5 +18,8 @@ class Patient extends Model
         return $this->hasMany(Scan::class);
     }
 
-
+    public function lastScan()
+    {
+        return $this->hasOne(Scan::class)->latest();
+    }
 }

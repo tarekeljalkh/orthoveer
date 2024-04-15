@@ -68,6 +68,17 @@ class ScanController extends Controller
         //$scan->note = $request->note;
         $scan->save();
 
+        // Create a new status update for the scan
+        $statusUpdate = new Status([
+            'scan_id' => $scan->id,
+            'status' => 'pending', // Setting the initial status to 'pending'
+            'note' => $request->note, // Assuming the note comes from the request
+            'updated_by' => Auth::id(), // Assuming the current user made this update
+        ]);
+
+        $statusUpdate->save();
+
+
         // Send Email
         $lab = User::findorFail($type->lab_id);
         $content = [

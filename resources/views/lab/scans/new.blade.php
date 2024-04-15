@@ -39,7 +39,7 @@
                                 <tbody>
                                     @foreach ($newScans as $scan)
                                         <tr>
-                                            <td><input type="checkbox" class="orderCheckbox" value="{{ $scan->id }}">
+                                            <td><input type="checkbox" class="scanCheckbox" value="{{ $scan->id }}">
                                             </td>
                                             <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
                                             </td>
@@ -89,3 +89,68 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.scanCheckbox');
+            const printButton = document.getElementById('printSelected');
+            const downloadButton = document.getElementById('downloadSelected');
+
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    updateButtonStatus();
+                });
+            });
+
+            function updateButtonStatus() {
+                const checkedCheckboxes = document.querySelectorAll('.scanCheckbox:checked');
+                const count = checkedCheckboxes.length;
+
+                printButton.disabled = downloadButton.disabled = count === 0;
+                printButton.textContent = `Print Selected (${count})`;
+                downloadButton.textContent = `Download Selected (${count})`;
+            }
+
+            updateButtonStatus(); // Initial status update
+
+            downloadButton.addEventListener('click', function() {
+                const selectedIds = Array.from(document.querySelectorAll('.scanCheckbox:checked')).map(
+                    checkbox => checkbox.value);
+                downloadSelectedScans(selectedIds);
+            });
+
+            function downloadSelectedScans(selectedIds) {
+                fetch('{{ route('lab.scans.downloadMultiple') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content')
+                        },
+                        body: JSON.stringify({
+                            ids: selectedIds
+                        })
+                    })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // Create a link element, use it to download the blob, and remove it
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        // the filename you need
+                        a.download = 'scans.zip';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        alert('Download has started!');
+                    })
+                    .catch(error => {
+                        console.error('Download failed:', error);
+                        alert('Download failed!');
+                    });
+            }
+        });
+    </script>
+@endpush

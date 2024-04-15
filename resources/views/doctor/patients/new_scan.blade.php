@@ -178,7 +178,7 @@
 
                             </div>
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary">Done</button>
+                                <button type="submit" class="btn btn-primary" id="submitBtn">Done</button>
                             </div>
 
                         </div>
