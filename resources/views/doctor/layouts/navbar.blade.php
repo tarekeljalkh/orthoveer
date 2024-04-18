@@ -59,6 +59,30 @@
             </li>
         @endif
 
+        {{-- Localization --}}
+        <li class="dropdown dropdown-list-toggle">
+            <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg">
+                <i class="fas fa-globe"></i>
+            </a>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                <div class="dropdown-header">Select Language
+                    <div class="float-right">
+                        <a href="#">Close</a>
+                    </div>
+                </div>
+                <div class="dropdown-list-content">
+                    {{-- <a href="{{ route('setLang', ['locale' => 'en']) }}" class="dropdown-item">English</a>
+                    <a href="{{ route('setLang', ['locale' => 'fr']) }}" class="dropdown-item">Français</a> --}}
+                    <a href="{{ route('setLang', ['locale' => 'en']) }}" class="dropdown-item {{ App::getLocale() == 'en' ? 'active-lang' : '' }}">English</a>
+                    <a href="{{ route('setLang', ['locale' => 'fr']) }}" class="dropdown-item {{ App::getLocale() == 'fr' ? 'active-lang' : '' }}">Français</a>
+                    <!-- Add more languages as needed -->
+                </div>
+            </div>
+        </li>
+
+        {{-- End Localization --}}
+
+
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="{{ asset(Auth::user()->image) }}" class="rounded-circle mr-1">

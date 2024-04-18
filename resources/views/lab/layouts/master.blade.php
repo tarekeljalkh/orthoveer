@@ -28,19 +28,26 @@
         :root {
             --primary: {{ config('settings.site_color') }};
         }
+
+        .active-lang {
+            font-weight: bold !important;
+            color: {{ config('settings.site_color') }};
+            /* Bootstrap primary color for example */
+        }
     </style>
 
-     <!-- Start GA -->
-     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
-     <script>
-         var pusherKey = "{{ config('settings.pusher_key') }}";
-         var pusherCluster = "{{ config('settings.pusher_cluster') }}";
-         var loggedInUserId = "{{ auth()->user()->id }}";
-     </script>
+    <!-- Start GA -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+        var pusherKey = "{{ config('settings.pusher_key') }}";
+        var pusherCluster = "{{ config('settings.pusher_cluster') }}";
+        var loggedInUserId = "{{ auth()->user()->id }}";
+    </script>
 
-     @stack('styles')
-     <!-- /END GA -->
-     @vite(['resources/js/app.js', 'resources/js/doctor.js'])
+    @stack('styles')
+    <!-- /END GA -->
+    @vite(['resources/js/app.js', 'resources/js/doctor.js'])
+
 </head>
 
 <body>

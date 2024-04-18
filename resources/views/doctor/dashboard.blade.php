@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Welcome Doctor</h1>
+            <h1>{{ trans('messages.welcome') }} {{ trans('messages.doctor') }}</h1>
         </div>
         <div class="row">
 

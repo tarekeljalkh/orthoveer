@@ -33,6 +33,12 @@
         :root {
             --primary: {{ config('settings.site_color') }};
         }
+
+        .active-lang {
+            font-weight: bold !important;
+            color: {{ config('settings.site_color') }};
+            /* Bootstrap primary color for example */
+        }
     </style>
 
 

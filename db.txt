@@ -1,0 +1,9 @@
+Step 1: Database Design
+Users Table: You've mentioned a single users table with roles as an enum. This is a good approach for a small set of roles. Your users table will likely have columns like id, name, email, password, and role (with values 'admin', 'doctor', 'lab', 'external_lab').
+
+Scans Table: To store information about each scan. Columns might include id, doctor_id (foreign key to users), lab_id (nullable, foreign key to users), file_path (for the STL file), status (e.g., 'submitted', 'processed', 'sent'), and timestamps.
+
+Orders Table: To aggregate multiple scans for sending to the admin. Columns could include id, lab_id (foreign key to users), admin_id (foreign key to users, possibly static if there's only one admin), dhl_tracking_number (nullable), status, and timestamps.
+
+OrderScans Table: A pivot table to manage the many-to-many relationship between orders and scans. Columns might include order_id and scan_id.
+

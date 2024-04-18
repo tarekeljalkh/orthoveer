@@ -4,6 +4,9 @@
     <section class="section">
         <div class="section-header">
             <h1>Welcome Admin</h1>
+            {{-- <h2>@lang('messages.title')</h2>
+            {{ __('messages.welcome') }} --}}
+            {{-- {{ trans('messages.title') }} --}}
         </div>
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
