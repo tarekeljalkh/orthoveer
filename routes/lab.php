@@ -4,6 +4,7 @@ use App\Http\Controllers\Lab\ChatController;
 use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
+use App\Http\Controllers\Lab\OrderController;
 use App\Http\Controllers\Lab\ScanController;
 use App\Http\Controllers\Lab\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,8 +25,10 @@ Route::get('scans/new', [ScanController::class, 'new'])->name('scans.new');
 Route::get('scans/pending', [ScanController::class, 'pending'])->name('scans.pending');
 Route::get('scans/viewer/{id}', [ScanController::class, 'viewer'])->name('scans.viewer');
 Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->name('scans.prescription');
-//reject order
+//reject Scan
 Route::post('scans/{id}/update-status', [ScanController::class, 'updateStatus'])->name('scans.updateStatus');
+//Complete Scan
+Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('scans.complete');
 
 Route::resource('scans', ScanController::class);
 /** Download Scan */
@@ -34,6 +37,10 @@ Route::post('/scans/downloadMultiple', [ScanController::class, 'downloadMultiple
 
 /** Scan Notification Routes */
 Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');
+
+
+//Order Routes
+Route::resource('orders', OrderController::class);
 
 /** chat Routes */
 Route::get('chat', [ChatController::class, 'index'])->name('chat.index');

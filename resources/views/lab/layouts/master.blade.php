@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/modules/fontawesome/css/all.min.css') }}">
 
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="{{ asset('assets/modules/select2/dist/css/select2.min.css') }}">
 
     <!-- DataTable CSS Libraries -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.css">
@@ -87,6 +88,7 @@
     <script src="{{ asset('assets/js/stisla.js') }}"></script>
 
     <!-- JS Libraies -->
+    <script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 
     <!-- Datatable Specific JS File -->
     {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> --}}

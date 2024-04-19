@@ -14,9 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use ZipArchive;
+use App\Traits\FileUploadTrait;
 
 class ScanController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -256,5 +259,59 @@ class ScanController extends Controller
                 $zip->addFile($pdfFilePath, basename($pdfPath));
             }
         }
+    }
+
+    public function complete(Request $request, $id)
+    {
+        $request->validate([
+            'lab_file' => 'required|file|mimes:zip', // Allow only ZIP files
+        ]);
+
+        //find scan id
+        $scan = Scan::findOrFail($id);
+
+        $file = $this->uploadImage($request, 'lab_file');
+        $scan->lab_file = $file;
+        $scan->save();
+
+        // Create a new status update for the scan
+        $statusUpdate = new Status([
+            'scan_id' => $scan->id,
+            'status' => 'completed', // Setting the initial status to 'pending'
+            'note' => 'Completed', // Assuming the note comes from the request
+            'updated_by' => Auth::id(), // Assuming the current user made this update
+        ]);
+
+        $statusUpdate->save();
+
+
+        // Send Email
+        // $lab = User::findorFail($type->lab_id);
+        // $content = [
+        //     'doctorName' => 'Dr. ' . Auth::user()->last_name,
+        //     'dueDate' => $scan->due_date->format('d-m-y'),
+        //     'scanDate' => now()->format('d-m-y'),
+        //     // Include other data as needed
+        // ];
+
+        // try {
+        //     Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
+        // } catch (\Exception $e) {
+        //     // Handle email sending failure, log error, etc.
+        // }
+
+        //Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+
+        //send Notification
+        // $notification = new Notification();
+        // $notification->sender_id = Auth::user()->id;
+        // $notification->receiver_id = $lab->id;
+        // $notification->message = 'New Scan Created';
+        // $notification->scan_id = $scan->id;
+        // $notification->save();
+
+
+        toastr()->success('Scan Completed Successfully');
+        return to_route('lab.dashboard');
     }
 }

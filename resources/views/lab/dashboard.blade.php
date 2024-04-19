@@ -6,24 +6,6 @@
             <h1>Welcome Lab Worker</h1>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.scans.new') }}" style="text-decoration:none; color: inherit;">
-
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>New Scans</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $todaysScans }}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <a href="{{ route('lab.scans.pending') }}" style="text-decoration:none; color: inherit;">
@@ -48,11 +30,11 @@
 
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
-                            <i class="fas fa-vials"></i>
+                            <i class="fas fa-th-list"></i>
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Scans</h4>
+                                <h4>Completed Scans</h4>
                             </div>
                             <div class="card-body">
                                 {{ $totalScans }}
@@ -61,6 +43,46 @@
                     </div>
                 </a>
             </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
+
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-pause-circle"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Wating to Make The Order</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $waitingScans }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
+
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Delivered Scans</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $deliveredScans }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
         </div>
         <div class="section-body">
         </div>

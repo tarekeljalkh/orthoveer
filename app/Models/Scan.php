@@ -58,4 +58,15 @@ class Scan extends Model
     {
         return $this->hasOne(Status::class)->latestOfMany();
     }
+
+    // public function orders()
+    // {
+    //     return $this->belongsToMany(Order::class, 'order_scans');
+    // }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_scans')
+            ->using(OrderScan::class); // Specifies to use OrderScan pivot model
+    }
 }
