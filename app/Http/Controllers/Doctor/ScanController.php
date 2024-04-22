@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ScanCreated;
+use App\Mail\ScanCreatedToLab;
 use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Patient;
@@ -78,13 +79,13 @@ class ScanController extends Controller
 
         $statusUpdate->save();
 
-
         // Send Email
         $lab = User::findorFail($type->lab_id);
         $content = [
             'doctorName' => 'Dr. ' . Auth::user()->last_name,
             'dueDate' => $scan->due_date->format('d-m-y'),
             'scanDate' => now()->format('d-m-y'),
+            'patientName' => $scan->patient,
             // Include other data as needed
         ];
 
@@ -193,16 +194,19 @@ class ScanController extends Controller
             'doctorName' => 'Dr. ' . Auth::user()->last_name,
             'dueDate' => $scan->due_date->format('d-m-y'),
             'scanDate' => now()->format('d-m-y'),
+            'patientName' => $scan->patient->first_name,
+            'labName' => $lab->first_name,
             // Include other data as needed
         ];
 
-        // try {
-        //     Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
-        // } catch (\Exception $e) {
-        //     // Handle email sending failure, log error, etc.
-        // }
+        try {
+            Mail::to(Auth::user()->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+            Mail::to($lab->email)->send(new ScanCreatedToLab($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        } catch (\Exception $e) {
+            toastr()->warning($e->getMessage());
+        }
 
-        Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        // Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
 
         //send Notification
         $notification = new Notification();

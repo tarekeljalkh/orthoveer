@@ -21,6 +21,9 @@ return new class extends Migration
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade');
             $table->unsignedBigInteger('lab_id')->nullable();
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
+            // Adding a field for lab reassignment
+            $table->unsignedBigInteger('external_lab_id')->nullable();
+            $table->foreign('external_lab_id')->references('id')->on('users')->onDelete('set null');
             $table->unsignedBigInteger('type_id')->nullable();
             $table->foreign('type_id')->references('id')->on('typeof_works')->onDelete('cascade');
             $table->date('due_date')->format('d/m/Y');

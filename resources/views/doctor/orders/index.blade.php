@@ -30,8 +30,8 @@
                                             <th>Patient Name</th>
                                             <th>Scan Date</th>
                                             <th>Due Date</th>
-                                            <th>Note</th>
                                             <th>Order Status</th>
+                                            <th>Note</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -41,12 +41,22 @@
                                                 <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
-                                                <td> @isset($order->latestStatus)
-                                                        {{ $order->latestStatus->note }}
+                                                <td>
+
+                                                    @isset($order->latestStatus)
+                                                        <div
+                                                            class="badge
+                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                                {{ $order->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
+                                                                {{ $order->latestStatus->status == 'completed' ? 'badge-success' : '' }}
+                                                                {{ $order->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                            {{ $order->latestStatus->status }}
+                                                        </div>
                                                     @endisset
                                                 </td>
-                                                <td> @isset($order->latestStatus)
-                                                        {{ $order->latestStatus->status }}
+                                                <td>
+                                                    @isset($order->latestStatus)
+                                                        {{ $order->latestStatus->note }}
                                                     @endisset
                                                 </td>
                                             </tr>

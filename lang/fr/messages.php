@@ -17,5 +17,16 @@ return [
     'logout' => 'Se Déconnecter',
     'save' => 'Sauvegarder',
     'update' => 'Réactualiser',
-
+    'orders' => 'Commandes',
+    'order' => 'Commande',
+    'current' => 'actuel',
+    'pending' => 'En attente',
+    'total' => 'Total',
+    'rejected' => 'rejeté',
+    'current_orders' => 'Commandes En Cours',
+    'pending_orders' => 'les ordres en attente',
+    'total_orders' => 'commandes totales',
+    'rejected_orders' => 'Commandes rejetées',
+    'patients' => 'Les Patients',
+    'new_scan' => 'Nouveau Scan'
 ];

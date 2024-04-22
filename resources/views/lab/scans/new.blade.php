@@ -31,8 +31,8 @@
                                         <th>Select</th>
                                         <th>Doctor Name</th>
                                         <th>Due Date</th>
-                                        <th>Note</th>
                                         <th>Status</th>
+                                        <th>Note</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -44,17 +44,17 @@
                                             <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
                                             </td>
                                             <td>{{ $scan->due_date->format('d/m/Y') }}</td>
-                                            <td>{{ $scan->note }}</td>
                                             <td>
                                                 <div
                                                     class="badge
-                                                        {{ $scan->status == 'pending' ? 'badge-warning' : '' }}
-                                                        {{ $scan->status == 'in_progress' ? 'badge-info' : '' }}
-                                                        {{ $scan->status == 'completed' ? 'badge-success' : '' }}
-                                                        {{ $scan->status == 'cancelled' ? 'badge-danger' : '' }}">
-                                                    {{ $scan->status }}
+                                                        {{ $scan->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                        {{ $scan->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
+                                                        {{ $scan->latestStatus->status == 'completed' ? 'badge-success' : '' }}
+                                                        {{ $scan->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                    {{ $scan->latestStatus->status }}
                                                 </div>
                                             </td>
+                                            <td>{{ $scan->latestStatus->note }}</td>
                                             <td>
                                                 <div class="btn-group dropleft">
                                                     <button type="button" class="btn btn-dark dropdown-toggle"

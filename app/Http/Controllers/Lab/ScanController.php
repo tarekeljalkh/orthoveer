@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Lab;
 
 use App\Events\ScanCreateEvent;
 use App\Http\Controllers\Controller;
-use App\Mail\scanRejected;
+use App\Mail\ScanRejected;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Scan;
@@ -141,10 +141,21 @@ class ScanController extends Controller
         $doctor = User::findOrFail($scan->doctor_id);
         $content = [
             'lab' => 'Lab. ' . Auth::user()->first_name,
-            'note' => $scan->note,
+            'doctorName' => $doctor->first_name, // Assuming you have the doctor's name available
+            'scanDate' => now()->format('d-m-y'),
+            'patientName' => $scan->patient->first_name,
+            'note' => $statusUpdate->note,
             // Include other data as needed
         ];
-        Mail::to($doctor->email)->send(new ScanRejected($content, Auth::user()->email, 'Lab. ' . Auth::user()->first_name)); //$content, 'custom@example.com', 'Custom Name'
+
+        try {
+            Mail::to($doctor->email)->send(new ScanRejected($content, Auth::user()->email, 'Lab. ' . Auth::user()->first_name)); //$content, 'custom@example.com', 'Custom Name'
+            Mail::to(Auth::user()->email)->send(new ScanRejected($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        } catch (\Exception $e) {
+            toastr()->warning($e->getMessage());
+        }
+
+        //Mail::to($doctor->email)->send(new ScanRejected($content, Auth::user()->email, 'Lab. ' . Auth::user()->first_name)); //$content, 'custom@example.com', 'Custom Name'
 
         //send Notification
         $notification = new Notification();
@@ -170,7 +181,8 @@ class ScanController extends Controller
     {
         //$order = Scan::findOrFail($id);
         $scan = Scan::with('status')->findOrFail($id); // Assuming the correct relationship name is 'status'
-        return view('lab.viewer.index', compact('scan'));
+        $external_labs = User::where('role', 'external_lab')->get();
+        return view('lab.viewer.index', compact('scan', 'external_labs'));
     }
 
     public function prescription($id)
@@ -193,7 +205,9 @@ class ScanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //$order = Scan::findOrFail($id);
+        $scan = Scan::with('status')->findOrFail($id); // Assuming the correct relationship name is 'status']
+        return view('lab.scans.view', compact('scan'));
     }
 
     /**
@@ -313,5 +327,18 @@ class ScanController extends Controller
 
         toastr()->success('Scan Completed Successfully');
         return to_route('lab.dashboard');
+    }
+
+    public function reassignScan(Request $request, $scanId)
+    {
+        $this->validate($request, [
+            'external_lab_id' => 'required|exists:users,id' // Ensure the reassigned lab exists
+        ]);
+
+        $scan = Scan::findOrFail($scanId);
+        $scan->external_lab_id = $request->external_lab_id;
+        $scan->save();
+
+        return redirect()->back()->with('success', 'Scan successfully reassigned to another lab.');
     }
 }

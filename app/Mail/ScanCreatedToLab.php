@@ -9,17 +9,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ScanRejected extends Mailable
+class ScanCreatedToLab extends Mailable
 {
-    use Queueable, SerializesModels;
-
     public $content;
     protected $fromEmail;
     protected $fromName;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct($content, $fromEmail = null, $fromName = null)
     {
         $this->content = $content;
@@ -29,7 +24,7 @@ class ScanRejected extends Mailable
 
     public function envelope(): Envelope
     {
-        $envelope = new Envelope(subject: 'Scan Rejected');
+        $envelope = new Envelope(subject: 'Case Received from: ' . $this->content['doctorName']);
 
         if ($this->fromEmail) {
             $envelope->from($this->fromEmail, $this->fromName);
@@ -40,7 +35,6 @@ class ScanRejected extends Mailable
 
     public function content(): Content
     {
-        return new Content(view: 'mail.scan-rejected');
+        return new Content(view: 'mail.scan-created-to-lab');
     }
-
 }

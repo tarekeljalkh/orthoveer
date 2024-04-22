@@ -29,6 +29,8 @@ Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->
 Route::post('scans/{id}/update-status', [ScanController::class, 'updateStatus'])->name('scans.updateStatus');
 //Complete Scan
 Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('scans.complete');
+//Reassign Scan to another Lab
+Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 
 Route::resource('scans', ScanController::class);
 /** Download Scan */

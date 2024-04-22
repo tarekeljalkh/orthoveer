@@ -34,7 +34,7 @@
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
                                         <label for="scans">Select Scans:</label>
-                                        <select class="form-control select2" name="scans[]" id="scans">
+                                        <select class="form-control select2" name="scans[]" id="scans" multiple>
                                             @foreach ($completedScans as $scan)
                                                 <option value="{{ $scan->id }}">{{ $scan->name }} -
                                                     {{ $scan }}</option>

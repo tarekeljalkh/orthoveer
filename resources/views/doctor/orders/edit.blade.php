@@ -18,264 +18,486 @@
                 @csrf
                 @method('PUT')
 
-                <div class="row">
-                    {{-- Doctor Section --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Doctor:</label>
-                                        <label class="form-control">Dr. {{ auth()->user()->last_name }},
-                                            {{ auth()->user()->first_name }}</label>
-                                    </div>
-                                    <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
-                                    @if (Auth::user()->license)
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>License:</label>
-                                            <label class="form-control">License:</label>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Doctor Section --}}
-
-                    {{-- Patient Section --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Patient:</h4>
-                                {{-- <div class="card-header-action">
+                {{-- @if ($order->latestStatus->status !== 'completed') --}}
+                @if ($order->latestStatus->status !== 'completed' && $order->latestStatus->status !== 'pending')
+                    <div class="row">
+                        {{-- Patient Section --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Patient:</h4>
+                                    {{-- <div class="card-header-action">
                                     <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
                                 </div> --}}
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>First Name</label>
-                                        <input name="patient_first_name" type="text" class="form-control"
-                                            value="{{ $order->patient->first_name }}" disabled>
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Last Name</label>
-                                        <input name="patient_last_name" type="text" class="form-control"
-                                            value="{{ $order->patient->last_name }}" disabled>
-                                    </div>
-
                                 </div>
+                                <div class="card-body">
+                                    <div class="row">
 
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Date Of Birth</label>
-                                        <input name="patient_dob" type="text" class="form-control"
-                                            value="{{ $order->patient->dob->format('d/m/y') }}" disabled>
-                                    </div>
-
-                                    <div class="form-group col-md-5 col-12">
-                                        <label class="form-label">Gender</label>
-                                        <div class="selectgroup w-100">
-                                            <label class="selectgroup-item">
-                                                <input type="radio" name="patient_gender" value="male"
-                                                    class="selectgroup-input" checked="" disabled>
-                                                <span class="selectgroup-button">Male</span>
-                                            </label>
-                                            <label class="selectgroup-item">
-                                                <input type="radio" name="patient_gender" value="female"
-                                                    class="selectgroup-input" disabled>
-                                                <span class="selectgroup-button">Female</span>
-                                            </label>
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>First Name</label>
+                                            <input name="patient_first_name" type="text" class="form-control"
+                                                value="{{ $order->patient->first_name }}" disabled>
                                         </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Last Name</label>
+                                            <input name="patient_last_name" type="text" class="form-control"
+                                                value="{{ $order->patient->last_name }}" disabled>
+                                        </div>
+
                                     </div>
 
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Date Of Birth</label>
+                                            <input name="patient_dob" type="text" class="form-control"
+                                                value="{{ $order->patient->dob->format('d/m/y') }}" disabled>
+                                        </div>
+
+                                        <div class="form-group col-md-5 col-12">
+                                            <label class="form-label">Gender</label>
+                                            <div class="selectgroup w-100">
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="patient_gender" value="male"
+                                                        class="selectgroup-input" checked="" disabled>
+                                                    <span class="selectgroup-button">Male</span>
+                                                </label>
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="patient_gender" value="female"
+                                                        class="selectgroup-input" disabled>
+                                                    <span class="selectgroup-button">Female</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{-- End Patient Section --}}
+                        {{-- End Patient Section --}}
 
 
-                    {{-- Order Section --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Order:</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
+                        {{-- Order Section --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Order:</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Due Date</label>
-                                        <input type="date" name="due_date" class="form-control"
-                                            value="{{ $order->due_date instanceof \DateTime ? $order->due_date->format('Y-m-d') : \Carbon\Carbon::parse($order->due_date)->format('Y-m-d') }}"
-                                            min="{{ now()->toDateString() }}">
-                                    </div>
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Due Date</label>
+                                            <input type="date" name="due_date" class="form-control"
+                                                value="{{ $order->due_date instanceof \DateTime ? $order->due_date->format('Y-m-d') : \Carbon\Carbon::parse($order->due_date)->format('Y-m-d') }}"
+                                                min="{{ now()->toDateString() }}">
+                                        </div>
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Procedure</label>
-                                        <select class="form-control select2" id="categorySelect" name="category_id">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Procedure</label>
+                                            <select class="form-control select2" id="categorySelect" name="category_id">
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Type</label>
-                                        <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
-                                            {{-- @foreach ($labs as $lab)
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Type</label>
+                                            <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
+                                                {{-- @foreach ($labs as $lab)
                                                                                 <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
                                                                             @endforeach --}}
-                                        </select>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
-                                        <div id="stl_upper"
-                                            style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
-                                        </div>
-                                        <input type="file" name="stl_upper" class="form-control">
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
-                                        <div id="stl_lower"
-                                            style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
-                                        </div>
-                                        <input type="file" name="stl_lower" class="form-control">
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Order Section --}}
-
-                    {{-- Image --}}
-                    @php
-                        // Ensure $order->pdf is not null and is a valid JSON string before decoding
-                        $filePaths = $order->pdf ? json_decode($order->pdf, true) : [];
-                    @endphp
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Upload Image Or PDF if Needed:</h4>
-                            </div>
-                            <div class="card-body">
-
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <div class="form-group col-12">
-                                            <div class="form-group col-12" id="previewContainer"></div>
-                                            {{-- Preview Container --}}
+                                            </select>
                                         </div>
 
-                                        <div
-                                            style="display: flex; align-items: center; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
-                                            <!-- Flex container with spacing -->
-                                            @if (!empty($filePaths))
-                                                @foreach ($filePaths as $filePath)
-                                                    @if (pathinfo($filePath, PATHINFO_EXTENSION) === 'pdf')
-                                                        {{-- PDF: Display as a downloadable link --}}
-                                                        <a href="{{ asset($filePath) }}" download
-                                                            style="flex-shrink: 0; display: inline-flex; align-items: center;">
-                                                        </a>
-                                                    @else
-                                                        {{-- Image: Display and make it downloadable --}}
-                                                        <a href="{{ asset($filePath) }}" download
-                                                            style="flex-shrink: 0; display: inline-flex; align-items: center;">
-                                                            <img src="{{ asset($filePath) }}" alt="Uploaded Image"
-                                                                style="height: 40px; width: auto;">
-                                                        </a>
-                                                    @endif
-                                                @endforeach
-                                            @endif
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
+                                            <div id="stl_upper"
+                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
+                                            </div>
+                                            <input type="file" name="stl_upper" class="form-control">
                                         </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
+                                            <div id="stl_lower"
+                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
+                                            </div>
+                                            <input type="file" name="stl_lower" class="form-control">
+                                        </div>
+
                                     </div>
-                                    <div class="form-group col-12">
-                                        <input type="file" name="pdf[]" id="pdfInput" class="form-control"
-                                            multiple>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{-- End Image --}}
+                        {{-- End Order Section --}}
 
-
-
-
-                    {{-- Note --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            @if (count($order->status) > 0)
+                        {{-- Image --}}
+                        @php
+                            // Ensure $order->pdf is not null and is a valid JSON string before decoding
+                            $filePaths = $order->pdf ? json_decode($order->pdf, true) : [];
+                        @endphp
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
                                 <div class="card-header">
-                                    <h4>Notes ({{ count($order->status) }})</h4>
+                                    <h4>Upload Image Or PDF if Needed:</h4>
                                 </div>
                                 <div class="card-body">
 
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div class="activities">
-                                                @forelse ($order->status as $status)
-                                                    <div class="activity">
-                                                        <div class="activity-icon bg-primary text-white shadow-primary">
-                                                            <i class="fas fa-comment-alt"></i>
-                                                        </div>
-                                                        <div class="activity-detail">
-                                                            <div class="mb-2">
-                                                                <span
-                                                                    class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
-                                                                    {{ $status->updatedBy->last_name }},
-                                                                    {{ $status->updatedBy->first_name }},
-                                                                </span>
-                                                                <span class="bullet"></span>
-                                                                <span
-                                                                    class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
-                                                            </div>
-                                                            <p><span style="font-weight: bold">Status:</span>
-                                                                {{ $status->status }}</p>
-                                                            <p><span style="font-weight: bold">Note:</span>
-                                                                {{ $status->note }}</p>
-                                                        </div>
-                                                    </div>
-                                                @empty
-                                                    <p>No status updates available.</p>
-                                                @endforelse
+                                        <div class="form-group col-12">
+                                            <div class="form-group col-12">
+                                                <div class="form-group col-12" id="previewContainer"></div>
+                                                {{-- Preview Container --}}
                                             </div>
+
+                                            <div
+                                                style="display: flex; align-items: center; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
+                                                <!-- Flex container with spacing -->
+                                                @if (!empty($filePaths))
+                                                    @foreach ($filePaths as $filePath)
+                                                        @if (pathinfo($filePath, PATHINFO_EXTENSION) === 'pdf')
+                                                            {{-- PDF: Display as a downloadable link --}}
+                                                            <a href="{{ asset($filePath) }}" download
+                                                                style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                            </a>
+                                                        @else
+                                                            {{-- Image: Display and make it downloadable --}}
+                                                            <a href="{{ asset($filePath) }}" download
+                                                                style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                                <img src="{{ asset($filePath) }}" alt="Uploaded Image"
+                                                                    style="height: 40px; width: auto;">
+                                                            </a>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <input type="file" name="pdf[]" id="pdfInput" class="form-control"
+                                                multiple>
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                            <div class="card-footer text-right">
+                            </div>
+                        </div>
+                        {{-- End Image --}}
 
-                                <div class="form-group col-md-8 col-8">
-                                    <input class="form-control" type="text" name="note"
-                                        placeholder="Enter New Note" required>
+
+
+
+                        {{-- Note --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                @if (count($order->status) > 0)
+                                    <div class="card-header">
+                                        <h4>Notes ({{ count($order->status) }})</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="activities">
+                                                    @forelse ($order->status as $status)
+                                                        <div class="activity">
+                                                            <div
+                                                                class="activity-icon bg-primary text-white shadow-primary">
+                                                                <i class="fas fa-comment-alt"></i>
+                                                            </div>
+                                                            <div class="activity-detail">
+                                                                <div class="mb-2">
+                                                                    <span
+                                                                        class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                                        {{ $status->updatedBy->last_name }},
+                                                                        {{ $status->updatedBy->first_name }},
+                                                                    </span>
+                                                                    <span class="bullet"></span>
+                                                                    <span
+                                                                        class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
+                                                                </div>
+                                                                <p><span style="font-weight: bold">Status:</span>
+                                                                    {{ $status->status }}</p>
+                                                                <p><span style="font-weight: bold">Note:</span>
+                                                                    {{ $status->note }}</p>
+                                                            </div>
+                                                        </div>
+                                                    @empty
+                                                        <p>No status updates available.</p>
+                                                    @endforelse
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="card-footer text-right">
+
+                                    <div class="form-group col-md-8 col-8">
+                                        <input class="form-control" type="text" name="note"
+                                            placeholder="Enter New Note" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="submitBtn">Update</button>
+
                                 </div>
-                                <button type="submit" class="btn btn-primary" id="submitBtn">Update</button>
 
                             </div>
 
+
                         </div>
+                        {{-- End Note --}}
+
 
 
                     </div>
-                    {{-- End Note --}}
+                @else
+                    <div class="row">
+
+                        {{-- Patient Section --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Patient:</h4>
+                                    {{-- <div class="card-header-action">
+                                        <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
+                                    </div> --}}
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>First Name</label>
+                                            <input name="patient_first_name" type="text" class="form-control"
+                                                value="{{ $order->patient->first_name }}" disabled>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Last Name</label>
+                                            <input name="patient_last_name" type="text" class="form-control"
+                                                value="{{ $order->patient->last_name }}" disabled>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Date Of Birth</label>
+                                            <input name="patient_dob" type="text" class="form-control"
+                                                value="{{ $order->patient->dob->format('d/m/y') }}" disabled>
+                                        </div>
+
+                                        <div class="form-group col-md-5 col-12">
+                                            <label class="form-label">Gender</label>
+                                            <div class="selectgroup w-100">
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="patient_gender" value="male"
+                                                        class="selectgroup-input" checked="" disabled>
+                                                    <span class="selectgroup-button">Male</span>
+                                                </label>
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="patient_gender" value="female"
+                                                        class="selectgroup-input" disabled>
+                                                    <span class="selectgroup-button">Female</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Patient Section --}}
+
+
+                        {{-- Order Section --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Order:</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Due Date</label>
+                                            <input type="date" name="due_date" class="form-control"
+                                                value="{{ $order->due_date instanceof \DateTime ? $order->due_date->format('Y-m-d') : \Carbon\Carbon::parse($order->due_date)->format('Y-m-d') }}"
+                                                min="{{ now()->toDateString() }}" disabled>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Procedure</label>
+                                            <select class="form-control select2" id="categorySelect" name="category_id"
+                                                disabled>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>Type</label>
+                                            <select class="form-control select2" id="typeOfWorkSelect"
+                                                name="typeofwork_id" disabled>
+                                                {{-- @foreach ($labs as $lab)
+                                                                                    <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
+                                                                                @endforeach --}}
+                                            </select>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
+                                            <div id="stl_upper"
+                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
+                                            </div>
+                                            <input type="file" name="stl_upper" class="form-control" hidden>
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
+                                            <div id="stl_lower"
+                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
+                                            </div>
+                                            <input type="file" name="stl_lower" class="form-control" hidden>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Order Section --}}
+
+                        {{-- Image --}}
+                        @php
+                            // Ensure $order->pdf is not null and is a valid JSON string before decoding
+                            $filePaths = $order->pdf ? json_decode($order->pdf, true) : [];
+                        @endphp
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Upload Image Or PDF if Needed:</h4>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <div class="form-group col-12">
+                                                <div class="form-group col-12" id="previewContainer"></div>
+                                                {{-- Preview Container --}}
+                                            </div>
+
+                                            <div
+                                                style="display: flex; align-items: center; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
+                                                <!-- Flex container with spacing -->
+                                                @if (!empty($filePaths))
+                                                    @foreach ($filePaths as $filePath)
+                                                        @if (pathinfo($filePath, PATHINFO_EXTENSION) === 'pdf')
+                                                            {{-- PDF: Display as a downloadable link --}}
+                                                            <a href="{{ asset($filePath) }}" download
+                                                                style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                            </a>
+                                                        @else
+                                                            {{-- Image: Display and make it downloadable --}}
+                                                            <a href="{{ asset($filePath) }}" download
+                                                                style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                                <img src="{{ asset($filePath) }}" alt="Uploaded Image"
+                                                                    style="height: 40px; width: auto;">
+                                                            </a>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12">
+                                            <input type="file" name="pdf[]" id="pdfInput" class="form-control"
+                                                multiple hidden>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Image --}}
 
 
 
-                </div>
+
+                        {{-- Note --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                @if (count($order->status) > 0)
+                                    <div class="card-header">
+                                        <h4>Notes ({{ count($order->status) }})</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="activities">
+                                                    @forelse ($order->status as $status)
+                                                        <div class="activity">
+                                                            <div
+                                                                class="activity-icon bg-primary text-white shadow-primary">
+                                                                <i class="fas fa-comment-alt"></i>
+                                                            </div>
+                                                            <div class="activity-detail">
+                                                                <div class="mb-2">
+                                                                    <span
+                                                                        class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                                        {{ $status->updatedBy->last_name }},
+                                                                        {{ $status->updatedBy->first_name }},
+                                                                    </span>
+                                                                    <span class="bullet"></span>
+                                                                    <span
+                                                                        class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
+                                                                </div>
+                                                                <p><span style="font-weight: bold">Status:</span>
+                                                                    {{ $status->status }}</p>
+                                                                <p><span style="font-weight: bold">Note:</span>
+                                                                    {{ $status->note }}</p>
+                                                            </div>
+                                                        </div>
+                                                    @empty
+                                                        <p>No status updates available.</p>
+                                                    @endforelse
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="card-footer text-right">
+
+                                    <div class="form-group col-md-8 col-8">
+                                        <input class="form-control" type="text" name="note"
+                                            placeholder="Enter New Note" required hidden>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="submitBtn" hidden>Update</button>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        {{-- End Note --}}
+
+
+
+                    </div>
+
+                @endif
             </form>
 
         </div>

@@ -159,34 +159,60 @@
 
                     {{-- Comple Scan Section --}}
                     @if ($lastStatus === 'pending')
- {{ $lastStatus }}
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Upload 3D And Complete Scan</h4>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Upload 3D And Complete Scan</h4>
+                            </div>
+                            <div class="card-body">
+                                <!-- Begin Form Content -->
+                                <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('post')
+
+                                    <div class="form-group">
+                                        <label for="lab_file">Upload Finished Files as ZIP:</label>
+                                        <input type="file" name="lab_file" id="lab_file" class="form-control" required>
+                                    </div>
+
+                                    <button type="submit" name="action" value="complete" class="btn btn-success">
+                                        Complete
+                                    </button>
+                                </form>
+                                <!-- End Form Content -->
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <!-- Begin Form Content -->
-                            <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                @method('post')
-
-                                <div class="form-group">
-                                    <label for="lab_file">Upload Finished Files as ZIP:</label>
-                                    <input type="file" name="lab_file" id="lab_file" class="form-control" required>
-                                </div>
-
-                                <button type="submit" name="action" value="complete" class="btn btn-success">
-                                    Complete
-                                </button>
-                        </form>
-                            <!-- End Form Content -->
-                        </div>
-                    </div>
-
                     @endif
 
                     {{-- End Complete Scan Section --}}
 
+                    {{-- Assign to External Lab --}}
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Assign to External Lab</h4>
+                        </div>
+                        <div class="card-body">
+                            <!-- Begin Form Content -->
+                            <form action="{{ route('lab.scans.reassign', $scan->id) }}" method="POST">
+                                @csrf
+
+                                <div class="form-group">
+                                    <label for="external_lab_id">Reassign Scan to External Lab:</label>
+                                    <select name="external_lab_id" id="external_lab_id" class="form-control">
+                                        @foreach ($external_labs as $external_lab)
+                                            <option value="{{ $external_lab->id }}">{{ $external_lab->first_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-warning">Reassign</button>
+                            </form>
+                            <!-- End Form Content -->
+                        </div>
+                    </div>
+
+                    {{-- End Assigne to External Lab Section --}}
                 </div>
 
 

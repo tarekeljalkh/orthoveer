@@ -188,9 +188,11 @@
 
 
                 <div class="col-4 col-md-4 col-lg-4">
+                    {{-- Status and Rejection Section --}}
+
                     <div class="card">
                         <div class="card-header">
-                            <p>Status Updates: {{ $scan->status->count() }}</p>
+                            <h4>Status Updates: {{ $scan->status->count() }}</h4>
                         </div>
                         <div class="card-body">
                             <div class="activities">
@@ -233,22 +235,50 @@
                                     @method('post')
 
                                     <div class="form-group">
-                                        <input class="form-control" type="text" name="note"
-                                            placeholder="Enter Note" required>
+                                        <input class="form-control" type="text" name="note" placeholder="Enter Note"
+                                            required>
                                     </div>
 
                                     <button type="submit" name="action" value="reject" class="btn btn-danger">
                                         Reject
                                     </button>
 
-                                    <button type="submit" name="action" value="complete" class="btn btn-success">
-                                        Complete
-                                    </button>
                                 </form>
                             </div>
                         @endif
 
                     </div>
+                    {{-- End Status and Rejection Section --}}
+
+                    {{-- Comple Scan Section --}}
+                    @if ($lastStatus === 'pending')
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Upload 3D And Complete Scan</h4>
+                            </div>
+                            <div class="card-body">
+                                <!-- Begin Form Content -->
+                                <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('post')
+
+                                    <div class="form-group">
+                                        <label for="lab_file">Upload Finished Files as ZIP:</label>
+                                        <input type="file" name="lab_file" id="lab_file" class="form-control" required>
+                                    </div>
+
+                                    <button type="submit" name="action" value="complete" class="btn btn-success">
+                                        Complete
+                                    </button>
+                                </form>
+                                <!-- End Form Content -->
+                            </div>
+                        </div>
+                    @endif
+
+                    {{-- End Complete Scan Section --}}
+
                 </div>
             </div>
 

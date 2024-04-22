@@ -17,4 +17,16 @@ return [
     'logout' => 'Logout',
     'save' => 'Save',
     'update' => 'Update',
+    'orders' => 'Orders',
+    'order' => 'Order',
+    'current' => 'Current',
+    'pending' => 'Pending',
+    'total' => 'Total',
+    'rejected' => 'Rejected',
+    'current_orders' => 'Current Orders',
+    'pending_orders' => 'Pending Orders',
+    'total_orders' => 'Total Orders',
+    'rejected_orders' => 'Rejected Orders',
+    'patients' => 'Patients',
+    'new_scan' => 'New Scan'
 ];

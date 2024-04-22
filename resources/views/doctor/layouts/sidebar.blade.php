@@ -7,23 +7,23 @@
             <a href="{{ route('doctor.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}" alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
-            <li class="menu-header">Dashboard</li>
+            <li class="menu-header">{{ trans('messages.dashboard') }}</li>
             <li class="{{ request()->routeIs('doctor.dashboard') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.dashboard') }}"><i class="fas fa-fire"></i>
-                    <span>Dashboard</span></a></li>
+                    <span>{{ trans('messages.dashboard') }}</span></a></li>
 
             <li class="menu-header">Starter</li>
             <li class="{{ request()->routeIs('doctor.scans.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.scans.index') }}"><i class="far fa-file"></i>
-                    <span>New Scan</span></a></li>
+                    <span>{{ trans('messages.new_scan') }}</span></a></li>
 
             <li class="{{ request()->routeIs('doctor.patients.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.patients.index') }}"><i class="fas fa-user-injured"></i>
-                    <span>Patients</span></a></li>
+                    <span>{{ trans('messages.patients') }}</span></a></li>
 
             <li class="{{ request()->routeIs('doctor.orders.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.orders.index') }}"><i class="fas fa-briefcase"></i>
-                    <span>Orders</span></a></li>
+                    <span>{{ trans('messages.scans') }}</span></a></li>
 
             <li class="{{ request()->routeIs('doctor.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.chat.index') }}"><i class="fas fa-envelope"></i>

@@ -24,7 +24,7 @@ class ScanCreated extends Mailable
 
     public function envelope(): Envelope
     {
-        $envelope = new Envelope(subject: 'New Scan Created');
+        $envelope = new Envelope(subject: 'Case Submission Confirmation for: ' . $this->content['patientName']);
 
         if ($this->fromEmail) {
             $envelope->from($this->fromEmail, $this->fromName);

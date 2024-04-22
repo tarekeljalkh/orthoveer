@@ -16,7 +16,7 @@ class ProfileController extends Controller
     use FileUploadTrait;
 
     function index() : View {
-        return view('ex.profile.index');
+        return view('external_lab.profile.index');
     }
 
     function updateProfile(ProfileUpdateRequest $request) : RedirectResponse {

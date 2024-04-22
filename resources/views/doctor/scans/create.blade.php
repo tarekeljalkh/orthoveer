@@ -18,33 +18,11 @@
                 @csrf
 
                 <div class="row">
-                    {{-- Doctor Section --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Doctor:</label>
-                                        <label class="form-control">Dr. {{ auth()->user()->last_name }},
-                                            {{ auth()->user()->first_name }}</label>
-                                    </div>
-                                    <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
-                                    @if (Auth::user()->license)
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>License:</label>
-                                            <label class="form-control">License:</label>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Doctor Section --}}
-
                     {{-- Patient Section --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
+                                <input type="text" name="doctor_id" value={{ Auth::user()->id }} hidden >
                                 <h4>Patient:</h4>
                                 {{-- <div class="card-header-action">
                                     <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
