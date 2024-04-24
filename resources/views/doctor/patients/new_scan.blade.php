@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>New Scan</h1>
+            <h1>{{ trans('messages.new_scan') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">New Scan</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.new_scan') }}</a></div>
             </div>
         </div>
 
@@ -18,32 +18,13 @@
                 @csrf
 
                 <div class="row">
-                    {{-- Doctor Section --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Doctor:</label>
-                                        <label class="form-control">Dr. {{ auth()->user()->last_name }},
-                                            {{ auth()->user()->first_name }}</label>
-                                    </div>
-                                    <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>License:</label>
-                                        <label class="form-control">License:</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Doctor Section --}}
+                    <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
 
                     {{-- Patient Section --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Patient:</h4>
+                                <h4>{{ trans('messages.patient') }}:</h4>
                                 {{-- <div class="card-header-action">
                                     <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
                                 </div> --}}
@@ -55,13 +36,15 @@
                                     <input type="hidden" name="patient_id" value="{{ $patient->id }}">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>First Name</label>
-                                        <input name="patient_first_name" type="text" class="form-control" value="{{ $patient->first_name }}" disabled>
+                                        <label>{{ trans('messages.first_name') }}</label>
+                                        <input name="patient_first_name" type="text" class="form-control"
+                                            value="{{ $patient->first_name }}" disabled>
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Last Name</label>
-                                        <input name="patient_last_name" type="text" class="form-control" value="{{ $patient->last_name }}" disabled>
+                                        <label>{{ trans('messages.last_name') }}</label>
+                                        <input name="patient_last_name" type="text" class="form-control"
+                                            value="{{ $patient->last_name }}" disabled>
                                     </div>
 
                                 </div>
@@ -69,20 +52,23 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Date Of Birth</label>
-                                        <input name="patient_dob" type="date" class="form-control" value="{{ $patient->dob->format('Y-m-d') }}" disabled>
+                                        <label>{{ trans('messages.date_of_birth') }}</label>
+                                        <input name="patient_dob" type="date" class="form-control"
+                                            value="{{ $patient->dob->format('Y-m-d') }}" disabled>
                                     </div>
 
                                     <div class="form-group col-md-5 col-12">
-                                        <label class="form-label">Gender</label>
+                                        <label class="form-label">{{ trans('messages.gender') }}</label>
                                         <div class="selectgroup w-100">
                                             <label class="selectgroup-item">
-                                                <input type="radio" name="patient_gender" value="male" class="selectgroup-input" checked="" disabled>
-                                                <span class="selectgroup-button">Male</span>
+                                                <input type="radio" name="patient_gender" value="male"
+                                                    class="selectgroup-input" checked="" disabled>
+                                                <span class="selectgroup-button">{{ trans('messages.male') }}</span>
                                             </label>
                                             <label class="selectgroup-item">
-                                                <input type="radio" name="patient_gender" value="female" class="selectgroup-input" disabled>
-                                                <span class="selectgroup-button">Female</span>
+                                                <input type="radio" name="patient_gender" value="female"
+                                                    class="selectgroup-input" disabled>
+                                                <span class="selectgroup-button">{{ trans('messages.female') }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -90,8 +76,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <label>Chart Number:</label>
-                                        <input class="form-control" type="text"  name="chart_number" value="{{ $patient->chart_number }}" disabled>
+                                        <label>{{ trans('messages.chart_number') }}:</label>
+                                        <input class="form-control" type="text" name="chart_number"
+                                            value="{{ $patient->chart_number }}" disabled>
                                     </div>
                                 </div>
 
@@ -101,22 +88,22 @@
                     {{-- End Patient Section --}}
 
 
-                    {{-- Order Section --}}
+                    {{-- Scan Section --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Order:</h4>
+                                <h4>{{ trans('messages.scan') }}:</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Due Date</label>
+                                        <label>{{ trans('messages.due_date') }}</label>
                                         <input type="date" name="due_date" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-12 col-6">
-                                        <label>Procedure</label>
+                                        <label>{{ trans('messages.procedure') }}</label>
                                         <select class="form-control select2" id="categorySelect" name="category_id">
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -125,7 +112,7 @@
                                     </div>
 
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Type</label>
+                                        <label>{{ trans('messages.type') }}</label>
                                         <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
                                             {{-- @foreach ($labs as $lab)
                                                     <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
@@ -139,7 +126,7 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>STL UPPER <i class="fas fa-arrow-up"></i></label>
+                                        <label>{{ trans('messages.stl_upper') }} <i class="fas fa-arrow-up"></i></label>
                                         <div id="stl_upper_container">
                                             <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
                                         </div>
@@ -147,7 +134,7 @@
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>STL LOWER <i class="fas fa-arrow-down"></i></label>
+                                        <label>{{ trans('messages.stl_lower') }} <i class="fas fa-arrow-down"></i></label>
                                         <div id="stl_lower_container">
                                             <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
                                         </div>
@@ -159,26 +146,26 @@
                             </div>
                         </div>
                     </div>
-                    {{-- End Order Section --}}
+                    {{-- End Scan Section --}}
 
 
                     {{-- Note --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Note:</h4>
+                                <h4>{{ trans('messages.note') }}:</h4>
                             </div>
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="form-group col-12">
-                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="Add Note"></textarea>
+                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="{{ trans('messages.add_note') }}"></textarea>
                                     </div>
                                 </div>
 
                             </div>
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary" id="submitBtn">Done</button>
+                                <button type="submit" class="btn btn-primary" id="submitBtn">{{ trans('messages.done') }}</button>
                             </div>
 
                         </div>

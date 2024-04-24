@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Patients</h1>
+            <h1>{{ trans('messages.patients') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Patients</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.patients') }}</a></div>
             </div>
         </div>
 
@@ -19,9 +19,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Patients</h4>
+                            <h4>{{ trans('messages.all_patients') }}</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
+                                <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">{{ trans('messages.add_new_patient') }} <i class="fas fa-plus"></i></a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -29,11 +29,11 @@
                                 <table id="example" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Chart Number</th>
-                                            <th>Date of Birth</th>
-                                            <th>Scans Count</th>
-                                            <th>Last Scan Date</th>
+                                            <th>{{ trans('messages.name') }}</th>
+                                            <th>{{ trans('messages.chart_number') }}</th>
+                                            <th>{{ trans('messages.date_of_birth') }}</th>
+                                            <th>{{ trans('messages.scans_count') }}</th>
+                                            <th>{{ trans('messages.last_scan_date') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -43,7 +43,7 @@
                                                 <td>{{ $patient->chart_number }}</td>
                                                 <td>{{ $patient->dob->format('d/m/Y') }}</td>
                                                 <td>{{ count($patient->scans) }}</td>
-                                                <td>{{ optional($patient->lastScan)->scan_date }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($patient->lastScan->scan_date)->format('d/m/Y') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

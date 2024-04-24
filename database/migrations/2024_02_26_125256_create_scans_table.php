@@ -32,9 +32,6 @@ return new class extends Migration
             $table->string('stl_lower')->nullable();
             $table->string('pdf')->nullable();
             $table->string('lab_file')->nullable();
-            $table->string('practitioner')->nullable();
-            $table->string('cabinet')->nullable();
-            $table->string('procedure')->nullable();
             $table->timestamps();
         });
 

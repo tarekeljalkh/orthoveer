@@ -106,7 +106,7 @@ class ScanController extends Controller
         $notification->save();
 
 
-        toastr()->success('Scan Created Successfully');
+        toastr()->success(trans('messages.scan_created_successfully'));
         return to_route('doctor.patients.show', $patient->id);
     }
 
@@ -216,7 +216,7 @@ class ScanController extends Controller
         $notification->scan_id = $scan->id;
         $notification->save();
 
-        toastr()->success('Scan Created Successfully');
+        toastr()->success(trans('messages.scan_created_successfully'));
         return to_route('doctor.scans.index');
     }
 
@@ -302,7 +302,7 @@ class ScanController extends Controller
             $notification->scan_id = $scan->id;
             $notification->save();
 
-            toastr()->success('Scan Updated Successfully');
+            toastr()->success(trans('messages.scan_updated_successfully'));
             return redirect()->route('doctor.scans.index');
         } catch (\Exception $e) {
             // Handle any exceptions (e.g., ModelNotFoundException)

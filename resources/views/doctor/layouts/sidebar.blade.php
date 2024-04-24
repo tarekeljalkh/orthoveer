@@ -23,11 +23,11 @@
 
             <li class="{{ request()->routeIs('doctor.orders.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.orders.index') }}"><i class="fas fa-briefcase"></i>
-                    <span>{{ trans('messages.scans') }}</span></a></li>
+                    <span>{{ trans('messages.orders') }}</span></a></li>
 
             <li class="{{ request()->routeIs('doctor.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>Messages</span></a></li>
+                    <span>{{ trans('messages.messages') }}</span></a></li>
         </ul>
 
     </aside>

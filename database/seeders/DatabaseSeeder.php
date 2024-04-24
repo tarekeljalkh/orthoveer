@@ -28,10 +28,11 @@ class DatabaseSeeder extends Seeder
         \App\Models\Patient::factory(4)->create();
 
         $this->call([
-            ScanSeeder::class,
-            ChatSeeder::class,
             CategorySeeder::class,
             TypeofWorkSeeder::class,
+            ScanSeeder::class,
+            StatusSeeder::class,
+            ChatSeeder::class,
             SettingSeeder::class,
         ]);
     }

@@ -65,16 +65,18 @@
                 <i class="fas fa-globe"></i>
             </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Select Language
+                <div class="dropdown-header">{{ trans('messages.select_language') }}
                     <div class="float-right">
-                        <a href="#">Close</a>
+                        <a href="#">{{ trans('messages.close') }}</a>
                     </div>
                 </div>
                 <div class="dropdown-list-content">
                     {{-- <a href="{{ route('setLang', ['locale' => 'en']) }}" class="dropdown-item">English</a>
                     <a href="{{ route('setLang', ['locale' => 'fr']) }}" class="dropdown-item">Français</a> --}}
-                    <a href="{{ route('setLang', ['locale' => 'en']) }}" class="dropdown-item {{ App::getLocale() == 'en' ? 'active-lang' : '' }}">English</a>
-                    <a href="{{ route('setLang', ['locale' => 'fr']) }}" class="dropdown-item {{ App::getLocale() == 'fr' ? 'active-lang' : '' }}">Français</a>
+                    <a href="{{ route('setLang', ['locale' => 'en']) }}"
+                        class="dropdown-item {{ App::getLocale() == 'en' ? 'active-lang' : '' }}">{{ trans('messages.english') }}</a>
+                    <a href="{{ route('setLang', ['locale' => 'fr']) }}"
+                        class="dropdown-item {{ App::getLocale() == 'fr' ? 'active-lang' : '' }}">{{ trans('messages.french') }}</a>
                     <!-- Add more languages as needed -->
                 </div>
             </div>
@@ -90,7 +92,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="{{ route('doctor.profile') }}" class="dropdown-item has-icon">
-                    <i class="far fa-user"></i> Profile
+                    <i class="far fa-user"></i> {{ trans('messages.profile') }}
                 </a>
                 <div class="dropdown-divider"></div>
 
@@ -100,7 +102,7 @@
                     <a href="#" class="dropdown-item has-icon text-danger"
                         onclick="event.preventDefault();
                 this.closest('form').submit();">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> {{ trans('messages.logout') }}
                     </a>
                 </form>
 

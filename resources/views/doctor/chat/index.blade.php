@@ -6,10 +6,10 @@
         <div class="section-header-back">
             <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
-        <h1>Messages</h1>
+        <h1>{{ trans('messages.messages') }}</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item">Messages</div>
+            <div class="breadcrumb-item active"><a href="#">{{ trans('messages.dashboard') }}</a></div>
+            <div class="breadcrumb-item">{{ trans('messages.messages') }}</div>
         </div>
     </div>
 
@@ -20,7 +20,7 @@
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card" style="height: 70vh">
                     <div class="card-header">
-                        <h4>Who's Online?</h4>
+                        <h4>{{ trans('messages.who_is_online') }}?</h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled list-unstyled-border">
@@ -37,7 +37,7 @@
                                     <div class="mt-0 mb-1 font-weight-bold">{{ $chatUser->first_name }}</div>
                                     <div class="text-warning text-small font-600-bold got_new_message">
                                         @if ($unseenMessages > 0)
-                                        <i class="beep"></i>new message
+                                        <i class="beep"></i>{{ trans('messages.new_message') }}
                                         @endif
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@
                     <div class="card-footer chat-form">
                         <form id="chat-form">
                             @csrf
-                            <input type="text" class="form-control fp_send_message" placeholder="Type a message" name="message">
+                            <input type="text" class="form-control fp_send_message" placeholder="{{ trans('messages.type_a_message') }}" name="message">
                             <input type="hidden" name="receiver_id" id="receiver_id" value="">
                             <input  type="hidden"  name="msg_temp_id" class="msg_temp_id" value="">
 

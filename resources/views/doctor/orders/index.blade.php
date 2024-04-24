@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Orders</h1>
+            <h1>{{ trans('messages.orders') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Orders</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.orders') }}</a></div>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Orders</h4>
+                            <h4>{{ trans('messages.all_orders') }}</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -27,11 +27,11 @@
                                 <table id="orders" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Patient Name</th>
-                                            <th>Scan Date</th>
-                                            <th>Due Date</th>
-                                            <th>Order Status</th>
-                                            <th>Note</th>
+                                            <th>{{ trans('messages.patient_name') }}</th>
+                                            <th>{{ trans('messages.scan_date') }}</th>
+                                            <th>{{ trans('messages.due_date')}}</th>
+                                            <th>{{ trans('messages.status') }}</th>
+                                            <th>{{ trans('messages.note') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -46,7 +46,8 @@
                                                     @isset($order->latestStatus)
                                                         <div
                                                             class="badge
-                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-primary' : '' }}
+                                                                {{ $order->latestStatus->status == 'resubmitted' ? 'badge-warning' : '' }}
                                                                 {{ $order->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
                                                                 {{ $order->latestStatus->status == 'completed' ? 'badge-success' : '' }}
                                                                 {{ $order->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">

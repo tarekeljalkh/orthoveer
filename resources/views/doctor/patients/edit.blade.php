@@ -6,11 +6,11 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Edit Patient</h1>
+            <h1>{{ trans('messages.edit_patient') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('doctor.patients.index') }}">Patients</a></div>
-                <div class="breadcrumb-item"><a href="#">Edit Patient</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('doctor.patients.index') }}">{{ trans('messages.patients') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.edit_patient') }}</a></div>
             </div>
         </div>
 
@@ -25,18 +25,18 @@
                             @method('put')
 
                             <div class="card-header">
-                                <h4>Edit Patient</h4>
+                                <h4>{{ trans('messages.edit_patient') }}</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>First Name</label>
+                                        <label>{{ trans('messages.first_name') }}</label>
                                         <input type="text" name="first_name" class="form-control" value="{{ $patient->first_name }}" required="">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Last Name</label>
+                                        <label>{{ trans('messages.last_name') }}</label>
                                         <input type="text" name="last_name" class="form-control" value="{{ $patient->last_name }}" required="">
                                     </div>
 
@@ -45,22 +45,22 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Date Of Birth</label>
+                                        <label>{{ trans('messages.date_of_birth') }}</label>
                                         <input type="date" name="dob" class="form-control" value="{{ date('Y-m-d', strtotime($patient->dob)) }}" required="">
                                     </div>
 
                                     <div class="form-group col-md-5 col-12">
-                                        <label class="form-label">Gender</label>
+                                        <label class="form-label">{{ trans('messages.gender') }}</label>
                                         <div class="selectgroup w-100">
                                             <label class="selectgroup-item">
                                                 <input type="radio" name="gender" value="male"
                                                     class="selectgroup-input" {{ $patient->gender === 'male' ? 'checked' : '' }}>
-                                                <span class="selectgroup-button">Male</span>
+                                                <span class="selectgroup-button">{{ trans('messages.male') }}</span>
                                             </label>
                                             <label class="selectgroup-item">
                                                 <input type="radio" name="gender" value="female"
                                                     class="selectgroup-input" {{ $patient->gender === 'female' ? 'checked' : '' }}>
-                                                <span class="selectgroup-button">Female</span>
+                                                <span class="selectgroup-button">{{ trans('messages.female') }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -71,7 +71,7 @@
 
                             </div>
                             <div class="card-footer text-right">
-                                <button class="btn btn-primary">Update</button>
+                                <button class="btn btn-primary">{{ trans('messages.update') }}</button>
                             </div>
                         </form>
                     </div>

@@ -21,7 +21,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Current Orders</h4>
+                                <h4>{{ trans('messages.current_orders') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $currentOrders }}
@@ -41,7 +41,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Pending Orders</h4>
+                                <h4>{{ trans('messages.pending_orders') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $pendingOrders }}
@@ -59,7 +59,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Total Orders</h4>
+                                <h4>{{ trans('messages.total_orders') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $totalOrders }}
@@ -79,7 +79,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Rejected Orders</h4>
+                                <h4>{{ trans('messages.rejected_orders') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $rejectedOrders }}

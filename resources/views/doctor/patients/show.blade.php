@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.patients.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Patient: {{ $patient->last_name }}, {{ $patient->first_name }}</h1>
+            <h1>{{ trans('messages.patient') }}: {{ $patient->last_name }}, {{ $patient->first_name }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.patients.index') }}">Dashboard</a></div>
-                <div class="breadcrumb-item">Patient</div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.patients.index') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item">{{ trans('messages.patient') }}</div>
             </div>
         </div>
         <div class="section-body">
@@ -18,7 +18,7 @@
                 <div class="col-12 col-md-12 col-lg-3">
                     <div class="card profile-widget">
                         <div class="profile-widget-description">
-                            <div class="profile-widget-name">Patient Name: <div
+                            <div class="profile-widget-name">{{ trans('messages.patient_name') }}: <div
                                     class="text-muted d-inline font-weight-normal">
                                     <div class="slash"></div><a href="{{ route('doctor.patients.edit', $patient->id) }}"><i
                                             class="fas fa-user-edit"></i></a>
@@ -27,7 +27,7 @@
                             {{ $patient->last_name }}, {{ $patient->first_name }}
                             <br>
                             <br>
-                            <a href="{{ route('doctor.scans.new', $patient->id) }}" class="btn btn-outline-primary">New Scan</a>
+                            <a href="{{ route('doctor.scans.new', $patient->id) }}" class="btn btn-outline-primary">{{ trans('messages.new_scan') }}</a>
                         </div>
                     </div>
                 </div>
@@ -36,18 +36,18 @@
                     <div class="card">
                         <form method="post" class="needs-validation" novalidate="">
                             <div class="card-header">
-                                <h4>Orders</h4>
+                                <h4>{{ trans('messages.scans') }}</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="example" class="display nowrap" style="width:100%">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Scan Date</th>
-                                                <th>Procedure</th>
-                                                <th>Status</th>
-                                                <th>Note</th>
+                                                <th>{{ trans('messages.id') }}</th>
+                                                <th>{{ trans('messages.scan_date') }}</th>
+                                                <th>{{ trans('messages.procedure') }}</th>
+                                                <th>{{ trans('messages.status')}}</th>
+                                                <th>{{ trans('messages.note') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,7 +56,21 @@
                                                 <td>{{ $scan->id }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($scan->scan_date)->format('d/m/Y') }}</td>
                                                     <td>{{ $scan->typeofwork->name }}</td>
-                                                    <td>{{ optional($scan->latestStatus)->status }}</td>
+                                                    <td>
+
+                                                        @isset($scan->latestStatus)
+                                                            <div
+                                                                class="badge
+                                                                    {{ $scan->latestStatus->status == 'pending' ? 'badge-primary' : '' }}
+                                                                    {{ $scan->latestStatus->status == 'resubmitted' ? 'badge-warning' : '' }}
+                                                                    {{ $scan->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
+                                                                    {{ $scan->latestStatus->status == 'completed' ? 'badge-success' : '' }}
+                                                                    {{ $scan->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                                {{ $scan->latestStatus->status }}
+                                                            </div>
+                                                        @endisset
+                                                    </td>
+
                                                     <td>{{ optional($scan->latestStatus)->note }}</td>
                                                 </tr>
                                             @endforeach
