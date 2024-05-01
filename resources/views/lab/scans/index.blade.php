@@ -6,10 +6,11 @@
             <div class="section-header-back">
                 <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Scans</h1>
+            <h1>{{ trans('messages.all_scans') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Scans</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.all_scans') }}</a></div>
             </div>
         </div>
 
@@ -19,16 +20,16 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Scans</h4>
+                            <h4>{{ trans('messages.all_scans') }}</h4>
                         </div>
                         <div class="card-body">
                             <table id="example" class="display nowrap" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Doctor Name</th>
-                                        <th>Due Date</th>
-                                        <th>Note</th>
-                                        <th>Status</th>
+                                        <th>{{ trans('messages.doctor') }}</th>
+                                        <th>{{ trans('messages.due_date') }}</th>
+                                        <th>{{ trans('messages.note') }}</th>
+                                        <th>{{ trans('messages.status') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,11 +42,11 @@
                                             <td>
                                                 <div
                                                     class="badge
-                                                        {{ optional($scan->latestStatus)->status == 'pending' ? 'badge-warning' : '' }}
-                                                        {{ optional($scan->latestStatus)->status == 'resubmitted' ? 'badge-info' : '' }}
-                                                        {{ optional($scan->latestStatus)->status == 'completed' ? 'badge-success' : '' }}
-                                                        {{ optional($scan->latestStatus)->status == 'rejected' ? 'badge-danger' : '' }}">
-                                                    {{ optional($scan->latestStatus)->status ?? 'No status' }}
+                                                {{ optional($scan->latestStatus)->status == 'pending' ? 'badge-warning' : '' }}
+                                                {{ optional($scan->latestStatus)->status == 'resubmitted' ? 'badge-info' : '' }}
+                                                {{ optional($scan->latestStatus)->status == 'completed' ? 'badge-success' : '' }}
+                                                {{ optional($scan->latestStatus)->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                    {{ trans('messages.' . optional($scan->latestStatus)->status) ?? trans('messages.no_status') }}
                                                 </div>
                                             </td>
 

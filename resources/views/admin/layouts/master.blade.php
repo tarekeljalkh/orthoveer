@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>{{ config('settings.site_name') }} | Admin</title>
+    <title>{{ config('settings.site_name') }} | {{ trans('messages.admin') }}</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset(config('settings.favicon')) }}">

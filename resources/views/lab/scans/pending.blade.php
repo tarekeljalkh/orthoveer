@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Pending Scans</h1>
+            <h1>{{ trans('messages.pending_scans') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Pending Scans</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.pending_scans') }}</a></div>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Pending Scans</h4>
+                            <h4>{{ trans('messages.pending_scans') }}</h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">

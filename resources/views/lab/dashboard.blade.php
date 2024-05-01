@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Welcome Lab Worker</h1>
+            <h1>{{ trans('messages.welcome') }}, {{ trans('messages.lab') }}</h1>
         </div>
         <div class="row">
 
@@ -16,7 +16,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Pending Scans</h4>
+                                <h4>{{ trans('messages.pending_scans') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $pendingScans }}
@@ -34,7 +34,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Completed Scans</h4>
+                                <h4>{{ trans('messages.completed_scans') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $totalScans }}
@@ -53,7 +53,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Wating to Make The Order</h4>
+                                <h4>{{ trans('messages.waiting_to_make_the_order') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $waitingScans }}
@@ -73,7 +73,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>Delivered Scans</h4>
+                                <h4>{{ trans('messages.delivered_scans') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $deliveredScans }}

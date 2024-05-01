@@ -89,7 +89,8 @@ class LabController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $lab = User::with('labScans')->findOrFail($id);
+        return view('admin.labs.show', compact('lab'));
     }
 
     /**
@@ -113,7 +114,7 @@ class LabController extends Controller
             'image' => ['nullable', 'image', 'mimes:png,jpg'],
             'first_name' => ['string', 'max:200'],
             'last_name' => ['string', 'max:200'],
-            'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
+            'email' => ['required', 'email', 'unique:users,email,'.$lab->id],
             'mobile' => ['required', 'numeric'],
         ]);
 

@@ -8,7 +8,8 @@
             </div>
             <h1>{{ trans('messages.patients') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.patients') }}</a></div>
             </div>
         </div>
@@ -21,7 +22,9 @@
                         <div class="card-header">
                             <h4>{{ trans('messages.all_patients') }}</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">{{ trans('messages.add_new_patient') }} <i class="fas fa-plus"></i></a>
+                                <a href="{{ route('doctor.patients.create') }}"
+                                    class="btn btn-success">{{ trans('messages.add_new_patient') }} <i
+                                        class="fas fa-plus"></i></a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -38,12 +41,18 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($patients as $patient)
-                                        <tr onclick="window.location='{{ route('doctor.patients.show', $patient->id) }}';" style="cursor:pointer;">
-                                            <td>{{ $patient->last_name }}, {{ $patient->first_name }}</td>
+                                            <tr onclick="window.location='{{ route('doctor.patients.show', $patient->id) }}';"
+                                                style="cursor:pointer;">
+                                                <td>{{ $patient->last_name }}, {{ $patient->first_name }}</td>
                                                 <td>{{ $patient->chart_number }}</td>
                                                 <td>{{ $patient->dob->format('d/m/Y') }}</td>
                                                 <td>{{ count($patient->scans) }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($patient->lastScan->scan_date)->format('d/m/Y') }}</td>
+                                                    {{-- <td>{{ \Carbon\Carbon::parse($patient->lastScan->scan_date)->format('d/m/Y') }}
+                                                    </td> --}}
+                                                    <td>
+                                                        {{ $patient->lastScan ? \Carbon\Carbon::parse($patient->lastScan->scan_date)->format('d/m/Y') : 'No scan available' }}
+                                                    </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

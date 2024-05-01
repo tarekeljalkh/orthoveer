@@ -77,7 +77,8 @@ class DoctorController extends Controller
      */
     public function show(string $id)
     {
-        dd($id);
+        $doctor = User::with('doctorScans')->findOrFail($id);
+        return view('admin.doctors.show', compact('doctor'));
     }
 
     /**

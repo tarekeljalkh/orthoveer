@@ -8,34 +8,32 @@
                     alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
-            <li class="menu-header">Dashboard</li>
+            <li class="menu-header">{{ trans('messages.dashboard') }}</li>
             <li class="{{ request()->routeIs('lab.dashboard') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.dashboard') }}"><i class="fas fa-fire"></i>
-                    <span>Dashboard</span></a></li>
+                    <span>{{ trans('messages.dashboard') }}</span></a></li>
 
             <li class="menu-header">Starter</li>
 
             <li class="{{ request()->routeIs('lab.scans.new') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.scans.new') }}"><i class="fas fa-folder-open"></i>
-                    <span>New Scans</span></a></li>
+                    <span>{{ trans('messages.new_scans') }}</span></a></li>
 
             <li class="{{ request()->routeIs('lab.scans.pending') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.scans.pending') }}"><i class="fas fa-truck-loading"></i>
-                    <span>Pending Scans</span></a></li>
+                    <span>{{ trans('messages.pending_scans') }}</span></a></li>
 
             <li class="{{ request()->routeIs('lab.scans.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.scans.index') }}"><i class="fas fa-briefcase"></i>
-                    <span>All Scans</span></a></li>
+                    <span>{{ trans('messages.all_scans') }}</span></a></li>
 
             <li class="{{ request()->routeIs('lab.orders.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.orders.index') }}"><i class="fas fa-briefcase"></i>
-                    <span>Orders</span></a></li>
+                    <span>{{ trans('messages.orders') }}</span></a></li>
 
             <li class="{{ request()->routeIs('lab.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.chat.index') }}"><i class="fas fa-envelope"></i>
                     <span>Messages</span></a></li>
-
-
 
         </ul>
 

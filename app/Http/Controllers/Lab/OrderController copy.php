@@ -8,7 +8,6 @@ use App\Models\Scan;
 use App\Models\Status;
 use App\Services\DHLService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,18 +39,16 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validate input
         $validated = $request->validate([
-            'scans' => 'required|array',
-            'scans.*' => 'exists:scans,id',
             'status' => 'required|string',
             'date' => 'required|date',
             'to_name' => 'required|string',
             'destination_street' => 'required|string',
             'destination_city' => 'required|string',
+            'destination_postcode' => 'required|string',
             'destination_state' => 'required|string',
             'destination_country' => 'required|string',
-            'destination_postcode' => 'required|string',
             'destination_email' => 'nullable|email',
             'destination_phone' => 'required|string',
             'item_name' => 'nullable|string',
@@ -64,75 +61,48 @@ class OrderController extends Controller
             'company' => 'nullable|string',
             'carrier' => 'nullable|string',
             'carrier_product_code' => 'nullable|string',
-            // ... add other validation rules as necessary
         ]);
 
+        // Store the order
+        $order = new Order();
+        $order->fill($validated);
+        $order->lab_id = $request->user()->id; // Assumes you are using standard Laravel authentication
+        $order->save();
 
+        // Generate CSV and upload via FTP
+        $csvPath = $this->generateCSV($order);
+        $this->uploadCSV($csvPath);
 
-        DB::beginTransaction();
-        try {
-            // Create the order
-            $order = new Order($validated);
-            $order->lab_id = $request->user()->id;
-            $order->save();
-
-            // Attach scans to the order
-            foreach ($validated['scans'] as $scanId) {
-                $scan = Scan::find($scanId);
-                $scan->order_id = $order->id; // Set the order ID to mark it as used
-                $scan->save();
-            }
-
-
-            // Generate the CSV file
-            $csvPath = $this->generateCSV($order, $validated['scans']);
-
-            // Attempt to upload the CSV to the FTP server
-            if ($this->uploadCSV($csvPath)) {
-                DB::commit();
-                return redirect()->route('lab.orders.index')->with('success', 'Order placed and CSV uploaded successfully.');
-            } else {
-                DB::rollBack();
-                return back()->with('error', 'Failed to upload the CSV to the FTP server.');
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'An error occurred while processing your request: ' . $e->getMessage());
-        }
+        return redirect()->route('lab.orders.index')->with('success', 'Order created and file uploaded successfully!');
     }
 
-    private function generateCSV($order, $scans)
+    private function generateCSV($order)
     {
         $headers = [
-            'Order Number', 'Date', 'To Name', 'Destination Street', 'Destination City',
-            'Destination State', 'Destination Country', 'Destination Postcode',
-            'Destination Email', 'Destination Phone', 'Item Name', 'Item Price',
-            'Weight', 'Shipping Method', 'Reference', 'SKU', 'Qty',
-            'Company', 'Carrier', 'Carrier Product Code'
+            'Order Number', 'Date', 'To Name', 'Destination Street', 'Destination Suburb',
+            'Destination City', 'Destination Postcode', 'Destination State',
+            'Destination Country', 'Destination Email', 'Destination Phone',
+            'Item Name', 'Item Price', 'Weight', 'Shipping Method', 'Reference',
+            'SKU', 'Qty', 'Company', 'Carrier', 'Carrier Product Code'
         ];
 
-        // Ensuring the uploads directory exists
-        $uploadsPath = storage_path('uploads');
-        if (!file_exists($uploadsPath)) {
-            mkdir($uploadsPath, 0777, true);
-        }
-
         $filename = "order_{$order->id}.csv";
-        $path = $uploadsPath . '/' . $filename;
-        $file = fopen($path, 'w'); // Open file for writing
-
+        $path = public_path("uploads/$filename");
+        $file = fopen($path, 'w');
         fputcsv($file, $headers);
 
-        foreach ($scans as $scanId) {
-            $row = [
-                $scanId,
+        // Assuming each scan corresponds to an "order number" and other details are same for all scans
+        foreach ($order->scans as $scan) {
+            $data = [
+                $scan->id,
                 $order->date,
                 $order->to_name,
                 $order->destination_street,
+                $order->destination_suburb,
                 $order->destination_city,
+                $order->destination_postcode,
                 $order->destination_state,
                 $order->destination_country,
-                $order->destination_postcode,
                 $order->destination_email,
                 $order->destination_phone,
                 $order->item_name,
@@ -146,7 +116,7 @@ class OrderController extends Controller
                 $order->carrier,
                 $order->carrier_product_code
             ];
-            fputcsv($file, $row);
+            fputcsv($file, $data);
         }
 
         fclose($file);
@@ -154,18 +124,12 @@ class OrderController extends Controller
         return $path;
     }
 
+
     private function uploadCSV($csvPath)
     {
         $disk = Storage::disk('ftp');
         $name = basename($csvPath);
-
-        try {
-            $disk->put($name, fopen($csvPath, 'r+'));
-            return true; // Indicate success explicitly
-        } catch (\Exception $e) {
-            Log::error("FTP upload failed for file: $name. Error: " . $e->getMessage());
-            return false; // Indicate failure explicitly
-        }
+        $disk->put($name, fopen($csvPath, 'r+'));
     }
 
 

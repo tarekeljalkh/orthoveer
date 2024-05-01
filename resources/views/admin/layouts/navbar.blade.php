@@ -8,82 +8,29 @@
         </ul>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Messages
-                    <div class="float-right">
-                        <a href="#">Mark All As Read</a>
-                    </div>
-                </div>
-                <div class="dropdown-list-content dropdown-list-message">
-                    <a href="#" class="dropdown-item dropdown-item-unread">
-                        <div class="dropdown-item-avatar">
-                            <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle">
-                            <div class="is-online"></div>
-                        </div>
-                        <div class="dropdown-item-desc">
-                            <b>Kusnaedi</b>
-                            <p>Hello, Bro!</p>
-                            <div class="time">10 Hours Ago</div>
-                        </div>
-                    </a>
-                    <a href="#" class="dropdown-item dropdown-item-unread">
-                        <div class="dropdown-item-avatar">
-                            <img alt="image" src="assets/img/avatar/avatar-2.png" class="rounded-circle">
-                        </div>
-                        <div class="dropdown-item-desc">
-                            <b>Dedik Sugiharto</b>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-                            <div class="time">12 Hours Ago</div>
-                        </div>
-                    </a>
-                    <a href="#" class="dropdown-item dropdown-item-unread">
-                        <div class="dropdown-item-avatar">
-                            <img alt="image" src="assets/img/avatar/avatar-3.png" class="rounded-circle">
-                            <div class="is-online"></div>
-                        </div>
-                        <div class="dropdown-item-desc">
-                            <b>Agung Ardiansyah</b>
-                            <p>Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                            <div class="time">12 Hours Ago</div>
-                        </div>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <div class="dropdown-item-avatar">
-                            <img alt="image" src="assets/img/avatar/avatar-4.png" class="rounded-circle">
-                        </div>
-                        <div class="dropdown-item-desc">
-                            <b>Ardian Rahardiansyah</b>
-                            <p>Duis aute irure dolor in reprehenderit in voluptate velit ess</p>
-                            <div class="time">16 Hours Ago</div>
-                        </div>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <div class="dropdown-item-avatar">
-                            <img alt="image" src="assets/img/avatar/avatar-5.png" class="rounded-circle">
-                        </div>
-                        <div class="dropdown-item-desc">
-                            <b>Alfa Zulkarnain</b>
-                            <p>Exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-                            <div class="time">Yesterday</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="dropdown-footer text-center">
-                    <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-                </div>
-            </div>
-        </li>
+
         @php
             $notifications = \App\Models\Notification::latest()->take(10)->get();
+
+            $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
+
         @endphp
+
+        @if (auth()->user()->role === 'admin')
+            <li class="dropdown dropdown-list-toggle">
+                <a href="{{ route('admin.chat.index') }}"
+                    class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i
+                        class="far fa-envelope"></i></a>
+            </li>
+        @endif
+
+
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                 class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Notifications
+                <div class="dropdown-header">{{ trans('messages.notifications') }}
                     <div class="float-right">
-                        <a href="#">Mark All As Read</a>
+                        <a href="#">{{ trans('messages.mark_all_as_read') }}</a>
                     </div>
                 </div>
                 <div class="dropdown-list-content dropdown-list-icons">
@@ -104,7 +51,8 @@
                     @endforeach
                 </div>
                 <div class="dropdown-footer text-center">
-                    <a href="{{ route('admin.notifications.index') }}">View All <i class="fas fa-chevron-right"></i></a>
+                    <a href="{{ route('admin.notifications.index') }}">{{ trans('messages.view_all') }} <i
+                            class="fas fa-chevron-right"></i></a>
                 </div>
             </div>
         </li>
@@ -115,16 +63,18 @@
                 <i class="fas fa-globe"></i>
             </a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">Select Language
+                <div class="dropdown-header">{{ trans('messages.select_language') }}
                     <div class="float-right">
-                        <a href="#">Close</a>
+                        <a href="#">{{ trans('messages.close') }}</a>
                     </div>
                 </div>
                 <div class="dropdown-list-content">
                     {{-- <a href="{{ route('setLang', ['locale' => 'en']) }}" class="dropdown-item">English</a>
                     <a href="{{ route('setLang', ['locale' => 'fr']) }}" class="dropdown-item">Français</a> --}}
-                    <a href="{{ route('setLang', ['locale' => 'en']) }}" class="dropdown-item {{ App::getLocale() == 'en' ? 'active-lang' : '' }}">English</a>
-                    <a href="{{ route('setLang', ['locale' => 'fr']) }}" class="dropdown-item {{ App::getLocale() == 'fr' ? 'active-lang' : '' }}">Français</a>
+                    <a href="{{ route('setLang', ['locale' => 'en']) }}"
+                        class="dropdown-item {{ App::getLocale() == 'en' ? 'active-lang' : '' }}">{{ trans('messages.english') }}</a>
+                    <a href="{{ route('setLang', ['locale' => 'fr']) }}"
+                        class="dropdown-item {{ App::getLocale() == 'fr' ? 'active-lang' : '' }}">{{ trans('messages.french') }}</a>
                     <!-- Add more languages as needed -->
                 </div>
             </div>
@@ -138,7 +88,7 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon">
-                    <i class="far fa-user"></i> Profile
+                    <i class="far fa-user"></i> {{ trans('messages.profile') }}
                 </a>
                 <div class="dropdown-divider"></div>
 
@@ -148,7 +98,7 @@
                     <a href="#" class="dropdown-item has-icon text-danger"
                         onclick="event.preventDefault();
                 this.closest('form').submit();">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i> {{ trans('messages.logout') }}
                     </a>
                 </form>
 

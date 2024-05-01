@@ -3,7 +3,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Welcome Admin</h1>
+            <h1>{{ trans('messages.welcome') }} {{ trans('messages.admin') }}</h1>
             {{-- <h2>@lang('messages.title')</h2>
             {{ __('messages.welcome') }} --}}
             {{-- {{ trans('messages.title') }} --}}
@@ -18,7 +18,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Doctors</h4>
+                            <h4>{{ trans('messages.doctors') }}</h4>
                         </div>
                         <div class="card-body">
                             {{ $doctors }}
@@ -38,7 +38,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>Labs</h4>
+                            <h4>{{ trans('messages.labs') }}</h4>
                         </div>
                         <div class="card-body">
                             {{ $labs }}
@@ -57,7 +57,7 @@
                     </div>
                     <div class="card-wrap">
                         <div class="card-header">
-                            <h4>External Labs</h4>
+                            <h4>{{ trans('messages.external_labs') }}</h4>
                         </div>
                         <div class="card-body">
                             {{ $external_labs }}

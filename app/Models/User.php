@@ -46,7 +46,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function patients()
     {
-        return $this->hasMany(User::class, 'doctor_id');
+        return $this->hasMany(Patient::class, 'doctor_id');
     }
 
     function chats()
@@ -64,4 +64,23 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Notification::class, 'sender_id');
     }
+
+    public function doctorScans()
+    {
+        // Scans associated with the doctor_id
+        return $this->hasMany(Scan::class, 'doctor_id');
+    }
+
+    public function labScans()
+    {
+        // Scans associated with the lab_id
+        return $this->hasMany(Scan::class, 'lab_id');
+    }
+
+    public function externalLabScans()
+    {
+        // Scans associated with the external_lab_id
+        return $this->hasMany(Scan::class, 'external_lab_id');
+    }
+
 }

@@ -6,11 +6,11 @@
             <div class="section-header-back">
                 <a href="{{ route('doctor.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Add New Lab</h1>
+            <h1>{{ trans('messages.add_new_lab') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('admin.labs.index') }}">Labs</a></div>
-                <div class="breadcrumb-item"><a href="#">Add New Lab</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('admin.labs.index') }}">{{ trans('messages.labs') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.add_new_lab') }}</a></div>
             </div>
         </div>
 
@@ -25,15 +25,15 @@
                             @csrf
 
                             <div class="card-header">
-                                <h4>Add New Lab</h4>
+                                <h4>{{ trans('messages.add_new_lab') }}</h4>
                             </div>
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Image</label>
+                                        <label>{{ trans('messages.image') }}</label>
                                         <div id="image-preview" class="image-preview">
-                                            <label for="image-upload" id="image-label">Choose File</label>
+                                            <label for="image-upload" id="image-label">{{ trans('messages.choose_image') }}</label>
                                             <input type="file" name="image" id="image-upload" />
                                         </div>
                                     </div>
@@ -42,12 +42,12 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>First Name</label>
+                                        <label>{{ trans('messages.first_name') }}</label>
                                         <input type="text" name="first_name" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Last Name</label>
+                                        <label>{{ trans('messages.last_name') }}</label>
                                         <input type="text" name="last_name" class="form-control" required="">
                                     </div>
 
@@ -55,41 +55,41 @@
 
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Email</label>
+                                        <label>{{ trans('messages.email') }}</label>
                                         <input type="email" name="email" class="form-control" required="">
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Mobile</label>
+                                        <label>{{ trans('messages.mobile') }}</label>
                                         <input type="number" name="mobile" class="form-control" required="">
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Password</label>
+                                        <label>{{ trans('messages.current_password') }}</label>
                                         <input type="password" name="password" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Confirm Password</label>
+                                        <label>{{ trans('messages.confirm_password') }}</label>
                                         <input type="password" name="password_confirmation" class="form-control" required="">
                                     </div>
                                 </div>
 
 
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Verified</label>
+                                        <label>{{ trans('messages.email_verified') }}</label>
                                         <select class="form-control" name="verified">
-                                            <option value="yes">Yes</option>
-                                            <option value="no">No</option>
+                                            <option value="yes">{{ trans('messages.yes') }}</option>
+                                            <option value="no">{{ trans('messages.no') }}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="card-footer text-right">
-                                    <button class="btn btn-primary">Add</button>
+                                    <button class="btn btn-primary">{{ trans('messages.add') }}</button>
                                 </div>
 
                             </div>

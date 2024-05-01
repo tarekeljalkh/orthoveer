@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Doctors</h1>
+            <h1>{{ trans('messages.doctors') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Doctors</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.doctors') }}</a></div>
             </div>
         </div>
 
@@ -19,9 +19,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>All Doctors</h4>
+                            <h4>{{ trans('messages.doctors') }}</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('admin.doctors.create') }}" class="btn btn-success">Create New <i
+                                <a href="{{ route('admin.doctors.create') }}" class="btn btn-success">{{ trans('messages.create_new') }} <i
                                         class="fas fa-plus"></i></a>
                             </div>
                         </div>
@@ -30,17 +30,17 @@
                                 <table id="example" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Email</th>
-                                            <th>Image</th>
-                                            <th>Mobile</th>
-                                            <th>Landline</th>
-                                            <th>Address</th>
-                                            <th>Postal Code</th>
-                                            <th>Siret Number</th>
-                                            <th>Email Verified</th>
-                                            <th>Action</th>
+                                            <th>{{ trans('messages.first_name') }}</th>
+                                            <th>{{ trans('messages.last_name') }}</th>
+                                            <th>{{ trans('messages.email') }}</th>
+                                            <th>{{ trans('image') }}</th>
+                                            <th>{{ trans('messages.mobile') }}</th>
+                                            <th>{{ trans('messages.landline') }}</th>
+                                            <th>{{ trans('messages.address') }}</th>
+                                            <th>{{ trans('messages.postal_code') }}</th>
+                                            <th>{{ trans('messages.siret_number') }}</th>
+                                            <th>{{ trans('messages.email_verified') }}</th>
+                                            <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,18 +57,22 @@
                                                 <td>{{ $doctor->siret_number }}</td>
                                                 @if ($doctor->email_verified_at)
                                                     <td>
-                                                        <div class="badge badge-success">Yes</div>
+                                                        <div class="badge badge-success">{{ trans('messages.yes') }}</div>
                                                     </td>
                                                 @else
                                                     <td>
-                                                        <div class="badge badge-danger">No</div>
+                                                        <div class="badge badge-danger">{{ trans('messages.no') }}</div>
                                                     </td>
                                                 @endif
                                                 <td>
                                                     <a href="{{ route('admin.doctors.edit', $doctor->id) }}"
-                                                        class="btn btn-primary">Edit</a>
+                                                        class="btn btn-primary">{{ trans('messages.edit') }}</a>
+
+
+                                                    @if ($doctor->doctorScans->isNotEmpty())
                                                         <a href="{{ route('admin.doctors.show', $doctor->id) }}"
-                                                            class="btn btn-info">See Scans</a>
+                                                            class="btn btn-info">{{ trans('messages.scans') }}</a>
+                                                    @endif
                                                 </td>
 
                                             </tr>

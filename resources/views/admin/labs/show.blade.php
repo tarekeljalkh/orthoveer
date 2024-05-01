@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>{{ trans('messages.doctor') }}</h1>
+            <h1>{{ trans('messages.lab') }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
-                <div class="breadcrumb-item"><a href="#">{{ trans('messages.doctor') }} : {{ $doctor->first_name }}, {{ $doctor->last_name }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.lab') }} : {{ $lab->first_name }}, {{ $lab->last_name }}</a></div>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>{{ trans('messages.doctor') }} : {{ $doctor->first_name }}, {{ $doctor->last_name }}</h4>
+                            <h4>{{ trans('messages.lab') }} : {{ $lab->first_name }}, {{ $lab->last_name }}</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -40,7 +40,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($doctor->doctorScans as $scan)
+                                        @foreach ($lab->labScans as $scan)
                                             <tr>
                                                 <td>{{ isset($scan->patient->first_name) ? $scan->patient->first_name : 'No Data' }}</td>
                                                 <td>{{ isset($scan->lab->first_name) ? $scan->lab->first_name : 'No Data' }}</td>
