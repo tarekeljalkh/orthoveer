@@ -17,14 +17,14 @@ class ScanSeeder extends Seeder
     {
         $scans = [
             [
-                'doctor_id' => 3, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
+                'doctor_id' => 2, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
                 'patient_id' => 1,
                 'scan_date' => Carbon::createFromFormat('d/m/Y', '05/12/2023'),
                 'type_id' => 1,
                 'due_date' => Carbon::createFromFormat('d/m/Y', '19/12/2023'),
             ],
             [
-                'doctor_id' => 3, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
+                'doctor_id' => 2, // assuming a doctor_id of 1, you'll need to adjust this based on your actual data
                 'patient_id' => 1,
                 'scan_date' => Carbon::createFromFormat('d/m/Y', '05/12/2023'),
                 'type_id' => 2,

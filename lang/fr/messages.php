@@ -105,7 +105,6 @@ return [
     'labs' => 'Laboratoires',
     'external_lab' => 'Laboratoire Externe',
     'external_labs' => 'Laboratoires Externes',
-    'category' => 'Catégorie',
     'categories' => 'Catégories',
     'type_of_work' => 'Type De Travail',
     'type_of_works' => 'Type De Travaux',
@@ -143,5 +142,6 @@ return [
     'create_new_order' => 'Créer Une Nouvelle Commande',
     'place_order' => 'Passer La Commande',
     'select_scans' => 'Sélectionner Des Analyses',
+    'id' => 'Identifiant',
 
 ];

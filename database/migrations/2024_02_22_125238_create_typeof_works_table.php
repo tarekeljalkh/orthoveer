@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('typeof_works', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->double('price');
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->double('lab_price')->nullable();
+            $table->double('bag_coule')->nullable();
+            $table->double('my_price')->nullable();
+            $table->double('invoice_to')->nullable();
+            $table->double('cash_out')->nullable();
+            $table->double('my_benefit')->nullable();
+            $table->double('accessories')->nullable();
             $table->unsignedBigInteger('lab_id');
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

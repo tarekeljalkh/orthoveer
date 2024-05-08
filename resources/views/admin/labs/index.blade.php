@@ -29,14 +29,13 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example" class="display nowrap" style="width:100%">
+                                <table id="labs" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>{{ trans('messages.id') }}</th>
                                             <th>{{ trans('messages.first_name') }}</th>
                                             <th>{{ trans('messages.last_name') }}</th>
                                             <th>{{ trans('messages.email') }}</th>
-                                            <th>{{ trans('messages.image') }}</th>
-                                            <th>{{ trans('messages.mobile') }}</th>
                                             <th>{{ trans('messages.email_verified') }}</th>
                                             <th>{{ trans('messages.action') }}</th>
                                         </tr>
@@ -44,11 +43,10 @@
                                     <tbody>
                                         @foreach ($labs as $lab)
                                             <tr>
+                                                <td>{{ $lab->id }}</td>
                                                 <td>{{ $lab->first_name }}</td>
                                                 <td>{{ $lab->last_name }}</td>
                                                 <td>{{ $lab->email }}</td>
-                                                <td><img style="width: 50px" src="{{ asset($lab->image) }}"></td>
-                                                <td>{{ $lab->mobile }}</td>
                                                 @if ($lab->email_verified_at)
                                                     <td>
                                                         <div class="badge badge-success">{{ trans('messages.yes') }}</div>
@@ -86,12 +84,19 @@
 
 @push('scripts')
     <script>
-        new DataTable('#example', {
+        new DataTable('#labs', {
             layout: {
                 topStart: {
-                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                    buttons: [
+                        'excel',
+                        'pdf',
+                        'print',
+                    ]
                 }
-            }
+            },
+            select: true
         });
+
+
     </script>
 @endpush

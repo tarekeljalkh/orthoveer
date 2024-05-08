@@ -8,7 +8,8 @@
             </div>
             <h1>{{ trans('messages.show_scan') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.order') }}: {{ $order->id }}</a></div>
             </div>
         </div>
@@ -94,51 +95,82 @@
                                                 min="{{ now()->toDateString() }}">
                                         </div>
 
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.procedure') }}</label>
-                                            <select class="form-control select2" id="categorySelect" name="category_id">
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
 
                                         <div class="form-group col-md-6 col-12">
                                             <label>{{ trans('messages.type') }}</label>
                                             <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
-                                                {{-- @foreach ($labs as $lab)
-                                                                                <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
-                                                                            @endforeach --}}
+                                                @foreach ($typeofWorks as $typeofWork)
+                                                    <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
 
                                     </div>
-
-                                    <div class="row">
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_upper') }} <i class="fas fa-arrow-up"></i></label>
-                                            <div id="stl_upper"
-                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
-                                            </div>
-                                            <input type="file" name="stl_upper" class="form-control">
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_lower') }} <i class="fas fa-arrow-down"></i></label>
-                                            <div id="stl_lower"
-                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
-                                            </div>
-                                            <input type="file" name="stl_lower" class="form-control">
-                                        </div>
-
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                         {{-- End Order Section --}}
+
+                        {{-- Note --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                @if (count($order->status) > 0)
+                                    <div class="card-header">
+                                        <h4>{{ trans('messages.notes') }} ({{ count($order->status) }})</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+
+                                            <div class="col-12">
+                                                <div class="activities">
+                                                    @forelse ($order->status as $status)
+                                                        <div class="activity">
+                                                            <div
+                                                                class="activity-icon bg-primary text-white shadow-primary">
+                                                                <i class="fas fa-comment-alt"></i>
+                                                            </div>
+                                                            <div class="activity-detail">
+                                                                <div class="mb-2">
+                                                                    <span
+                                                                        class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                                        {{ $status->updatedBy->last_name }},
+                                                                        {{ $status->updatedBy->first_name }},
+                                                                    </span>
+                                                                    <span class="bullet"></span>
+                                                                    <span
+                                                                        class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
+                                                                </div>
+                                                                <p><span
+                                                                        style="font-weight: bold">{{ trans('messages.status') }}:</span>
+                                                                    {{ $status->status }}</p>
+                                                                <p><span
+                                                                        style="font-weight: bold">{{ trans('messages.note') }}:</span>
+                                                                    {{ $status->note }}</p>
+                                                            </div>
+                                                        </div>
+                                                    @empty
+                                                        <p>{{ trans('messages.no_status_updates_available') }}.</p>
+                                                    @endforelse
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="card-footer text-right">
+
+                                    <div class="form-group col-md-8 col-8">
+                                        <input class="form-control" type="text" name="note"
+                                            placeholder="Enter New Note" required>
+                                    </div>                                </div>
+
+                            </div>
+
+
+                        </div>
+                        {{-- End Note --}}
+
 
                         {{-- Image --}}
                         @php
@@ -194,56 +226,39 @@
 
 
 
-                        {{-- Note --}}
+                        {{-- STL SECTION --}}
                         <div class="col-12 col-md-12 col-lg-12">
                             <div class="card">
-                                @if (count($order->status) > 0)
                                     <div class="card-header">
-                                        <h4>{{ trans('messages.notes') }} ({{ count($order->status) }})</h4>
+                                        <h4>STL FILES</h4>
                                     </div>
                                     <div class="card-body">
 
                                         <div class="row">
-                                            <div class="col-12">
-                                                <div class="activities">
-                                                    @forelse ($order->status as $status)
-                                                        <div class="activity">
-                                                            <div
-                                                                class="activity-icon bg-primary text-white shadow-primary">
-                                                                <i class="fas fa-comment-alt"></i>
-                                                            </div>
-                                                            <div class="activity-detail">
-                                                                <div class="mb-2">
-                                                                    <span
-                                                                        class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
-                                                                        {{ $status->updatedBy->last_name }},
-                                                                        {{ $status->updatedBy->first_name }},
-                                                                    </span>
-                                                                    <span class="bullet"></span>
-                                                                    <span
-                                                                        class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
-                                                                </div>
-                                                                <p><span style="font-weight: bold">{{ trans('messages.status') }}:</span>
-                                                                    {{ $status->status }}</p>
-                                                                <p><span style="font-weight: bold">{{ trans('messages.note') }}:</span>
-                                                                    {{ $status->note }}</p>
-                                                            </div>
-                                                        </div>
-                                                    @empty
-                                                        <p>{{ trans('messages.no_status_updates_available') }}.</p>
-                                                    @endforelse
+
+                                                <div class="form-group col-md-6 col-12">
+                                                    <label>{{ trans('messages.stl_upper') }} <i
+                                                            class="fas fa-arrow-up"></i></label>
+                                                    <div id="stl_upper"
+                                                        style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
+                                                    </div>
+                                                    <input type="file" name="stl_upper" class="form-control">
                                                 </div>
-                                            </div>
+
+                                                <div class="form-group col-md-6 col-12">
+                                                    <label>{{ trans('messages.stl_lower') }} <i
+                                                            class="fas fa-arrow-down"></i></label>
+                                                    <div id="stl_lower"
+                                                        style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
+                                                    </div>
+                                                    <input type="file" name="stl_lower" class="form-control">
+                                                </div>
                                         </div>
                                     </div>
-                                @endif
                                 <div class="card-footer text-right">
 
-                                    <div class="form-group col-md-8 col-8">
-                                        <input class="form-control" type="text" name="note"
-                                            placeholder="Enter New Note" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary" id="submitBtn">{{ trans('messages.update') }}</button>
+                                    <button type="submit" class="btn btn-primary"
+                                        id="submitBtn">{{ trans('messages.update') }}</button>
 
                                 </div>
 
@@ -251,7 +266,7 @@
 
 
                         </div>
-                        {{-- End Note --}}
+                        {{-- End STL SECTION --}}
 
 
 
@@ -333,44 +348,13 @@
                                         </div>
 
                                         <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.procedure') }}</label>
-                                            <select class="form-control select2" id="categorySelect" name="category_id"
-                                                disabled>
-                                                @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-12">
                                             <label>{{ trans('messages.type') }}</label>
                                             <select class="form-control select2" id="typeOfWorkSelect"
                                                 name="typeofwork_id" disabled>
-                                                {{-- @foreach ($labs as $lab)
-                                                                                    <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
-                                                                                @endforeach --}}
+                                                @foreach ($typeofWorks as $typeofWork)
+                                                    <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>
+                                                @endforeach
                                             </select>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="row">
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_upper') }} <i class="fas fa-arrow-up"></i></label>
-                                            <div id="stl_upper"
-                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
-                                            </div>
-                                            <input type="file" name="stl_upper" class="form-control" hidden>
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_lower') }} <i class="fas fa-arrow-down"></i></label>
-                                            <div id="stl_lower"
-                                                style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
-                                            </div>
-                                            <input type="file" name="stl_lower" class="form-control" hidden>
                                         </div>
 
                                     </div>
@@ -379,6 +363,66 @@
                             </div>
                         </div>
                         {{-- End Order Section --}}
+
+
+                        {{-- Note --}}
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                @if (count($order->status) > 0)
+                                    <div class="card-header">
+                                        <h4>{{ trans('messages.notes') }} ({{ count($order->status) }})</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="activities">
+                                                    @forelse ($order->status as $status)
+                                                        <div class="activity">
+                                                            <div
+                                                                class="activity-icon bg-primary text-white shadow-primary">
+                                                                <i class="fas fa-comment-alt"></i>
+                                                            </div>
+                                                            <div class="activity-detail">
+                                                                <div class="mb-2">
+                                                                    <span
+                                                                        class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
+                                                                        {{ $status->updatedBy->last_name }},
+                                                                        {{ $status->updatedBy->first_name }},
+                                                                    </span>
+                                                                    <span class="bullet"></span>
+                                                                    <span
+                                                                        class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
+                                                                </div>
+                                                                <p><span
+                                                                        style="font-weight: bold">{{ trans('messages.status') }}:</span>
+                                                                    {{ $status->status }}</p>
+                                                                <p><span
+                                                                        style="font-weight: bold">{{ trans('messages.note') }}:</span>
+                                                                    {{ $status->note }}</p>
+                                                            </div>
+                                                        </div>
+                                                    @empty
+                                                        <p>{{ trans('messages.no_status_updates_available') }}.</p>
+                                                    @endforelse
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="card-footer text-right">
+
+                                    <div class="form-group col-md-8 col-8">
+                                        <input class="form-control" type="text" name="note"
+                                            placeholder="Enter New Note" required hidden>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        {{-- End Note --}}
 
                         {{-- Image --}}
                         @php
@@ -431,58 +475,37 @@
                         </div>
                         {{-- End Image --}}
 
-
-
-
-                        {{-- Note --}}
+                        {{-- STL FILES --}}
                         <div class="col-12 col-md-12 col-lg-12">
                             <div class="card">
-                                @if (count($order->status) > 0)
                                     <div class="card-header">
-                                        <h4>{{ trans('messages.notes') }} ({{ count($order->status) }})</h4>
+                                        <h4>STL FILES</h4>
                                     </div>
                                     <div class="card-body">
 
                                         <div class="row">
-                                            <div class="col-12">
-                                                <div class="activities">
-                                                    @forelse ($order->status as $status)
-                                                        <div class="activity">
-                                                            <div
-                                                                class="activity-icon bg-primary text-white shadow-primary">
-                                                                <i class="fas fa-comment-alt"></i>
-                                                            </div>
-                                                            <div class="activity-detail">
-                                                                <div class="mb-2">
-                                                                    <span
-                                                                        class="text-job text-primary">{{ $status->updatedBy->role ?? 'User' }},
-                                                                        {{ $status->updatedBy->last_name }},
-                                                                        {{ $status->updatedBy->first_name }},
-                                                                    </span>
-                                                                    <span class="bullet"></span>
-                                                                    <span
-                                                                        class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
-                                                                </div>
-                                                                <p><span style="font-weight: bold">{{ trans('messages.status') }}:</span>
-                                                                    {{ $status->status }}</p>
-                                                                <p><span style="font-weight: bold">{{ trans('messages.note') }}:</span>
-                                                                    {{ $status->note }}</p>
-                                                            </div>
-                                                        </div>
-                                                    @empty
-                                                        <p>{{ trans('messages.no_status_updates_available') }}.</p>
-                                                    @endforelse
+                                            <div class="form-group col-md-6 col-12">
+                                                <label>{{ trans('messages.stl_upper') }} <i
+                                                        class="fas fa-arrow-up"></i></label>
+                                                <div id="stl_upper"
+                                                    style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_upper ? ' display:none;' : '' }}">
                                                 </div>
+                                                <input type="file" name="stl_upper" class="form-control" hidden>
                                             </div>
+
+                                            <div class="form-group col-md-6 col-12">
+                                                <label>{{ trans('messages.stl_lower') }} <i
+                                                        class="fas fa-arrow-down"></i></label>
+                                                <div id="stl_lower"
+                                                    style="width:300px; height:300px; margin:0 auto;{{ !$order->stl_lower ? ' display:none;' : '' }}">
+                                                </div>
+                                                <input type="file" name="stl_lower" class="form-control" hidden>
+                                            </div>
+
+
                                         </div>
                                     </div>
-                                @endif
                                 <div class="card-footer text-right">
-
-                                    <div class="form-group col-md-8 col-8">
-                                        <input class="form-control" type="text" name="note"
-                                            placeholder="Enter New Note" required hidden>
-                                    </div>
                                     <button type="submit" class="btn btn-primary" id="submitBtn" hidden>Update</button>
 
                                 </div>
@@ -491,7 +514,7 @@
 
 
                         </div>
-                        {{-- End Note --}}
+                        {{-- End STL FILES --}}
 
 
 
@@ -568,27 +591,6 @@
             $('#submitBtn').prop('disabled', true).text('Submitting...');
         });
 
-
-
-        // convert this data into a JavaScript variable within your Blade template
-        var categoriesAndTypes = @json(
-            $categories->mapWithKeys(function ($category) {
-                return [$category->id => $category->TypeOfWorks->pluck('name', 'id')];
-            }));
-
-        $('#categorySelect').on('change', function() {
-            var categoryId = $(this).val();
-            var typesOfWork = categoriesAndTypes[categoryId] || {};
-            var $typeOfWorkSelect = $('#typeOfWorkSelect');
-
-            $typeOfWorkSelect.empty().append('<option value="">Select Type</option>'); // Reset and add placeholder
-
-            $.each(typesOfWork, function(id, name) {
-                $typeOfWorkSelect.append('<option value="' + id + '">' + name + '</option>');
-            });
-        });
-
-        //
 
 
         //preview files before submitting

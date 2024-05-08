@@ -37,8 +37,45 @@
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Price</label>
-                                        <input type="number" name="price" class="form-control" value="{{ $typeofwork->price }}" required="">
+                                        <label>Lab Price</label>
+                                        <input type="number" name="price" class="form-control" value="{{ $typeofwork->lab_price }}" required="">
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Bag Coule</label>
+                                        <input type="number" name="bag_coule" class="form-control" value="{{ $typeofwork->bag_coule }}" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>My Price</label>
+                                        <input type="number" name="my_price" class="form-control" value="{{ $typeofwork->my_Price }}" required="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Invoice To</label>
+                                        <input type="number" name="invoice_to" class="form-control" value="{{ $typeofwork->invoice_to }}" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Cash Out</label>
+                                        <input type="number" name="cash_out" class="form-control" value="{{ $typeofwork->cash_out }}" required="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>My Benefit</label>
+                                        <input type="number" name="my_benefit" class="form-control" value="{{ $typeofwork->my_benefit }}" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Accessories</label>
+                                        <input type="number" name="accessories" class="form-control" value="{{ $typeofwork->accessories }}" required="">
                                     </div>
                                 </div>
 
@@ -48,18 +85,6 @@
                                         <select class="form-control select2" name="lab_id">
                                             @foreach ($labs as $lab)
                                                 <option @selected($lab->first_name === $typeofwork->lab->first_name) value="{{ $lab->id }}">{{ $lab->first_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="row">
-                                    <div class="form-group col-md-12 col-12">
-                                        <label>Select Category</label>
-                                        <select class="form-control select2" name="category_id">
-                                            @foreach ($categories as $category)
-                                                <option @selected($category->name === $typeofwork->category->name) value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

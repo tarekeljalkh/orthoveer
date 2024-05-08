@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\TypeofWork;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -25,8 +24,7 @@ class TypeofWorkController extends Controller
     public function create()
     {
         $labs = User::where('role', 'lab')->get();
-        $categories = Category::all();
-        return view('admin.typeofworks.create', compact('categories', 'labs'));
+        return view('admin.typeofworks.create', compact('labs'));
     }
 
     /**
@@ -38,14 +36,12 @@ class TypeofWorkController extends Controller
             'name' => ['required', 'max:255'],
             'price' => ['required', 'integer'],
             'lab_id' => ['required', 'integer'],
-            'category_id' => ['required', 'integer']
         ]);
 
         $typeofwork = new TypeofWork();
         $typeofwork->name = $request->name;
         $typeofwork->price = $request->price;
         $typeofwork->lab_id = $request->lab_id;
-        $typeofwork->category_id = $request->category_id;
         $typeofwork->save();
 
         toastr()->success('Type of Work Added Successfully');
@@ -68,9 +64,8 @@ class TypeofWorkController extends Controller
     public function edit(string $id)
     {
         $typeofwork = TypeofWork::findOrFail($id);
-        $categories = Category::all();
         $labs = User::where('role', 'lab')->get();
-        return view('admin.typeofworks.edit', compact('typeofwork', 'categories', 'labs'));
+        return view('admin.typeofworks.edit', compact('typeofwork', 'labs'));
     }
 
     /**
@@ -82,14 +77,12 @@ class TypeofWorkController extends Controller
             'name' => ['required', 'max:255'],
             'price' => ['required', 'integer'],
             'lab_id' => ['required', 'integer'],
-            'category_id' => ['required', 'integer']
         ]);
 
         $typeofwork = TypeofWork::findOrFail($id);
         $typeofwork->name = $request->name;
         $typeofwork->price = $request->price;
         $typeofwork->lab_id = $request->lab_id;
-        $typeofwork->category_id = $request->category_id;
         $typeofwork->save();
 
         toastr()->success('Type of Work Updated Successfully');

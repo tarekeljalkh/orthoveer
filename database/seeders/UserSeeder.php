@@ -15,19 +15,6 @@ class UserSeeder extends Seeder
     {
         User::insert([
             [
-                'first_name' => 'super',
-                'last_name' => 'admin',
-                'email' => 'superadmin@superadmin.com',
-                'mobile' => null,
-                'landline' => null,
-                'address' => null,
-                'postal_code' => null,
-                'siret_number' => null,
-                'role' => 'super_admin',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password')
-            ],
-            [
                 'first_name' => 'admin',
                 'last_name' => 'admin',
                 'email' => 'admin@admin.com',
@@ -79,6 +66,20 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
+            [
+                'first_name' => 'second_lab',
+                'last_name' => 'second lab',
+                'email' => 'second_lab@second_lab.com',
+                'mobile' => null,
+                'landline' => null,
+                'address' => null,
+                'postal_code' => null,
+                'siret_number' => null,
+                'role' => 'lab',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password')
+            ],
+
         ]);
     }
 }

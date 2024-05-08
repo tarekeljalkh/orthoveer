@@ -9,11 +9,6 @@ class TypeofWork extends Model
 {
     use HasFactory;
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id');
-    }
-
     public function lab()
     {
         return $this->belongsTo(User::class, 'lab_id');

@@ -38,19 +38,18 @@
                     href="{{ route('admin.external_labs.index') }}"><i class="fas fa-vials"></i>
                     <span>{{ trans('messages.external_labs') }}</span></a></li>
 
-            <li class="dropdown {{ request()->routeIs('admin.categories.index') ? 'active' : '' }}">
-                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
-                    <span>{{ trans('messages.type_of_works') }}</span></a>
-                <ul class="dropdown-menu">
-                    <li class="{{ request()->routeIs('admin.categories.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.categories.index') }}">{{ trans('messages.categories') }}</a></li>
-                    <li class="{{ request()->routeIs('admin.type-of-works.index') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.type-of-works.index') }}">{{ trans('messages.type_of_works') }}</a></li>
-                </ul>
-            </li>
+            <li class="{{ request()->routeIs('admin.type-of-works.index') ? 'active' : '' }}"><a class="nav-link"
+                    href="{{ route('admin.type-of-works.index') }}"><i class="fas fa-vials"></i>
+                    <span>{{ trans('messages.type_of_works') }}</span></a></li>
+
+            @php
+                $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
+            @endphp
 
 
             <li class="{{ request()->routeIs('admin.chat.index') ? 'active' : '' }}"><a class="nav-link"
-                href="{{ route('admin.chat.index') }}"><i class="fas fa-envelope"></i>
-                <span>{{ trans('messages.messages') }}</span></a></li>
+                    href="{{ route('admin.chat.index') }}"><i class="fas fa-envelope"></i>
+                    <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
 
 
             <li class="{{ request()->routeIs('admin.setting.index') ? 'active' : '' }}"><a class="nav-link"

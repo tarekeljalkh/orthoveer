@@ -16,27 +16,23 @@ class TypeofWorkSeeder extends Seeder
         TypeofWork::insert([
             [
                 'name' => 'Goutiere resine',
-                'price' => '105',
-                'category_id' => '1',
-                'lab_id' => '4',
+                'my_price' => '105',
+                'lab_id' => '3',
             ],
             [
                 'name' => 'Goutiere regide de 1 a 3 mm',
-                'price' => '30',
-                'category_id' => '1',
-                'lab_id' => '4',
+                'my_price' => '30',
+                'lab_id' => '3',
             ],
             [
                 'name' => 'BWS',
-                'price' => '45',
-                'category_id' => '2',
-                'lab_id' => '4',
+                'my_price' => '45',
+                'lab_id' => '3',
             ],
             [
                 'name' => 'Pendulum',
-                'price' => '100',
-                'category_id' => '2',
-                'lab_id' => '4',
+                'my_price' => '100',
+                'lab_id' => '3',
             ],
         ]);
     }

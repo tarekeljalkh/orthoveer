@@ -25,7 +25,7 @@ class StatusSeeder extends Seeder
                 'scan_id' => $scanId,
                 'status' => $statuses[array_rand($statuses)], // Random status for each scan
                 'note' => 'Automatically generated status.', // Optional note
-                'updated_by' => 4, // Could be a user ID or null
+                'updated_by' => 3, // Could be a user ID or null
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

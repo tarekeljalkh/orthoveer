@@ -4,7 +4,8 @@
             <a href="{{ route('doctor.dashboard') }}">Orthoveer</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('doctor.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}" alt="OV"></a>
+            <a href="{{ route('doctor.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}"
+                    alt="OV"></a>
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">{{ trans('messages.dashboard') }}</li>
@@ -25,9 +26,13 @@
                     href="{{ route('doctor.orders.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.orders') }}</span></a></li>
 
+            @php
+                $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
+            @endphp
+
             <li class="{{ request()->routeIs('doctor.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>{{ trans('messages.messages') }}</span></a></li>
+                    <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
         </ul>
 
     </aside>

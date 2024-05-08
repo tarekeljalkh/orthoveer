@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Doctor;
 use App\Http\Controllers\Controller;
 use App\Mail\ScanCreated;
 use App\Mail\ScanCreatedToLab;
-use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Patient;
 use App\Models\Scan;
@@ -28,15 +27,15 @@ class ScanController extends Controller
     {
         //dd(Auth::user()->patients); relationship inside User Model
         $patients = Patient::where('doctor_id', Auth::user()->id)->get();
-        $categories = Category::with('TypeOfWorks')->get();
-        return view('doctor.scans.create', compact('patients', 'categories'));
+        $typeofWorks = TypeofWork::all();
+        return view('doctor.scans.create', compact('patients', 'typeofWorks'));
     }
 
     public function newScan($id)
     {
         $patient = Patient::findOrFail($id);
-        $categories = Category::with('TypeOfWorks')->get();
-        return view('doctor.patients.new_scan', compact('patient', 'categories'));
+        $typeofWorks = TypeofWork::all();
+        return view('doctor.patients.new_scan', compact('patient', 'typeofWorks'));
     }
 
     public function newScanStore(Request $request, $id)
@@ -123,6 +122,20 @@ class ScanController extends Controller
      */
     public function store(Request $request)
     {
+
+        // Validate the input
+        $request->validate([
+            'stl_upper' => 'nullable|file',
+            'stl_lower' => 'nullable|file',
+        ]);
+
+        if (!$request->hasFile('stl_upper') && !$request->hasFile('stl_lower')) {
+            // Using Toastr to display an error message
+            toastr()->warning('Please upload at least one STL file (upper or lower).');
+            return redirect()->back();
+        }
+
+
         // Check if a patient is selected and exists
         if ($request->has('patient_id') && $patient = Patient::findOrFail($request->patient_id)) {
             // Update the existing patient

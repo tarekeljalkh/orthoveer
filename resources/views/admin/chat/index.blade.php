@@ -98,7 +98,7 @@
                 $('#receiver_id').val(senderId);
                 $.ajax({
                     method: 'GET',
-                    url: '{{ route("doctor.chat.get-conversation", ":senderId") }}'.replace(":senderId", senderId),
+                    url: '{{ route("admin.chat.get-conversation", ":senderId") }}'.replace(":senderId", senderId),
                     beforeSend: function() {
                         $('.chat-content').empty();
                         $('#chat_header').text("Chat With "+senderName);
@@ -137,7 +137,7 @@
                 let formData = $(this).serialize();
                 $.ajax({
                     method: 'POST',
-                    url: "{{ route('doctor.chat.send-message') }}",
+                    url: "{{ route('admin.chat.send-message') }}",
                     data: formData,
                     beforeSend: function(){
                     let message = $('.fp_send_message').val();

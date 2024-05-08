@@ -107,7 +107,6 @@ return [
     'labs' => 'Labs',
     'external_lab' => 'External Lab',
     'external_labs' => 'External Labs',
-    'category' => 'Category',
     'categories' => 'Categories',
     'type_of_work' => 'Type Of Work',
     'type_of_works' => 'Type Of Works',
@@ -145,4 +144,5 @@ return [
     'create_new_order' => 'Create New Order',
     'place_order' => 'Place Order',
     'select_scans' => 'Select Scans',
+    'id' => 'ID',
 ];

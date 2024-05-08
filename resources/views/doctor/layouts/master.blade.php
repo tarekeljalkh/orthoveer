@@ -101,6 +101,20 @@
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
+    <!-- Toastr JS  -->
+    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+
+    <!-- Toastr Error  -->
+    <script>
+        toastr.options.closeButton = true;
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        @endif
+    </script>
+
     @stack('scripts')
 </body>
 

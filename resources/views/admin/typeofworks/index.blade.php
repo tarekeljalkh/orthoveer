@@ -27,25 +27,44 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="example" class="display nowrap" style="width:100%">
+                                <table id="typeofWorks" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Lab</th>
-                                            <th>Category</th>
-                                            <th>Action</th>
+                                            <th>{{ trans('messages.id') }}</th>
+                                            <th>{{ trans('messages.name') }}</th>
+                                            <th>Lab Price</th>
+                                            <th>Bag Coule</th>
+                                            <th>My Price</th>
+                                            <th>Invoice To</th>
+                                            <th>Cash Out</th>
+                                            <th>My Benefit</th>
+                                            <th>Accessories</th>
+                                            <th>{{ trans('messages.lab') }}</th>
+                                            <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($typeofworks as $typeofwork)
                                             <tr>
+                                                <td>{{ $typeofwork->id }}</td>
                                                 <td>{{ $typeofwork->name }}</td>
-                                                <td>{{ $typeofwork->price }}
+                                                <td>{{ $typeofwork->lab_price }}
                                                     {{ config('settings.site_currency_icon') }}</td>
-                                                <td><span class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span></td>
-                                                <td><span class="badge badge-info">{{ $typeofwork->category->name }}</span></td>
-
+                                                <td>{{ $typeofwork->bag_coule }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->my_price }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->invoice_to }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->cash_out }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->my_benefit }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->accessories }}
+                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td><span
+                                                        class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span>
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}"
                                                         class="btn btn-primary">Edit</a>
@@ -68,12 +87,17 @@
 
 @push('scripts')
     <script>
-        new DataTable('#example', {
+        new DataTable('#typeofWorks', {
             layout: {
                 topStart: {
-                    buttons: ['excel', 'pdf', 'print']
+                    buttons: [
+                        'excel',
+                        'pdf',
+                        'print',
+                    ]
                 }
-            }
+            },
+            select: true
         });
     </script>
 @endpush

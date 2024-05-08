@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExternalLabController;
@@ -37,8 +36,7 @@ Route::resource('labs', LabController::class);
 Route::put('external_labs/{id}/updatePassword', [ExternalLabController::class, 'updatePassword'])->name('external_labs.updatePassword');
 Route::resource('external_labs', ExternalLabController::class);
 
-//Category and TypeofWorks Routes
-Route::resource('categories', CategoryController::class);
+//TypeofWorks Routes
 Route::resource('type-of-works', TypeofWorkController::class);
 
 /** Setting Routes */

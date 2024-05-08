@@ -36,10 +36,47 @@
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>Price</label>
-                                        <input type="number" name="price" class="form-control" required="">
+                                        <label>Lab Price</label>
+                                        <input type="number" name="lab_price" class="form-control" required="">
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Bag Coule</label>
+                                        <input type="number" name="bag_coule" class="form-control" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>My Price</label>
+                                        <input type="number" name="my_Price" class="form-control" required="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Invoice To</label>
+                                        <input type="number" name="invoice_to" class="form-control" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Cash Out</label>
+                                        <input type="number" name="cash_out" class="form-control" required="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>My Benefit</label>
+                                        <input type="number" name="my_benefit" class="form-control" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>Accessories</label>
+                                        <input type="number" name="accessories" class="form-control" required="">
+                                    </div>
+                                </div>
+
 
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
@@ -51,19 +88,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-
-                                <div class="row">
-                                    <div class="form-group col-md-12 col-12">
-                                        <label>Select Category</label>
-                                        <select class="form-control select2" name="category_id">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
 
                                 <div class="card-footer text-right">
                                     <button class="btn btn-primary">Add</button>

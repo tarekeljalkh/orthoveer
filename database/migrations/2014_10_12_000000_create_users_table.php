@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('image')->default('uploads/avatar.png');
+            $table->string('image')->default('uploads/avatar.png')->nullable();
             $table->string('mobile')->unique()->nullable();
             $table->string('landline')->nullable();
             $table->string('license')->nullable();
             $table->text('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('siret_number')->nullable();
-            $table->enum('role', ['super_admin', 'admin', 'doctor', 'lab', 'external_lab'])->default('doctor');
+            $table->enum('role', ['admin', 'doctor', 'lab', 'external_lab'])->default('doctor');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

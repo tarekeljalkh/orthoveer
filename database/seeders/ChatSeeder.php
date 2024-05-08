@@ -15,6 +15,42 @@ class ChatSeeder extends Seeder
     {
         Chat::insert([
             [
+                'sender_id' => '1',
+                'receiver_id' => '2',
+                'message' => 'welcome to orthoveer',
+                'seen' => 0,
+            ],
+            [
+                'sender_id' => '1',
+                'receiver_id' => '3',
+                'message' => 'welcome to orthoveer',
+                'seen' => 0,
+            ],
+            [
+                'sender_id' => '1',
+                'receiver_id' => '4',
+                'message' => 'welcome to orthoveer',
+                'seen' => 0,
+            ],
+            [
+                'sender_id' => '2',
+                'receiver_id' => '1',
+                'message' => 'welcome to orthoveer',
+                'seen' => 0,
+            ],
+            [
+                'sender_id' => '3',
+                'receiver_id' => '1',
+                'message' => 'welcome to orthoveer',
+                'seen' => 0,
+            ],
+            [
+                'sender_id' => '4',
+                'receiver_id' => '1',
+                'message' => 'welcome to orthoveer',
+                'seen' => 0,
+            ],
+            [
                 'sender_id' => '2',
                 'receiver_id' => '3',
                 'message' => 'welcome to orthoveer',

@@ -59,7 +59,7 @@
                                                 <div class="btn-group dropleft">
                                                     <button type="button" class="btn btn-dark dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        Dropleft
+                                                        <i class="fas fa-cog"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropleft">
                                                         <a class="dropdown-item"

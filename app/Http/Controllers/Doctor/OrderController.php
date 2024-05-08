@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Doctor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Patient;
 use App\Models\Scan;
+use App\Models\TypeofWork;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,8 +83,8 @@ class OrderController extends Controller
     {
         $order = Scan::findOrFail($id);
         $patients = Patient::where('doctor_id', Auth::user()->id)->get();
-        $categories = Category::with('TypeOfWorks')->get();
-        return view('doctor.orders.edit', compact('order', 'patients', 'categories'));
+        $typeofWorks = TypeofWork::all();
+        return view('doctor.orders.edit', compact('order', 'patients', 'typeofWorks'));
     }
 
     /**
