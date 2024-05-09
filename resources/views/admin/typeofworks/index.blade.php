@@ -40,6 +40,7 @@
                                             <th>My Benefit</th>
                                             <th>Accessories</th>
                                             <th>{{ trans('messages.lab') }}</th>
+                                            <th>Second Lab</th>
                                             <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
@@ -62,9 +63,16 @@
                                                     {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->accessories }}
                                                     {{ config('settings.site_currency_icon') }}</td>
-                                                <td><span
-                                                        class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span>
+                                                <td>
+                                                    <span class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span>
                                                 </td>
+                                                <td>
+                                                    @if ($typeofwork->secondLab)
+                                                    <span class="badge badge-primary">{{ $typeofwork->secondLab->first_name }}</span>
+                                                @else
+                                                    No Secondary Lab
+                                                @endif
+                                                                                            </td>
                                                 <td>
                                                     <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}"
                                                         class="btn btn-primary">Edit</a>

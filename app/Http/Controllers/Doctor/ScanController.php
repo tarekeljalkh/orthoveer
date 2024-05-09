@@ -58,6 +58,7 @@ class ScanController extends Controller
         $type = TypeofWork::findOrFail($request->typeofwork_id);
         $scan->type_id = $request->typeofwork_id;
         $scan->lab_id = $type->lab_id;
+        $scan->second_lab_id = $type->second_lab_id;
         //
         $scan->due_date = $request->due_date;
         $scan->stl_upper = $upperPath;
@@ -181,6 +182,7 @@ class ScanController extends Controller
         $type = TypeofWork::findOrFail($request->typeofwork_id);
         $scan->type_id = $request->typeofwork_id;
         $scan->lab_id = $type->lab_id;
+        $scan->second_lab_id = $type->second_lab_id;
         //
 
         $scan->due_date = $request->due_date;

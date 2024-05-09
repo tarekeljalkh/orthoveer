@@ -201,7 +201,8 @@
                                     <label for="external_lab_id">Reassign Scan to External Lab:</label>
                                     <select name="external_lab_id" id="external_lab_id" class="form-control">
                                         @foreach ($external_labs as $external_lab)
-                                            <option value="{{ $external_lab->id }}">{{ $external_lab->first_name }}</option>
+                                            <option value="{{ $external_lab->id }}">{{ $external_lab->first_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

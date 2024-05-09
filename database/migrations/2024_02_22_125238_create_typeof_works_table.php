@@ -23,6 +23,8 @@ return new class extends Migration
             $table->double('accessories')->nullable();
             $table->unsignedBigInteger('lab_id');
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('second_lab_id')->nullable(); // make nullable
+            $table->foreign('second_lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

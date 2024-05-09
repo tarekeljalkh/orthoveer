@@ -34,14 +34,21 @@ class TypeofWorkController extends Controller
     {
         $request->validate([
             'name' => ['required', 'max:255'],
-            'price' => ['required', 'integer'],
             'lab_id' => ['required', 'integer'],
+            'second_lab_id' => ['required', 'integer'],
         ]);
 
         $typeofwork = new TypeofWork();
         $typeofwork->name = $request->name;
-        $typeofwork->price = $request->price;
+        $typeofwork->lab_price = $request->lab_price;
+        $typeofwork->bag_coule = $request->bag_coule;
+        $typeofwork->my_price = $request->my_price;
+        $typeofwork->invoice_to = $request->invoice_to;
+        $typeofwork->cash_out = $request->cash_out;
+        $typeofwork->my_benefit = $request->my_benefit;
+        $typeofwork->accessories = $request->accessories;
         $typeofwork->lab_id = $request->lab_id;
+        $typeofwork->second_lab_id = $request->second_lab_id;
         $typeofwork->save();
 
         toastr()->success('Type of Work Added Successfully');
@@ -75,14 +82,21 @@ class TypeofWorkController extends Controller
     {
         $request->validate([
             'name' => ['required', 'max:255'],
-            'price' => ['required', 'integer'],
             'lab_id' => ['required', 'integer'],
+            'second_lab_id' => ['required', 'integer'],
         ]);
 
         $typeofwork = TypeofWork::findOrFail($id);
         $typeofwork->name = $request->name;
-        $typeofwork->price = $request->price;
+        $typeofwork->lab_price = $request->lab_price;
+        $typeofwork->bag_coule = $request->bag_coule;
+        $typeofwork->my_price = $request->my_price;
+        $typeofwork->invoice_to = $request->invoice_to;
+        $typeofwork->cash_out = $request->cash_out;
+        $typeofwork->my_benefit = $request->my_benefit;
+        $typeofwork->accessories = $request->accessories;
         $typeofwork->lab_id = $request->lab_id;
+        $typeofwork->second_lab_id = $request->second_lab_id;
         $typeofwork->save();
 
         toastr()->success('Type of Work Updated Successfully');
