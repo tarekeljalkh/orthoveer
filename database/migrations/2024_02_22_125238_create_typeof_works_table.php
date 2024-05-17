@@ -25,6 +25,8 @@ return new class extends Migration
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('second_lab_id')->nullable(); // make nullable
             $table->foreign('second_lab_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('external_lab_id')->nullable(); // make nullable
+            $table->foreign('external_lab_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

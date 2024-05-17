@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Lab;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Models\Scan;
-use App\Models\ScanCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,21 +23,21 @@ class LabController extends Controller
 
         // Assuming each scan directly belongs to a lab and has a status field
         // Retrieve all scans for the lab with any necessary related models loaded
-        $scans = Scan::with(['status']) // Adjust based on your actual relationship/method to get current status
-                     ->where('lab_id', $labId)
-                     ->get();
+        $scans = Scan::with('latestStatus') // Adjust based on your actual relationship/method to get current status
+        ->where('lab_id', $labId)
+        ->get();
 
         // Assuming you have an accessor in the Scan model that dynamically gives you the current status
         // Filter scans based on their current status
         //$todaysScans = $scans->where('created_at', '>=', now()->startOfDay())->count();
-        $pendingScans = $scans->where('current_status', 'pending')->count();
-        $rejectedScans = $scans->where('current_status', 'rejected')->count();
-        $waitingScans = $scans->where('current_status', 'completed')->count();
-        $deliveredScans = $scans->where('current_status', 'delivered')->count();
+        $pendingScans = $scans->where('latestStatus.status', 'pending')->count();
+        $rejectedScans = $scans->where('latestStatus.status', 'rejected')->count();
+        $completedScans = $scans->where('latestStatus.status', 'completed')->count();
+        $deliveredScans = $scans->where('latestStatus.status', 'delivered')->count();
         $totalScans = $scans->count();
 
 
-        return view('lab.dashboard', compact('pendingScans','rejectedScans', 'totalScans', 'waitingScans' , 'deliveredScans'));
+        return view('lab.dashboard', compact('pendingScans', 'rejectedScans', 'completedScans', 'deliveredScans', 'totalScans'));
     }
 
     function clearNotification() {

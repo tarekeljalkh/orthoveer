@@ -15,8 +15,9 @@ class AdminController extends Controller
     {
         $doctors = User::where('role', 'doctor')->count();
         $labs = User::where('role', 'lab')->count();
+        $second_labs = User::where('role', 'second_lab')->count();
         $external_labs = User::where('role', 'external_lab')->count();
-        return view('admin.dashboard', compact('doctors', 'labs', 'external_labs'));
+        return view('admin.dashboard', compact('doctors', 'labs', 'second_labs', 'external_labs'));
     }
 
     /**

@@ -18,4 +18,9 @@ class TypeofWork extends Model
     {
         return $this->belongsTo(User::class, 'second_lab_id');
     }
+
+    public function externalLab()
+    {
+        return $this->belongsTo(User::class, 'external_lab_id');
+    }
 }

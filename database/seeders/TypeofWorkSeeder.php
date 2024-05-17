@@ -18,21 +18,25 @@ class TypeofWorkSeeder extends Seeder
                 'name' => 'Goutiere resine',
                 'my_price' => '105',
                 'lab_id' => '3',
+                'external_lab_id' => '5',
             ],
             [
                 'name' => 'Goutiere regide de 1 a 3 mm',
                 'my_price' => '30',
                 'lab_id' => '3',
+                'external_lab_id' => '5',
             ],
             [
                 'name' => 'BWS',
                 'my_price' => '45',
-                'lab_id' => '3',
+                'lab_id' => '5',
+                'external_lab_id' => '5',
             ],
             [
                 'name' => 'Pendulum',
                 'my_price' => '100',
                 'lab_id' => '3',
+                'external_lab_id' => '5',
             ],
         ]);
     }

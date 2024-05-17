@@ -24,7 +24,9 @@ class TypeofWorkController extends Controller
     public function create()
     {
         $labs = User::where('role', 'lab')->get();
-        return view('admin.typeofworks.create', compact('labs'));
+        $second_labs = User::where('role', 'second_lab')->get();
+        $external_labs = User::where('role', 'external_lab')->get();
+        return view('admin.typeofworks.create', compact('labs', 'second_labs', 'external_labs'));
     }
 
     /**
@@ -36,6 +38,7 @@ class TypeofWorkController extends Controller
             'name' => ['required', 'max:255'],
             'lab_id' => ['required', 'integer'],
             'second_lab_id' => ['required', 'integer'],
+            'external_lab_id' => ['required', 'integer'],
         ]);
 
         $typeofwork = new TypeofWork();
@@ -49,6 +52,7 @@ class TypeofWorkController extends Controller
         $typeofwork->accessories = $request->accessories;
         $typeofwork->lab_id = $request->lab_id;
         $typeofwork->second_lab_id = $request->second_lab_id;
+        $typeofwork->external_lab_id = $request->external_lab_id;
         $typeofwork->save();
 
         toastr()->success('Type of Work Added Successfully');
@@ -72,7 +76,9 @@ class TypeofWorkController extends Controller
     {
         $typeofwork = TypeofWork::findOrFail($id);
         $labs = User::where('role', 'lab')->get();
-        return view('admin.typeofworks.edit', compact('typeofwork', 'labs'));
+        $second_labs = User::where('role', 'second_lab')->get();
+        $external_labs = User::where('role', 'external_lab')->get();
+        return view('admin.typeofworks.edit', compact('typeofwork', 'labs', 'second_labs', 'external_labs'));
     }
 
     /**
@@ -83,7 +89,8 @@ class TypeofWorkController extends Controller
         $request->validate([
             'name' => ['required', 'max:255'],
             'lab_id' => ['required', 'integer'],
-            'second_lab_id' => ['required', 'integer'],
+            'second_lab_id' => ['nullable', 'integer'],
+            'external_lab_id' => ['nullable', 'integer'],
         ]);
 
         $typeofwork = TypeofWork::findOrFail($id);
@@ -97,6 +104,8 @@ class TypeofWorkController extends Controller
         $typeofwork->accessories = $request->accessories;
         $typeofwork->lab_id = $request->lab_id;
         $typeofwork->second_lab_id = $request->second_lab_id;
+        //$typeofwork->second_lab_id = $request->input('second_lab_id');  // Get the second lab id, handles null automatically
+        $typeofwork->external_lab_id = $request->external_lab_id;
         $typeofwork->save();
 
         toastr()->success('Type of Work Updated Successfully');

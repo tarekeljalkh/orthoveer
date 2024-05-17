@@ -21,14 +21,10 @@
                             <h4>{{ trans('messages.new_scans') }}</h4>
                         </div>
                         <div class="card-body">
-                            <div class="mb-3">
-                                <button class="btn btn-primary" id="printSelected">Print Selected</button>
-                                <button class="btn btn-primary" id="downloadSelected">Download Selected</button>
-                            </div>
-                            <table id="example" class="display nowrap" style="width:100%">
+                            <table id="new" class="display nowrap" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Select</th>
+                                        <th hidden>ID</th> <!-- Hidden ID Column -->
                                         <th>Doctor Name</th>
                                         <th>Due Date</th>
                                         <th>Status</th>
@@ -39,7 +35,7 @@
                                 <tbody>
                                     @foreach ($newScans as $scan)
                                         <tr>
-                                            <td><input type="checkbox" class="scanCheckbox" value="{{ $scan->id }}">
+                                            <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
                                             </td>
                                             <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
                                             </td>
@@ -69,11 +65,13 @@
                                                             href="{{ route('lab.scans.prescription', $scan->id) }}">Open
                                                             Prescription</a>
                                                         <div class="dropdown-divider"></div>
-                                                        <a class="dropdown-item" href="#"><i class="fas fa-print"></i>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('lab.scans.printScan', $scan->id) }}"><i
+                                                                class="fas fa-print"></i>
                                                             Print Prescription</a>
-                                                        <a class="dropdown-item" href="{{ route('lab.scans.downloadStl', $scan->id) }}"><i
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('lab.scans.downloadStl', $scan->id) }}"><i
                                                                 class="fas fa-download"></i> Download The Scan</a>
-
                                                     </div>
                                                 </div>
 
@@ -92,65 +90,181 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('.scanCheckbox');
-            const printButton = document.getElementById('printSelected');
-            const downloadButton = document.getElementById('downloadSelected');
+        new DataTable('#new', {
+            layout: {
+                topStart: {
+                    buttons: [
+                        'excel',
+                        'pdf',
+                        'print',
+                        {
+                            text: '<i class="fa fa-download"></i> Download',
+                            action: function(e, dt, node, config) {
+                                var selectedData = dt.rows({
+                                    selected: true
+                                }).data().toArray();
 
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    updateButtonStatus();
-                });
-            });
+                                if (selectedData.length === 1) {
+                                    var scanId = selectedData[0][0];
+                                    var url = "{{ route('lab.scans.downloadStl', ':id') }}".replace(':id',
+                                        scanId);
 
-            function updateButtonStatus() {
-                const checkedCheckboxes = document.querySelectorAll('.scanCheckbox:checked');
-                const count = checkedCheckboxes.length;
+                                    $.ajax({
+                                        url: url,
+                                        method: 'GET',
+                                        xhrFields: {
+                                            responseType: 'blob'
+                                        },
+                                        success: function(data) {
+                                            var a = document.createElement('a');
+                                            var url = window.URL.createObjectURL(data);
+                                            a.href = url;
+                                            a.download = 'stl-files-' + scanId + '.zip';
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            window.URL.revokeObjectURL(url);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error:', status, error);
+                                        }
+                                    });
+                                } else if (selectedData.length > 1) {
+                                    var scanIds = selectedData.map(function(data) {
+                                        return data[0];
+                                    });
+                                    var url = "{{ route('lab.scans.printMultiple') }}";
 
-                printButton.disabled = downloadButton.disabled = count === 0;
-                printButton.textContent = `Print Selected (${count})`;
-                downloadButton.textContent = `Download Selected (${count})`;
-            }
-
-            updateButtonStatus(); // Initial status update
-
-            downloadButton.addEventListener('click', function() {
-                const selectedIds = Array.from(document.querySelectorAll('.scanCheckbox:checked')).map(
-                    checkbox => checkbox.value);
-                downloadSelectedScans(selectedIds);
-            });
-
-            function downloadSelectedScans(selectedIds) {
-                fetch('{{ route('lab.scans.downloadMultiple') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                'content')
+                                    $.ajax({
+                                        url: url,
+                                        method: 'POST',
+                                        data: JSON.stringify({
+                                            ids: scanIds,
+                                            _token: '{{ csrf_token() }}'
+                                        }), // Send as JSON string
+                                        contentType: 'application/json', // Specify content type as JSON
+                                        xhrFields: {
+                                            responseType: 'blob'
+                                        },
+                                        success: function(data) {
+                                            var a = document.createElement('a');
+                                            var url = window.URL.createObjectURL(data);
+                                            a.href = url;
+                                            a.download = 'multiple-scans.zip';
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            window.URL.revokeObjectURL(url);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error:', status, error);
+                                        }
+                                    });
+                                }
+                            }
                         },
-                        body: JSON.stringify({
-                            ids: selectedIds
-                        })
-                    })
-                    .then(response => response.blob())
-                    .then(blob => {
-                        // Create a link element, use it to download the blob, and remove it
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.style.display = 'none';
-                        a.href = url;
-                        // the filename you need
-                        a.download = 'scans.zip';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                        alert('Download has started!');
-                    })
-                    .catch(error => {
-                        console.error('Download failed:', error);
-                        alert('Download failed!');
-                    });
-            }
+                        {
+                            text: '<i class="fa fa-file-pdf"></i> Print Prescriptions',
+                            action: function(e, dt, node, config) {
+                                var selectedData = dt.rows({
+                                    selected: true
+                                }).data().toArray();
+
+                                if (selectedData.length === 1) {
+                                    // Single selection
+                                    var scanId = selectedData[0][0]; // Assuming scan ID is at index 0
+                                    var url = "{{ route('lab.scans.printScan', ':id') }}".replace(':id',
+                                        scanId);
+
+                                    $.ajax({
+                                        url: url,
+                                        method: 'GET',
+                                        xhrFields: {
+                                            responseType: 'blob'
+                                        },
+                                        success: function(data) {
+                                            var a = document.createElement('a');
+                                            var url = window.URL.createObjectURL(data);
+                                            a.href = url;
+                                            a.download = 'prescription-' + scanId + '.pdf';
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            window.URL.revokeObjectURL(url);
+                                        }
+                                    });
+                                } else if (selectedData.length > 1) {
+                                    // Multiple selections
+                                    var scanIds = selectedData.map(function(data) {
+                                        return data[0];
+                                    }); // Assuming scan ID is at index 0
+
+                                    scanIds.forEach(function(scanId) {
+                                        var url = "{{ route('lab.scans.printScan', ':id') }}"
+                                            .replace(':id', scanId);
+
+                                        $.ajax({
+                                            url: url,
+                                            method: 'GET',
+                                            xhrFields: {
+                                                responseType: 'blob'
+                                            },
+                                            success: function(data) {
+                                                var a = document.createElement('a');
+                                                var url = window.URL.createObjectURL(
+                                                    data);
+                                                a.href = url;
+                                                a.download = 'prescription-' + scanId +
+                                                    '.pdf';
+                                                document.body.appendChild(a);
+                                                a.click();
+                                                window.URL.revokeObjectURL(url);
+                                            }
+                                        });
+                                    });
+                                }
+                            }
+                        }
+
+                    ]
+                }
+            },
+            select: true
         });
+
+        // new DataTable('#pending', {
+        //     dom: 'Bfrtip', // Define the elements in the control layout
+        //     buttons: [{
+        //             extend: 'copyHtml5',
+        //             text: '<i class="fas fa-files-o"></i>', // Using FontAwesome icons
+        //             titleAttr: 'Copy'
+        //         },
+
+        //         <
+        //         i class = "fas fa-file-excel" > < /i> {
+        //             extend: 'excelHtml5',
+        //             text: '<i class="fa fa-file-excel-o"></i>',
+        //             titleAttr: 'Excel'
+        //         },
+        //         {
+        //             extend: 'csvHtml5',
+        //             text: '<i class="fa fa-file-text-o"></i>',
+        //             titleAttr: 'CSV'
+        //         },
+        //         {
+        //             extend: 'pdfHtml5',
+        //             text: '<i class="fa fa-file-pdf-o"></i>',
+        //             titleAttr: 'PDF'
+        //         },
+        //         {
+        //             extend: 'print',
+        //             text: '<i class="fa fa-print"></i> Print all (not just selected)',
+        //             titleAttr: 'Print',
+        //             exportOptions: {
+        //                 modifier: {
+        //                     selected: null
+        //                 }
+        //             }
+        //         }
+        //     ],
+        //     select: true
+        // });
     </script>
 @endpush

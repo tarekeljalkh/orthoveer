@@ -13,7 +13,7 @@
              Clickable div --}}
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('doctor.orders.index', ['status' => 'completed']) }}"
+                <a href="{{ route('doctor.orders.completed') }}"
                     style="text-decoration:none; color: inherit;">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
@@ -32,7 +32,7 @@
 
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('doctor.orders.index', ['status' => 'pending']) }}"
+                <a href="{{ route('doctor.orders.pending') }}"
                     style="text-decoration:none; color: inherit;">
 
                     <div class="card card-statistic-1">
@@ -52,7 +52,6 @@
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <a href="{{ route('doctor.orders.index') }}" style="text-decoration:none; color: inherit;">
-
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-info">
                             <i class="fas fa-briefcase"></i>
@@ -70,7 +69,7 @@
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('doctor.orders.index', ['status' => 'rejected']) }}"
+                <a href="{{ route('doctor.orders.rejected') }}"
                     style="text-decoration:none; color: inherit;">
 
                     <div class="card card-statistic-1">

@@ -31,9 +31,14 @@
                     href="{{ route('lab.orders.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.orders') }}</span></a></li>
 
+                    @php
+                    $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
+                @endphp
+
+
             <li class="{{ request()->routeIs('lab.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>Messages</span></a></li>
+                    <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
 
         </ul>
 

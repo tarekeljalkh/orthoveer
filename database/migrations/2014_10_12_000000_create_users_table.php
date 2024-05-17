@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('siret_number')->nullable();
-            $table->enum('role', ['admin', 'doctor', 'lab', 'external_lab'])->default('doctor');
+            $table->enum('role', ['admin', 'doctor', 'lab', 'second_lab', 'external_lab'])->default('doctor');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

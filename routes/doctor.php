@@ -24,6 +24,12 @@ Route::get('new_scan/{id}', [ScanController::class, 'newScan'])->name('scans.new
 Route::post('new_scan/{id}/store', [ScanController::class, 'newScanStore'])->name('scans.new.store');
 Route::resource('scans', ScanController::class);
 Route::resource('patients', PatientController::class);
+
+/** Orders Routes */
+Route::get('/orders/pending', [OrderController::class, 'pending'])->name('orders.pending');
+Route::get('/orders/rejected', [OrderController::class, 'rejected'])->name('orders.rejected');
+Route::get('/orders/completed', [OrderController::class, 'completed'])->name('orders.completed');
+Route::get('/orders/delivered', [OrderController::class, 'delivered'])->name('orders.delivered');
 Route::resource('orders', OrderController::class);
 
 /** Notifications Routes */

@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             TypeofWorkSeeder::class,
-            ScanSeeder::class,
+            // ScanSeeder::class,
             StatusSeeder::class,
             ChatSeeder::class,
             SettingSeeder::class,

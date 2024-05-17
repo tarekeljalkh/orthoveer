@@ -8,7 +8,8 @@
             </div>
             <h1>{{ trans('messages.orders') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.orders') }}</a></div>
             </div>
         </div>
@@ -29,16 +30,17 @@
                                         <tr>
                                             <th>{{ trans('messages.patient_name') }}</th>
                                             <th>{{ trans('messages.scan_date') }}</th>
-                                            <th>{{ trans('messages.due_date')}}</th>
+                                            <th>{{ trans('messages.due_date') }}</th>
                                             <th>{{ trans('messages.status') }}</th>
                                             <th>{{ trans('messages.note') }}</th>
+                                            <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($orders as $order)
-                                            <tr onclick="window.location='{{ route('doctor.orders.edit', $order->id) }}';"
-                                                style="cursor:pointer;">
-                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
+                                            <tr>
+                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}
+                                                </td>
                                                 <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
                                                 <td>
@@ -60,6 +62,11 @@
                                                         {{ $order->latestStatus->note }}
                                                     @endisset
                                                 </td>
+                                                <td>
+                                                    <a href="{{ route('doctor.orders.edit', $order->id) }}"
+                                                        class="btn btn-primary">{{ trans('messages.edit') }}</a>
+                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -74,14 +81,20 @@
     </section>
 @endsection
 
+
 @push('scripts')
     <script>
         new DataTable('#orders', {
             layout: {
                 topStart: {
-                    buttons: ['excel', 'pdf', 'print']
+                    buttons: [
+                        'excel',
+                        'pdf',
+                        'print',
+                    ]
                 }
-            }
+            },
+            select: true
         });
     </script>
 @endpush

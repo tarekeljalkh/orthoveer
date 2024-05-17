@@ -145,4 +145,12 @@ return [
     'place_order' => 'Place Order',
     'select_scans' => 'Select Scans',
     'id' => 'ID',
+    'pending_orders' => 'Pending Orders',
+    'pending_order' => 'Pending Order',
+    'rejected_orders' => 'Rejected Orders',
+    'rejected_order' => 'Rejected Order',
+    'completed_orders' => 'Completed Orders',
+    'completed_order' => 'Completed Order',
+    'delivered_orders' => 'Delivered Orders',
+    'delivered_order' => 'Delivered Order',
 ];

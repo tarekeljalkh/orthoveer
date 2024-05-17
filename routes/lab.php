@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Lab\ChatController;
-use App\Http\Controllers\Lab\CommentController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
 use App\Http\Controllers\Lab\OrderController;
@@ -36,6 +35,9 @@ Route::resource('scans', ScanController::class);
 /** Download Scan */
 Route::get('/scans/{scan}/download-stl', [ScanController::class, 'downloadStl'])->name('scans.downloadStl');
 Route::post('/scans/downloadMultiple', [ScanController::class, 'downloadMultiple'])->name('scans.downloadMultiple');
+/** Print Scan */
+Route::get('/scans/{scanId}/printScan', [ScanController::class, 'printScan'])->name('scans.printScan');
+Route::post('/scans/printMultiple', [ScanController::class, 'printMultiple'])->name('scans.printMultiple');
 
 /** Scan Notification Routes */
 Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');

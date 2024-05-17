@@ -47,6 +47,27 @@
                 </div>
             </a>
             </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('admin.second_labs.index') }}"
+                style="text-decoration:none; color: inherit;">
+
+                <div class="card card-statistic-1">
+                    <div class="card-icon bg-danger">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Second Labs</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ $second_labs }}
+                        </div>
+                    </div>
+                </div>
+            </a>
+            </div>
+
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <a href="{{ route('admin.external_labs.index') }}"
                 style="text-decoration:none; color: inherit;">

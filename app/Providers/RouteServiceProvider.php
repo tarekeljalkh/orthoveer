@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
 
-            Route::middleware(['web', 'auth','verified', 'role:doctor'])
+            Route::middleware(['web', 'auth', 'verified', 'role:doctor'])
                 ->prefix('doctor')
                 ->as('doctor.')
                 ->group(base_path('routes/doctor.php'));
@@ -50,6 +50,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('lab')
                 ->as('lab.')
                 ->group(base_path('routes/lab.php'));
+
+            Route::middleware(['web', 'auth', 'role:second_lab'])
+                ->prefix('second_lab')
+                ->as('second_lab.')
+                ->group(base_path('routes/second_lab.php'));
 
             Route::middleware(['web', 'auth', 'role:external_lab'])
                 ->prefix('external_lab')

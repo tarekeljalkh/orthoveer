@@ -102,4 +102,61 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function pending()
+    {
+        // Start building the query to get scans for the logged-in doctor
+        $pendingOrders = Scan::with(['patient', 'latestStatus'])
+            ->where('doctor_id', Auth::user()->id)
+            // Apply a condition to filter scans based on the latest status
+            ->whereHas('latestStatus', function ($query) {
+                $query->where('status', 'pending');
+            })
+            ->get(); // Fetch the results
+
+        // You can remove the dump and die function unless you specifically want to debug here
+        // dd($pendingScans);
+
+        // Return the view with the scans
+        return view('doctor.orders.pending', compact('pendingOrders'));
+    }
+
+    public function rejected()
+    {
+        // Start building the query to get scans for the logged-in doctor
+        $rejectedOrders = Scan::with(['patient', 'latestStatus'])
+            ->where('doctor_id', Auth::user()->id)
+            ->whereHas('latestStatus', function ($query) {
+                $query->where('status', 'rejected');
+            })->get();
+
+        // Return the view with the orders
+        return view('doctor.orders.rejected', compact('rejectedOrders'));
+    }
+
+    public function completed()
+    {
+        // Start building the query to get scans for the logged-in doctor
+        $completedOrders = Scan::with(['patient', 'latestStatus'])
+            ->where('doctor_id', Auth::user()->id)
+            ->whereHas('latestStatus', function ($query) {
+                $query->where('status', 'rejected');
+            })->get();
+
+        // Return the view with the orders
+        return view('doctor.orders.completed', compact('completedOrders'));
+    }
+
+    public function delivered()
+    {
+        // Start building the query to get scans for the logged-in doctor
+        $deliveredOrders = Scan::with(['patient', 'latestStatus'])
+            ->where('doctor_id', Auth::user()->id)
+            ->whereHas('latestStatus', function ($query) {
+                $query->where('status', 'delivered');
+            })->get();
+
+        // Return the view with the orders
+        return view('doctor.orders.delivered', compact('deliveredOrders'));
+    }
 }

@@ -54,6 +54,19 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password')
             ],
             [
+                'first_name' => 'Second',
+                'last_name' => 'second lab',
+                'email' => 'secondlab@secondlab.com',
+                'mobile' => null,
+                'landline' => null,
+                'address' => null,
+                'postal_code' => null,
+                'siret_number' => null,
+                'role' => 'second_lab',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password')
+            ],
+            [
                 'first_name' => 'external',
                 'last_name' => 'lab',
                 'email' => 'externallab@externallab.com',
@@ -66,20 +79,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => bcrypt('password')
             ],
-            [
-                'first_name' => 'second_lab',
-                'last_name' => 'second lab',
-                'email' => 'second_lab@second_lab.com',
-                'mobile' => null,
-                'landline' => null,
-                'address' => null,
-                'postal_code' => null,
-                'siret_number' => null,
-                'role' => 'lab',
-                'email_verified_at' => now(),
-                'password' => bcrypt('password')
-            ],
-
         ]);
     }
 }

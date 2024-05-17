@@ -34,7 +34,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>{{ trans('messages.completed_scans') }}</h4>
+                                <h4>{{ trans('messages.total_scans') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $totalScans }}
@@ -56,13 +56,32 @@
                                 <h4>{{ trans('messages.waiting_to_make_the_order') }}</h4>
                             </div>
                             <div class="card-body">
-                                {{ $waitingScans }}
+                                {{ $rejectedScans }}
                             </div>
                         </div>
                     </div>
                 </a>
             </div>
 
+
+            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
+
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>{{ trans('messages.delivered_scans') }}</h4>
+                            </div>
+                            <div class="card-body">
+                                {{ $completedScans }}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">

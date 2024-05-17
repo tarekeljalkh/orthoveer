@@ -143,5 +143,13 @@ return [
     'place_order' => 'Passer La Commande',
     'select_scans' => 'Sélectionner Des Analyses',
     'id' => 'Identifiant',
+    'pending_orders' => 'Les Ordres En Attente',
+    'pending_order' => 'Commande En Cours',
+    'rejected_orders' => 'Commandes Rejetées',
+    'rejected_order' => 'Commande Rejetée',
+    'completed_orders' => 'Commande Rejetée',
+    'completed_order' => 'Commande Complétée',
+    'delivered_orders' => 'Commandes Livrées',
+    'delivered_order' => 'Commande Livrée',
 
 ];

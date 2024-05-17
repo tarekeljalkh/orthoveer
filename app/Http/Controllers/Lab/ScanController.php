@@ -13,8 +13,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use ZipArchive;
+use Madnest\Madzipper\Facades\Madzipper;
 use App\Traits\FileUploadTrait;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
+use ZipArchive;
 
 class ScanController extends Controller
 {
@@ -77,41 +80,17 @@ class ScanController extends Controller
         return view('lab.scans.new', compact('newScans'));
     }
 
-    public function downloadStl(Scan $scan)
+
+    // public function printScan(Scan $scan)
+    // {
+    //     $pdf = PDF::loadView('lab.print', compact('scan'));
+    //     return $pdf->download('prescription.pdf');
+    // }
+    public function printScan(Request $request, $scanId)
     {
-        $zip = new ZipArchive;
-        $zipFileName = "stl-files-{$scan->id}.zip";
-        $zipFilePath = public_path($zipFileName); // Adjust based on where you want to save the zip temporarily
-
-        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
-            $upperFilePath = public_path('uploads/' . basename($scan->stl_upper)); // Adjust path as needed
-            $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower)); // Adjust path as needed
-
-            if (file_exists($upperFilePath)) {
-                $zip->addFile($upperFilePath, basename($scan->stl_upper));
-            }
-            if (file_exists($lowerFilePath)) {
-                $zip->addFile($lowerFilePath, basename($scan->stl_lower));
-            }
-
-            // Decode the JSON string containing PDF paths to an array
-            $pdfPaths = json_decode($scan->pdf, true) ?? [];
-
-            foreach ($pdfPaths as $pdfPath) {
-                // Adjust the path and add each PDF file to the ZIP archive
-                $pdfFilePath = public_path($pdfPath);
-                if (file_exists($pdfFilePath)) {
-                    $zip->addFile($pdfFilePath, basename($pdfPath));
-                }
-            }
-
-            $zip->close();
-
-            return response()->download($zipFilePath)->deleteFileAfterSend(true);
-            return redirect()->back();
-        } else {
-            return back()->withError('Could not create ZIP file.');
-        }
+        $scan = Scan::findOrFail($scanId);
+        $pdf = PDF::loadView('lab.print', compact('scan'));
+        return $pdf->download('prescription-' . $scan->id . '.pdf');
     }
 
     public function updateStatus(Request $request, $id)
@@ -234,46 +213,7 @@ class ScanController extends Controller
         //
     }
 
-    public function downloadMultiple(Request $request)
-    {
-        $ids = $request->ids; // Array of Scan IDs
-        $zip = new ZipArchive;
-        $zipFileName = "stl-files-" . now()->format('Ymd-His') . ".zip";
-        $zipFilePath = public_path($zipFileName);
 
-        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
-            foreach ($ids as $id) {
-                $scan = Scan::findOrFail($id); // Make sure to handle the case where ID is invalid
-                $this->addFilesToZip($scan, $zip);
-            }
-
-            $zip->close();
-            return response()->download($zipFilePath)->deleteFileAfterSend(true);
-        } else {
-            return back()->withError('Could not create ZIP file.');
-        }
-    }
-
-    protected function addFilesToZip($scan, $zip)
-    {
-        $upperFilePath = public_path('uploads/' . basename($scan->stl_upper));
-        $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower));
-
-        if (file_exists($upperFilePath)) {
-            $zip->addFile($upperFilePath, basename($scan->stl_upper));
-        }
-        if (file_exists($lowerFilePath)) {
-            $zip->addFile($lowerFilePath, basename($scan->stl_lower));
-        }
-
-        $pdfPaths = json_decode($scan->pdf, true) ?? [];
-        foreach ($pdfPaths as $pdfPath) {
-            $pdfFilePath = public_path($pdfPath);
-            if (file_exists($pdfFilePath)) {
-                $zip->addFile($pdfFilePath, basename($pdfPath));
-            }
-        }
-    }
 
     public function complete(Request $request, $id)
     {
@@ -341,4 +281,139 @@ class ScanController extends Controller
 
         return redirect()->back()->with('success', 'Scan successfully reassigned to another lab.');
     }
+
+    protected function addFilesToZip($scan, $zip)
+    {
+        $upperFilePath = public_path('uploads/' . basename($scan->stl_upper));
+        $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower));
+
+        if (file_exists($upperFilePath)) {
+            $zip->add($upperFilePath);
+        }
+        if (file_exists($lowerFilePath)) {
+            $zip->add($lowerFilePath);
+        }
+
+        $pdfPaths = json_decode($scan->pdf, true) ?? [];
+        foreach ($pdfPaths as $pdfPath) {
+            $pdfFilePath = public_path($pdfPath);
+            if (file_exists($pdfFilePath)) {
+                $zip->add($pdfFilePath);
+            }
+        }
+    }
+
+    public function downloadStl(Scan $scan)
+    {
+        $zipFileName = "stl-files-{$scan->id}.zip";
+        $zipFilePath = public_path($zipFileName);
+
+        // Check if directory is writable
+        if (!is_writable(public_path())) {
+            Log::error("Directory is not writable: " . public_path());
+            return back()->withErrors('Directory is not writable.');
+        }
+
+        // Create a temporary zip file
+        $zip = new ZipArchive();
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) !== TRUE) {
+            Log::error("Could not open ZIP file at path: {$zipFilePath}");
+            return back()->withErrors('Could not create ZIP file.');
+        }
+
+        // Add STL upper file if it exists
+        $upperFilePath = public_path('uploads/' . basename($scan->stl_upper));
+        if (file_exists($upperFilePath) && is_file($upperFilePath)) {
+            $zip->addFile($upperFilePath, basename($upperFilePath));
+        } else {
+            Log::error("Upper STL file not found or is not a file: {$upperFilePath}");
+        }
+
+        // Add STL lower file if it exists
+        $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower));
+        if (file_exists($lowerFilePath) && is_file($lowerFilePath)) {
+            $zip->addFile($lowerFilePath, basename($lowerFilePath));
+        } else {
+            Log::error("Lower STL file not found or is not a file: {$lowerFilePath}");
+        }
+
+        // Add PDF files if they exist
+        $pdfPaths = json_decode($scan->pdf, true) ?? [];
+        foreach ($pdfPaths as $pdfPath) {
+            $pdfFilePath = public_path($pdfPath);
+            if (file_exists($pdfFilePath) && is_file($pdfFilePath)) {
+                $zip->addFile($pdfFilePath, basename($pdfFilePath));
+            } else {
+                Log::error("PDF file not found or is not a file: {$pdfFilePath}");
+            }
+        }
+
+        if (!$zip->close()) {
+            Log::error("Could not close ZIP file at path: {$zipFilePath}");
+            return back()->withErrors('Could not create ZIP file.');
+        }
+
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    }
+
+    public function printMultiple(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            Log::error('No scans selected.');
+            return response()->json(['error' => 'No scans selected.'], 400);
+        }
+
+        $zipFileName = "multiple-scans.zip";
+        $zipFilePath = public_path($zipFileName);
+
+        if (!is_writable(public_path())) {
+            Log::error("Directory is not writable: " . public_path());
+            return back()->withErrors('Directory is not writable.');
+        }
+
+        $zip = new ZipArchive;
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            foreach ($ids as $id) {
+                $scan = Scan::findOrFail($id);
+
+                $upperFilePath = public_path('uploads/' . basename($scan->stl_upper));
+                $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower));
+
+                if (file_exists($upperFilePath) && is_file($upperFilePath)) {
+                    $zip->addFile($upperFilePath, "{$id}/" . basename($upperFilePath));
+                } else {
+                    Log::error("Upper STL file not found or is not a file for scan ID {$id}: {$upperFilePath}");
+                }
+
+                if (file_exists($lowerFilePath) && is_file($lowerFilePath)) {
+                    $zip->addFile($lowerFilePath, "{$id}/" . basename($lowerFilePath));
+                } else {
+                    Log::error("Lower STL file not found or is not a file for scan ID {$id}: {$lowerFilePath}");
+                }
+
+                $pdfPaths = json_decode($scan->pdf, true) ?? [];
+                foreach ($pdfPaths as $pdfPath) {
+                    $pdfFilePath = public_path($pdfPath);
+                    if (file_exists($pdfFilePath) && is_file($pdfFilePath)) {
+                        $zip->addFile($pdfFilePath, "{$id}/" . basename($pdfFilePath));
+                    } else {
+                        Log::error("PDF file not found or is not a file for scan ID {$id}: {$pdfFilePath}");
+                    }
+                }
+            }
+
+            if (!$zip->close()) {
+                Log::error("Could not close ZIP file at path: {$zipFilePath}");
+                return back()->withErrors('Could not create ZIP file.');
+            }
+
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            Log::error('Could not open ZIP file for creation at path: ' . $zipFilePath);
+            return back()->withErrors('Could not create ZIP file.');
+        }
+    }
+
+
 }

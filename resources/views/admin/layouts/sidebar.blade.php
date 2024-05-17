@@ -13,7 +13,6 @@
                     href="{{ route('admin.dashboard') }}"><i class="fas fa-fire"></i>
                     <span>{{ trans('messages.dashboard') }}</span></a></li>
 
-
             <li class="menu-header">Starter</li>
 
             {{-- <li class="dropdown">
@@ -34,6 +33,10 @@
                     href="{{ route('admin.labs.index') }}"><i class="fas fa-flask"></i>
                     <span>{{ trans('messages.labs') }}</span></a></li>
 
+            <li class="{{ request()->routeIs('admin.second_labs.index') ? 'active' : '' }}"><a class="nav-link"
+                    href="{{ route('admin.second_labs.index') }}"><i class="fas fa-vial"></i>
+                    <span>Second Labs</span></a></li>
+
             <li class="{{ request()->routeIs('admin.external_labs.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.external_labs.index') }}"><i class="fas fa-vials"></i>
                     <span>{{ trans('messages.external_labs') }}</span></a></li>
@@ -46,17 +49,13 @@
                 $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
             @endphp
 
-
             <li class="{{ request()->routeIs('admin.chat.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.chat.index') }}"><i class="fas fa-envelope"></i>
                     <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
 
-
             <li class="{{ request()->routeIs('admin.setting.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.setting.index') }}"><i class="fas fa-cog"></i>
                     <span>{{ trans('messages.settings') }}</span></a></li>
-
-
         </ul>
 
     </aside>

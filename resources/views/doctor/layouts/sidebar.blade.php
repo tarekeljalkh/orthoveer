@@ -22,9 +22,54 @@
                     href="{{ route('doctor.patients.index') }}"><i class="fas fa-user-injured"></i>
                     <span>{{ trans('messages.patients') }}</span></a></li>
 
-            <li class="{{ request()->routeIs('doctor.orders.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('doctor.orders.index') }}"><i class="fas fa-briefcase"></i>
-                    <span>{{ trans('messages.orders') }}</span></a></li>
+
+            @php
+                $doctorId = auth()->user()->id;
+
+                $allOrdersCount = App\Models\Scan::where('doctor_id', $doctorId)->count();
+
+                $pendingCount = App\Models\Scan::where('doctor_id', $doctorId)
+                    ->whereHas('latestStatus', function ($query) {
+                        $query->where('status', 'pending');
+                    })
+                    ->count();
+
+                $rejectedCount = App\Models\Scan::where('doctor_id', $doctorId)
+                    ->whereHas('latestStatus', function ($query) {
+                        $query->where('status', 'rejected');
+                    })
+                    ->count();
+
+                $completedCount = App\Models\Scan::where('doctor_id', $doctorId)
+                    ->whereHas('latestStatus', function ($query) {
+                        $query->where('status', 'completed');
+                    })
+                    ->count();
+
+                $deliveredCount = App\Models\Scan::where('doctor_id', $doctorId)
+                    ->whereHas('latestStatus', function ($query) {
+                        $query->where('status', 'delivered');
+                    })
+                    ->count();
+            @endphp
+
+            <li
+                class="dropdown {{ request()->routeIs('doctor.orders.index') || request()->routeIs('doctor.orders.pending') || request()->routeIs('doctor.orders.rejected') || request()->routeIs('doctor.orders.completed') || request()->routeIs('doctor.orders.delivered') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
+                    <span>Orders</span></a>
+                <ul class="dropdown-menu">
+                    <li class="{{ request()->routeIs('doctor.orders.index') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('doctor.orders.index') }}">All Orders ({{ $allOrdersCount }})</a></li>
+                    <li class="{{ request()->routeIs('doctor.orders.pending') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('doctor.orders.pending') }}">Pending Orders ({{ $pendingCount }})</a></li>
+                    <li class="{{ request()->routeIs('doctor.orders.rejected') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('doctor.orders.rejected') }}">Rejected Orders ({{ $rejectedCount }})</a></li>
+                    <li class="{{ request()->routeIs('doctor.orders.completed') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('doctor.orders.completed') }}">Completed Orders ({{ $completedCount }})</a></li>
+                    <li class="{{ request()->routeIs('doctor.orders.delivered') ? 'active' : '' }}"><a class="nav-link"
+                            href="{{ route('doctor.orders.delivered') }}">Delivered Orders ({{ $deliveredCount }})</a></li>
+                </ul>
+            </li>
 
             @php
                 $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
