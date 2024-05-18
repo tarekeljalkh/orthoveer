@@ -20,7 +20,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
-        return view('lab.orders.index', compact('orders'));
+        return view('second_lab.orders.index', compact('orders'));
     }
 
     /**
@@ -32,7 +32,7 @@ class OrderController extends Controller
             $query->where('status', 'completed');
         })->get();
 
-        return view('lab.orders.create', compact('completedScans'));
+        return view('second_lab.orders.create', compact('completedScans'));
     }
 
     /**
@@ -90,7 +90,7 @@ class OrderController extends Controller
             // Attempt to upload the CSV to the FTP server
             if ($this->uploadCSV($csvPath)) {
                 DB::commit();
-                return redirect()->route('lab.orders.index')->with('success', 'Order placed and CSV uploaded successfully.');
+                return redirect()->route('second_lab.orders.index')->with('success', 'Order placed and CSV uploaded successfully.');
             } else {
                 DB::rollBack();
                 return back()->with('error', 'Failed to upload the CSV to the FTP server.');
@@ -175,7 +175,7 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::findOrFail($id);
-        return view('lab.orders.show', compact('order'));
+        return view('second_lab.orders.show', compact('order'));
     }
 
     /**

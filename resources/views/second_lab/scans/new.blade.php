@@ -106,7 +106,7 @@
 
                                 if (selectedData.length === 1) {
                                     var scanId = selectedData[0][0];
-                                    var url = "{{ route('lab.scans.downloadStl', ':id') }}".replace(':id',
+                                    var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id',
                                         scanId);
 
                                     $.ajax({
@@ -132,7 +132,7 @@
                                     var scanIds = selectedData.map(function(data) {
                                         return data[0];
                                     });
-                                    var url = "{{ route('lab.scans.printMultiple') }}";
+                                    var url = "{{ route('second_lab.scans.printMultiple') }}";
 
                                     $.ajax({
                                         url: url,
@@ -171,7 +171,7 @@
                                 if (selectedData.length === 1) {
                                     // Single selection
                                     var scanId = selectedData[0][0]; // Assuming scan ID is at index 0
-                                    var url = "{{ route('lab.scans.printScan', ':id') }}".replace(':id',
+                                    var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id',
                                         scanId);
 
                                     $.ajax({
@@ -197,7 +197,7 @@
                                     }); // Assuming scan ID is at index 0
 
                                     scanIds.forEach(function(scanId) {
-                                        var url = "{{ route('lab.scans.printScan', ':id') }}"
+                                        var url = "{{ route('second_lab.scans.printScan', ':id') }}"
                                             .replace(':id', scanId);
 
                                         $.ajax({

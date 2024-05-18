@@ -27,10 +27,6 @@
                     href="{{ route('lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.all_scans') }}</span></a></li>
 
-            <li class="{{ request()->routeIs('lab.orders.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('lab.orders.index') }}"><i class="fas fa-briefcase"></i>
-                    <span>{{ trans('messages.orders') }}</span></a></li>
-
                     @php
                     $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
                 @endphp

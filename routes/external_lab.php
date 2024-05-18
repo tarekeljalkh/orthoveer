@@ -3,7 +3,6 @@
 use App\Http\Controllers\ExternalLab\ChatController;
 use App\Http\Controllers\ExternalLab\ExternalLabController;
 use App\Http\Controllers\ExternalLab\NotificationController;
-use App\Http\Controllers\ExternalLab\OrderController;
 use App\Http\Controllers\ExternalLab\ProfileController;
 use App\Http\Controllers\ExternalLab\ScanController;
 use Illuminate\Support\Facades\Route;
@@ -40,10 +39,6 @@ Route::post('/scans/downloadMultiple', [ScanController::class, 'downloadMultiple
 
 /** Scan Notification Routes */
 Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');
-
-
-//Order Routes
-Route::resource('orders', OrderController::class);
 
 /** chat Routes */
 Route::get('chat', [ChatController::class, 'index'])->name('chat.index');

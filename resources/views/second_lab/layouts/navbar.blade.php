@@ -18,7 +18,7 @@
             $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
         @endphp
 
-        @if (auth()->user()->role === 'lab')
+        @if (auth()->user()->role === 'second_lab')
             <li class="dropdown dropdown-list-toggle">
                 <a href="{{ route('second_lab.chat.index') }}"
                     class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i

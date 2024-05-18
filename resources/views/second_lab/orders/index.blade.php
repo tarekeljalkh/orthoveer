@@ -1,14 +1,14 @@
-@extends('lab.layouts.master')
+@extends('second_lab.layouts.master')
 
 @section('content')
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                <a href="{{ route('second_lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
             <h1>{{ trans('messages.orders') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.orders') }}</a></div>
             </div>
         </div>
@@ -21,7 +21,7 @@
                         <div class="card-header">
                             <h4>{{ trans('messages.orders') }}</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('lab.orders.create') }}" class="btn btn-success">{{ trans('messages.create_new') }} <i
+                                <a href="{{ route('second_lab.orders.create') }}" class="btn btn-success">{{ trans('messages.create_new') }} <i
                                         class="fas fa-plus"></i></a>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $order)
-                                    <tr onclick="window.location='{{ route('lab.orders.show', $order->id) }}';"
+                                    <tr onclick="window.location='{{ route('second_lab.orders.show', $order->id) }}';"
                                         style="cursor:pointer;">
                                         <td>{{ $order->id }}</td>
                                             <td>{{ $order->dhl_tracking_number }}</td>

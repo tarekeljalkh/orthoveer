@@ -1,4 +1,4 @@
-@extends('lab.layouts.master')
+@extends('second_lab.layouts.master')
 
 @section('content')
     <section class="section">
@@ -9,8 +9,8 @@
             <h1>{{ trans('messages.create_new_order') }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a
-                        href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('lab.orders.index') }}">{{ trans('messages.orders') }}</a>
+                        href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('second_lab.orders.index') }}">{{ trans('messages.orders') }}</a>
                 </div>
                 <div class="breadcrumb-item">{{ trans('messages.create_new_order') }}</div>
             </div>
@@ -21,14 +21,14 @@
 
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card">
-                        <form action="{{ route('lab.orders.store') }}" method="post" class="needs-validation" novalidate
+                        <form action="{{ route('second_lab.orders.store') }}" method="post" class="needs-validation" novalidate
                             enctype="multipart/form-data">
                             @csrf
                             <div class="card-header">
                                 <h4>{{ trans('messages.create_new_order') }}</h4>
                             </div>
                             <div class="card-body">
-                                <input type="hidden" name="lab_id" value="{{ auth()->user()->id }}">
+                                <input type="hidden" name="second_lab_id" value="{{ auth()->user()->id }}">
 
                                 <div class="form-group col-md-12 col-12">
                                     <label for="scans">Select Scans:</label>

@@ -57,10 +57,10 @@
         <div class="main-wrapper main-wrapper-1">
 
             <!-- Navbar -->
-            @include('lab.layouts.navbar')
+            @include('second_lab.layouts.navbar')
 
             <!-- Sidebar -->
-            @include('lab.layouts.sidebar')
+            @include('second_lab.layouts.sidebar')
 
             <!-- Main Content -->
             <div class="main-content">

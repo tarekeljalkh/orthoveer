@@ -1,14 +1,14 @@
-@extends('lab.layouts.master')
+@extends('second_lab.layouts.master')
 
 @section('content')
 <section class="section">
     <div class="section-header">
         <div class="section-header-back">
-            <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            <a href="{{ route('second_lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
         <h1>{{ trans('orders') }}</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+            <div class="breadcrumb-item active"><a href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
             <div class="breadcrumb-item">{{ trans('order') }}: {{ $order->id }}</div>
         </div>
     </div>

@@ -35,6 +35,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended('/doctor/dashboard');
         } elseif ($request->user()->role === 'lab') {
             return redirect()->intended('/lab/dashboard');
+        } elseif ($request->user()->role === 'second_lab') {
+            return redirect()->intended('/second_lab/dashboard');
         } elseif ($request->user()->role === 'external_lab') {
             return redirect()->intended('/external_lab/dashboard');
         }
