@@ -1,0 +1,31 @@
+pending is new scan
+total scans is downloaded
+and pending is the last box 
+
+checkboxes to download scans
+
+print files to the sidebar and make hasmany to scans
+
+all scans (show patient name)
+
+when lab uploads data, he can upload 1 or 2 stl files 
+ 
+lab can upload scan
+
+admin can make a due date in type of works for each lab
+
+add vat to type of works after my prices 20%
+
+prescription: adjust the prescription template
+
+second lab selects the scans he want to send via dhl and send them and the ones that arent sent will be displayed to the admin
+
+
+dooctor information to be corrected with the dhl form
+
+
+each doctor has is own type of work
+
+
+rejection email: patient name, and scan id , and link to direct goto
+
