@@ -30,6 +30,8 @@ class LabController extends Controller
         // Assuming you have an accessor in the Scan model that dynamically gives you the current status
         // Filter scans based on their current status
         //$todaysScans = $scans->where('created_at', '>=', now()->startOfDay())->count();
+        $newScans = $scans->where('latestStatus.status', 'new')->count();
+        $downloadedScans = $scans->where('latestStatus.status', 'downloaded')->count();
         $pendingScans = $scans->where('latestStatus.status', 'pending')->count();
         $rejectedScans = $scans->where('latestStatus.status', 'rejected')->count();
         $completedScans = $scans->where('latestStatus.status', 'completed')->count();
@@ -37,7 +39,7 @@ class LabController extends Controller
         $totalScans = $scans->count();
 
 
-        return view('lab.dashboard', compact('pendingScans', 'rejectedScans', 'completedScans', 'deliveredScans', 'totalScans'));
+        return view('lab.dashboard', compact('newScans', 'downloadedScans', 'pendingScans', 'rejectedScans', 'completedScans', 'deliveredScans', 'totalScans'));
     }
 
     function clearNotification() {

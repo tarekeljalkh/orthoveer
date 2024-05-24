@@ -27,9 +27,18 @@
                     href="{{ route('lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.all_scans') }}</span></a></li>
 
-                    @php
-                    $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
-                @endphp
+            <li class="{{ request()->routeIs('lab.scans.create') ? 'active' : '' }}"><a class="nav-link"
+                    href="{{ route('lab.scans.create') }}"><i class="fas fa-plus"></i>
+                    <span>{{ trans('messages.create_scan') }}</span></a></li>
+
+            <li class="#"><a class="nav-link" href="#"><i class="fas fa-file-upload"></i>
+                    <span>{{ trans('messages.print_files') }}</span></a></li>
+
+
+
+            @php
+                $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
+            @endphp
 
 
             <li class="{{ request()->routeIs('lab.chat.index') ? 'active' : '' }}"><a class="nav-link"

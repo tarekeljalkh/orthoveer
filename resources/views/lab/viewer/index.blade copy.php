@@ -135,7 +135,7 @@
 
 
                         {{-- Only show "Complete" and "Reject" buttons for "pending" or "resubmitted" statuses --}}
-                        @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                        @if ($lastStatus ==='new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
                             <div class="card-footer">
                                 <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
                                     @csrf
@@ -161,7 +161,7 @@
                     @if ($lastStatus === 'new')
                         <div class="card">
                             <div class="card-header">
-                                <h4>Upload And Complete Scan</h4>
+                                <h4>Upload 3D And Complete Scan</h4>
                             </div>
                             <div class="card-body">
                                 <!-- Begin Form Content -->
@@ -170,26 +170,9 @@
                                     @csrf
                                     @method('post')
 
-                                    <div class="row">
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_upper') }} <i
-                                                    class="fas fa-arrow-up"></i></label>
-                                            <div id="stl_upper_container">
-                                                <div id="stl_upper_viewer_lab" style="width:150px; height:150px;"></div>
-                                            </div>
-                                            <input type="file" name="stl_upper_lab" class="form-control">
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_lower') }} <i
-                                                    class="fas fa-arrow-down"></i></label>
-                                            <div id="stl_lower_container">
-                                                <div id="stl_lower_viewer_lab" style="width:150px; height:150px;"></div>
-                                            </div>
-                                            <input type="file" name="stl_lower_lab" class="form-control">
-                                        </div>
-
+                                    <div class="form-group">
+                                        <label for="lab_file">Upload Finished Files as ZIP:</label>
+                                        <input type="file" name="lab_file" id="lab_file" class="form-control" required>
                                     </div>
 
                                     <button type="submit" name="action" value="complete" class="btn btn-success">
@@ -240,73 +223,33 @@
         </div>
     </section>
 @endsection
+
 @push('scripts')
     <script src="{{ asset('assets/js/stl_js/stl_viewer.min.js') }}"></script>
     <script>
-        function initializeOrUpdateStlViewer(containerId, fileUrl) {
-            let container = document.getElementById(containerId);
-
-            if (!container) {
-                const newContainer = document.createElement('div');
-                newContainer.id = containerId;
-                newContainer.style.width = '150px';
-                newContainer.style.height = '150px';
-                document.body.appendChild(newContainer);
-                container = newContainer;
-            } else {
-                container.innerHTML = ''; // Clear previous content
-            }
-
-            new StlViewer(container, {
-                models: [{
-                    filename: fileUrl,
-                    color: "#FFC0CB"
-                }]
-            });
-        }
-
         $(document).ready(function() {
-            // Initialize the STL viewers for the initial load
-            if ("{{ $scan->stl_upper }}") {
-                new StlViewer(
-                    document.getElementById("stl_upper"), {
-                        models: [{
-                            id: 1,
-                            filename: "{{ asset($scan->stl_upper) }}",
-                            display: "smooth",
-                            color: "#FFC0CB"
-                        }]
-                    }
-                );
-            }
-
-            if ("{{ $scan->stl_lower }}") {
-                new StlViewer(
-                    document.getElementById("stl_lower"), {
-                        models: [{
-                            id: 2,
-                            filename: "{{ asset($scan->stl_lower) }}",
-                            display: "smooth",
-                            color: "#FFC0CB"
-                        }]
-                    }
-                );
-            }
-
-            // Handle file input change for lab uploads
-            $('input[name="stl_upper_lab"]').change(function(e) {
-                if (this.files && this.files[0]) {
-                    const url = URL.createObjectURL(this.files[0]);
-                    initializeOrUpdateStlViewer("stl_upper_viewer_lab", url);
+            var stl_viewer_upper = new StlViewer(
+                document.getElementById("stl_upper"), {
+                    models: [{
+                        id: 1,
+                        filename: "{{ asset($scan->stl_upper) }}",
+                        display: "smooth",
+                        color: "#FFC0CB"
+                    }]
                 }
-            });
+            );
 
-            $('input[name="stl_lower_lab"]').change(function(e) {
-                if (this.files && this.files[0]) {
-                    const url = URL.createObjectURL(this.files[0]);
-                    initializeOrUpdateStlViewer("stl_lower_viewer_lab", url);
+            var stl_viewer_lower = new StlViewer(
+                document.getElementById("stl_lower"), {
+                    models: [{
+                        id: 2,
+                        filename: "{{ asset($scan->stl_lower) }}",
+                        display: "smooth",
+                        color: "#FFC0CB"
+                    }]
                 }
-            });
+            );
+            stl_viewer.download_model(2, '{{ asset($scan->stl_lower) }}');
         });
     </script>
 @endpush

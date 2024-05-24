@@ -34,6 +34,7 @@ return [
     'new_scan' => 'Nouveau Scan',
     'clear' => 'Effacer',
     'select_existing_patient' => 'Sélectionner Un Patient Existant',
+    'select_existing_doctor' => 'Sélectionner Un Docteur Existant',
     'first_name' => 'Le Prénom',
     'last_name' => 'Nom De Famille',
     'date_of_birth' => 'Date de Naissance',
@@ -151,5 +152,17 @@ return [
     'completed_order' => 'Commande Complétée',
     'delivered_orders' => 'Commandes Livrées',
     'delivered_order' => 'Commande Livrée',
+
+    'new_scans' => 'Nouvelles Analyses',
+    'downloaded_scans' => 'Scans Téléchargés',
+    'rejected_scans' => 'Analyses Rejetées',
+    'upload_scan' => "Télécharger L'analyse",
+    'upload_scans' => 'Télécharger Des Analyses',
+    'uploaded_scan' => 'Numérisation Téléchargée',
+    'uploaded_scans' => 'Scans Téléchargés',
+    'print_file' => 'Imprimer De Fichier',
+    'print_files' => 'Imprimer Des Fichiers',
+    'create_scan' => 'créer une analyse',
+    'create_scans' => 'créer des analyses',
 
 ];

@@ -73,7 +73,7 @@ class ScanController extends Controller
         // Create a new status update for the scan
         $statusUpdate = new Status([
             'scan_id' => $scan->id,
-            'status' => 'pending', // Setting the initial status to 'pending'
+            'status' => 'new', // Setting the initial status to 'pending'
             'note' => $request->note, // Assuming the note comes from the request
             'updated_by' => Auth::id(), // Assuming the current user made this update
         ]);
@@ -198,7 +198,7 @@ class ScanController extends Controller
         // Create a new status update for the scan
         $statusUpdate = new Status([
             'scan_id' => $scan->id,
-            'status' => 'pending', // Setting the initial status to 'pending'
+            'status' => 'new', // Setting the initial status to 'pending'
             'note' => $request->note, // Assuming the note comes from the request
             'updated_by' => Auth::id(), // Assuming the current user made this update
         ]);

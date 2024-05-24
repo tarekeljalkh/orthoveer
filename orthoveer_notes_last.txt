@@ -1,16 +1,16 @@
 pending is new scan
 total scans is downloaded
-and pending is the last box 
+and pending is the last box -> Done
 
-checkboxes to download scans
-
-print files to the sidebar and make hasmany to scans
-
-all scans (show patient name)
+all scans (show patient name) -> done
 
 when lab uploads data, he can upload 1 or 2 stl files 
  
 lab can upload scan
+
+print files to the sidebar and make hasmany to scans
+
+checkboxes to download scans
 
 admin can make a due date in type of works for each lab
 

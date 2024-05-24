@@ -26,11 +26,12 @@
                                 <thead>
                                     <tr>
                                         <th hidden>ID</th> <!-- Hidden ID Column -->
-                                        <th>Doctor Name</th>
-                                        <th>Due Date</th>
-                                        <th>Status</th>
-                                        <th>Note</th>
-                                        <th>Actions</th>
+                                        <th>{{ trans('messages.doctor') }}</th>
+                                        <th>{{ trans('messages.patient') }}</th>
+                                        <th>{{ trans('messages.due_date') }}</th>
+                                        <th>{{ trans('messages.status') }}</th>
+                                        <th>{{ trans('messages.note') }}</th>
+                                        <th>{{ trans('messages.action') }} </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -39,15 +40,19 @@
                                             <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
                                             <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
                                             </td>
+                                            <td>{{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}
+                                            </td>
                                             <td>{{ $scan->due_date->format('d/m/Y') }}</td>
                                             <td>
                                                 <div
                                                     class="badge
+                                                    {{ $scan->latestStatus->status == 'new' ? 'badge-primary' : '' }}
+                                                    {{ $scan->latestStatus->status == 'downloaded' ? 'badge-light' : '' }}
                                                     {{ $scan->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
                                                     {{ $scan->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
                                                     {{ $scan->latestStatus->status == 'completed' ? 'badge-success' : '' }}
                                                     {{ $scan->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
-                                                    {{ $scan->latestStatus->status }}
+                                                {{ $scan->latestStatus->status }}
                                                 </div>
                                             </td>
                                             <td>{{ $scan->latestStatus->note }}</td>

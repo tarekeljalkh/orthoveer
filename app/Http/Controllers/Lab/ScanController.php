@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\ScanRejected;
 use App\Models\Comment;
 use App\Models\Notification;
+use App\Models\Patient;
 use App\Models\Scan;
 use App\Models\Status;
+use App\Models\TypeofWork;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +75,7 @@ class ScanController extends Controller
         // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
         // Note: This filtering happens in memory, not in the database.
         $newScans = $scans->filter(function ($scan) {
-            return $scan->current_status == 'pending';
+            return $scan->current_status == 'new';
         });
 
         return view('lab.scans.new', compact('newScans'));
@@ -152,7 +154,11 @@ class ScanController extends Controller
      */
     public function create()
     {
-        //
+        //$patients = Patient::where('doctor_id', Auth::user()->id)->get();
+        $doctors = User::where('role', 'doctor')->get();
+        $patients = Patient::all();
+        $typeofWorks = TypeofWork::all();
+        return view('lab.scans.create', compact('doctors', 'patients', 'typeofWorks'));
     }
 
     public function viewer($id)

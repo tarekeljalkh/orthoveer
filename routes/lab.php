@@ -30,6 +30,8 @@ Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('s
 //Reassign Scan to another Lab
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 
+//print files
+
 Route::resource('scans', ScanController::class);
 /** Download Scan */
 Route::get('/scans/{scan}/download-stl', [ScanController::class, 'downloadStl'])->name('scans.downloadStl');

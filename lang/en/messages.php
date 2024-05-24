@@ -36,6 +36,7 @@ return [
     'new_scan' => 'New Scan',
     'clear' => 'Clear',
     'select_existing_patient' => 'Select Existing Patient',
+    'select_existing_doctor' => 'Select Existing Doctor',
     'first_name' => 'First Name',
     'last_name' => 'Last Name',
     'date_of_birth' => 'Date Of Birth',
@@ -153,4 +154,17 @@ return [
     'completed_order' => 'Completed Order',
     'delivered_orders' => 'Delivered Orders',
     'delivered_order' => 'Delivered Order',
+
+    'new_scans' => 'New Scans',
+    'downloaded_scans' => 'Downloaded Scans',
+    'rejected_scans' => 'Rejected Scans',
+    'upload_scan' => 'Upload Scan',
+    'upload_scans' => 'Upload Scans',
+    'uploaded_scan' => 'Uploaded Scan',
+    'uploaded_scans' => 'Uploaded Scans',
+    'print_file' => 'Print File',
+    'print_files' => 'Print Files',
+    'create_scan' => 'Create Scan',
+    'create_scans' => 'Create Scans',
+
 ];

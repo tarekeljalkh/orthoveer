@@ -28,9 +28,10 @@
                                     <tr>
                                         <th hidden>ID</th> <!-- Hidden ID Column -->
                                         <th>{{ trans('messages.doctor') }}</th>
+                                        <th>{{ trans('messages.patient') }}</th>
                                         <th>{{ trans('messages.due_date') }}</th>
-                                        <th>{{ trans('messages.note') }}</th>
                                         <th>{{ trans('messages.status') }}</th>
+                                        <th>{{ trans('messages.note') }}</th>
                                         <th>{{ trans('messages.action') }} </th>
                                     </tr>
                                 </thead>
@@ -39,11 +40,13 @@
                                         <tr>
                                             <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
                                             <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                            <td>{{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
                                             <td>{{ $scan->due_date->format('d/m/Y') }}</td>
-                                            <td>{{ optional($scan->latestStatus)->note }}</td>
                                             <td>
                                                 <div
                                                     class="badge
+                                                    {{ optional($scan->latestStatus)->status == 'new' ? 'badge-primary' : '' }}
+                                                    {{ optional($scan->latestStatus)->status == 'downloaded' ? 'badge-light' : '' }}
                                                 {{ optional($scan->latestStatus)->status == 'pending' ? 'badge-warning' : '' }}
                                                 {{ optional($scan->latestStatus)->status == 'resubmitted' ? 'badge-info' : '' }}
                                                 {{ optional($scan->latestStatus)->status == 'completed' ? 'badge-success' : '' }}
@@ -51,6 +54,7 @@
                                                     {{ trans('messages.' . optional($scan->latestStatus)->status) ?? trans('messages.no_status') }}
                                                 </div>
                                             </td>
+                                            <td>{{ optional($scan->latestStatus)->note }}</td>
                                             <td>
                                                 <div class="btn-group dropleft">
                                                     <button type="button" class="btn btn-dark dropdown-toggle"
