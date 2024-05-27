@@ -88,10 +88,19 @@
                                         </select>
                                     </div>
 
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.lab_due_date') }}</label>
+                                        <input name="lab_due_date" type="number" class="form-control" value="{{ old('lab_due_date', $typeofwork->lab_due_date ? $typeofwork->lab_due_date : '') }}">
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
                                     <div class="form-group col-md-6 col-12">
                                         <label>Select Secondary Lab</label>
                                         <select class="form-control select2" id="second_lab_id" name="second_lab_id">
-                                            <option value="">None</option>  <!-- Set value to an empty string which represents null -->
+                                            <option value="">None</option>
+                                            <!-- Set value to an empty string which represents null -->
                                             @foreach ($second_labs as $second_lab)
                                                 <option value="{{ $second_lab->id }}"
                                                     @if ($second_lab->id == $typeofwork->second_lab_id) selected @endif>
@@ -100,13 +109,21 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.second_lab_due_date') }}</label>
+                                        <input name="second_lab_due_date" type="number" class="form-control" value="{{ old('second_lab_due_date', $typeofwork->second_lab_due_date ? $typeofwork->second_lab_due_date : '') }}">
+                                    </div>
                                 </div>
+
 
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
                                         <label>Select External Lab</label>
                                         <select class="form-control select2" id="external_lab_id" name="external_lab_id">
-                                            <option value="">None</option>  <!-- Set value to an empty string which represents null -->
+                                            <option value="">None</option>
+                                            <!-- Set value to an empty string which represents null -->
                                             @foreach ($external_labs as $external_lab)
                                                 <option value="{{ $external_lab->id }}"
                                                     @if ($external_lab->id == $typeofwork->external_lab_id) selected @endif>
@@ -117,6 +134,11 @@
                                     </div>
                                 </div>
 
+
+                                <div class="form-group col-md-12 col-12">
+                                    <label>{{ trans('messages.external_lab_due_date') }}</label>
+                                    <input name="external_lab_due_date" type="number" class="form-control" value="{{ old('external_lab_due_date', $typeofwork->external_lab_due_date ? $typeofwork->external_lab_due_date : '') }}">
+                                </div>
                             </div>
 
                             <div class="card-footer text-right">
@@ -128,5 +150,4 @@
             </div>
         </div>
     </section>
-
 @endsection

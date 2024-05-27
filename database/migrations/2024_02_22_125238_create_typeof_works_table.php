@@ -23,10 +23,13 @@ return new class extends Migration
             $table->double('accessories')->nullable();
             $table->unsignedBigInteger('lab_id');
             $table->foreign('lab_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('lab_due_date')->nullable();
             $table->unsignedBigInteger('second_lab_id')->nullable(); // make nullable
             $table->foreign('second_lab_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('second_lab_due_date')->nullable();
             $table->unsignedBigInteger('external_lab_id')->nullable(); // make nullable
             $table->foreign('external_lab_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('external_lab_due_date')->nullable();
             $table->timestamps();
         });
     }

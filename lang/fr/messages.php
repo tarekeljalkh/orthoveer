@@ -164,5 +164,11 @@ return [
     'print_files' => 'Imprimer Des Fichiers',
     'create_scan' => 'créer une analyse',
     'create_scans' => 'créer des analyses',
+    'downloaded' => 'Téléchargé',
+    'lab_due_date' => "Date D'échéance Du Laboratoire",
+    'second_lab_due_date' => "Date D'échéance Du Deuxième Laboratoire",
+    'external_lab_due_date' => "Date D'échéance Du Laboratoire Externe",
+    'second_lab' => 'Deuxième Laboratoire',
+    'external_lab' => 'Laboratoire Externe',
 
 ];

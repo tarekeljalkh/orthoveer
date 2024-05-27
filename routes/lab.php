@@ -3,6 +3,7 @@
 use App\Http\Controllers\Lab\ChatController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
+use App\Http\Controllers\Lab\PrintFileController;
 use App\Http\Controllers\Lab\ScanController;
 use App\Http\Controllers\Lab\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,8 @@ Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('s
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 
 //print files
+Route::get('lab/printfiles/download/{id}', [PrintFileController::class, 'download'])->name('printfiles.download');
+Route::resource('printfiles', PrintFileController::class);
 
 Route::resource('scans', ScanController::class);
 /** Download Scan */

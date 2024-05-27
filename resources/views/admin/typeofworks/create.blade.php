@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-12 col-12">
                                         <label>Select Primary Lab</label>
                                         <select class="form-control select2" id="lab_id" name="lab_id">
                                             @foreach ($labs as $lab)
@@ -77,7 +77,16 @@
                                         </select>
                                     </div>
 
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.lab_due_date') }}</label>
+                                        <input name="lab_due_date" type="number" class="form-control">
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-12">
                                         <label>Select Second Lab</label>
                                         <select class="form-control select2" id="second_lab_id" name="second_lab_id">
                                             <option value="">None</option>  <!-- Set value to an empty string which represents null -->
@@ -87,6 +96,12 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.second_lab_due_date') }}</label>
+                                        <input name="second_lab_due_date" type="number" class="form-control">
+                                    </div>
+
                                 </div>
 
                                 <div class="row">
@@ -100,6 +115,12 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.external_lab_due_date') }}</label>
+                                        <input name="external_lab_due_date" type="number" class="form-control">
+                                    </div>
+
                                 </div>
 
                             </div>

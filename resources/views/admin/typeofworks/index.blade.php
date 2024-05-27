@@ -40,8 +40,11 @@
                                             <th>My Benefit</th>
                                             <th>Accessories</th>
                                             <th>{{ trans('messages.lab') }}</th>
-                                            <th>Second Lab</th>
-                                            <th>External Lab</th>
+                                            <th>{{ trans('messages.lab_due_date') }}</th>
+                                            <th>{{ trans('messages.second_lab') }}</th>
+                                            <th>{{ trans('messages.second_lab_due_date') }} </th>
+                                            <th>{{ trans('messages.external_lab') }}</th>
+                                            <th>{{ trans('messages.external_lab_due_date') }} </th>
                                             <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
@@ -68,6 +71,7 @@
                                                     <span
                                                         class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span>
                                                 </td>
+                                                <td>{{ $typeofwork->lab_due_date }}</td>
                                                 <td>
                                                     @if ($typeofwork->secondLab)
                                                         <span
@@ -76,6 +80,7 @@
                                                         No Secondary Lab
                                                     @endif
                                                 </td>
+                                                <td>{{ $typeofwork->second_lab_due_date }} </td>
                                                 <td>
                                                     @if ($typeofwork->externalLab)
                                                         <span
@@ -84,7 +89,7 @@
                                                         No External Lab
                                                     @endif
                                                 </td>
-
+                                                <td>{{ $typeofwork->external_lab_due_date }}</td>
                                                 <td>
                                                     <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}"
                                                         class="btn btn-primary">Edit</a>

@@ -17,8 +17,6 @@
             <form action="{{ route('lab.scans.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
-                <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
-
                 <div class="row">
 
                     {{-- Doctor Section --}}
@@ -30,7 +28,7 @@
                                     <select class="form-control select2" name="doctor_id" id="doctorSelect">
                                         <option value="0" disabled selected>{{ trans('messages.select_existing_doctor') }}...</option>
                                         @foreach ($doctors as $doctor)
-                                            <option value="{{ $doctor->id }}" data-first-name="{{ $doctor->first_name }}" data-last-name="{{ $doctor->last_name }}">
+                                            <option value="{{ $doctor->id }}" data-first-name="{{ $doctor->first_name }}" data-last-name="{{ $doctor->last_name }}" data-email="{{ $doctor->email }}">
                                                 {{ $doctor->last_name }}, {{ $doctor->first_name }}
                                             </option>
                                         @endforeach
@@ -50,6 +48,12 @@
                                         <label>{{ trans('messages.last_name') }}</label>
                                         <input name="doctor_last_name" type="text" class="form-control" required="">
                                     </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.email') }}</label>
+                                        <input name="doctor_email" type="text" class="form-control" required="">
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -261,10 +265,12 @@
                 var data = e.params.data;
                 var doctorfirstName = $(data.element).data('first-name');
                 var doctorlastName = $(data.element).data('last-name');
+                var doctoremail = $(data.element).data('email');
 
                 // Fill the form fields
                 $('input[name="doctor_first_name"]').val(doctorfirstName);
                 $('input[name="doctor_last_name"]').val(doctorlastName);
+                $('input[name="doctor_email"]').val(doctoremail);
             });
 
             // Reset doctor form when clear button is clicked
@@ -275,7 +281,7 @@
                 $('#doctorSelect').val(0).trigger('change');
 
                 // Reset form fields
-                $('input[name="doctor_first_name"], input[name="doctor_last_name"]').val('');
+                $('input[name="doctor_first_name"], input[name="doctor_last_name"], input[name="doctor_email"]').val('');
 
                 // Disable clear button again
                 $(this).css({'pointer-events': 'none', 'opacity': '0.5'});

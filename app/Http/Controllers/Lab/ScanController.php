@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Lab;
 
 use App\Events\ScanCreateEvent;
 use App\Http\Controllers\Controller;
+use App\Mail\ScanCreated;
+use App\Mail\ScanCreatedToLab;
 use App\Mail\ScanRejected;
 use App\Models\Comment;
 use App\Models\Notification;
@@ -181,8 +183,144 @@ class ScanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the input
+        $request->validate([
+            'stl_upper' => 'nullable|file',
+            'stl_lower' => 'nullable|file',
+            'doctor_first_name' => 'required|string',
+            'doctor_last_name' => 'required|string',
+            'doctor_email' => 'required|email',
+            'patient_first_name' => 'required|string',
+            'patient_last_name' => 'required|string',
+            'patient_dob' => 'required|date',
+            'patient_gender' => 'required|string|in:male,female',
+        ]);
+
+        if (!$request->hasFile('stl_upper') && !$request->hasFile('stl_lower')) {
+            toastr()->warning('Please upload at least one STL file (upper or lower).');
+            return redirect()->back();
+        }
+
+        // Handle doctor information
+        $doctor = null;
+        if ($request->has('doctor_id')) {
+            try {
+                $doctor = User::findOrFail($request->doctor_id);
+                $doctor->first_name = $request->doctor_first_name;
+                $doctor->last_name = $request->doctor_last_name;
+                $doctor->email = $request->doctor_email;
+                $doctor->save();
+            } catch (\Exception $e) {
+                toastr()->warning('Selected doctor not found.');
+                return redirect()->back();
+            }
+        } else {
+            // Add new Doctor
+            $doctor = new User();
+            $doctor->role = 'doctor';
+            $doctor->first_name = $request->doctor_first_name;
+            $doctor->last_name = $request->doctor_last_name;
+            $doctor->email = $request->doctor_email;
+            $doctor->password = bcrypt('password');
+            $doctor->save();
+        }
+
+        // Handle patient information
+        $patient = null;
+        if ($request->has('patient_id')) {
+            try {
+                $patient = Patient::findOrFail($request->patient_id);
+                $patient->first_name = $request->patient_first_name;
+                $patient->last_name = $request->patient_last_name;
+                $patient->dob = $request->patient_dob;
+                $patient->gender = $request->patient_gender;
+                $patient->save();
+            } catch (\Exception $e) {
+                toastr()->warning('Selected patient not found.');
+                return redirect()->back();
+            }
+        } else {
+            // Add new patient for this doctor
+            $patient = new Patient();
+            $patient->doctor_id = $doctor->id;
+            $patient->first_name = $request->patient_first_name;
+            $patient->last_name = $request->patient_last_name;
+            $patient->dob = $request->patient_dob;
+            $patient->gender = $request->patient_gender;
+
+            // Generate a unique chart number
+            $datePart = date('y-m-d');
+            $nineDigitNumber = mt_rand(100000000, 999999999);
+            $finalNumber = "{$datePart}-{$nineDigitNumber}";
+
+            $patient->chart_number = $finalNumber;
+            $patient->save();
+        }
+
+        $upperPath = $this->uploadImage($request, 'stl_upper');
+        $lowerPath = $this->uploadImage($request, 'stl_lower');
+
+        // Handling multiple file uploads
+        $pdfPaths = $this->uploadFiles($request, 'pdf');
+
+        // Add or update scan
+        $scan = new Scan();
+        $scan->doctor_id = $doctor->id;
+        $scan->patient_id = $patient->id;
+
+        // Add lab id from type of work id
+        $type = TypeofWork::findOrFail($request->typeofwork_id);
+        $scan->type_id = $request->typeofwork_id;
+        $scan->lab_id = $type->lab_id;
+        $scan->second_lab_id = $type->second_lab_id;
+        $scan->external_lab_id = $type->external_lab_id;
+
+        $scan->due_date = $request->due_date;
+        $scan->stl_upper = $upperPath;
+        $scan->stl_lower = $lowerPath;
+        $scan->pdf = json_encode($pdfPaths);
+        $scan->scan_date = now();
+        $scan->save();
+
+        // Create a new status update for the scan
+        $statusUpdate = new Status([
+            'scan_id' => $scan->id,
+            'status' => 'new',
+            'note' => $request->note,
+            'updated_by' => Auth::id(),
+        ]);
+
+        $statusUpdate->save();
+
+        // Send Email
+        $lab = User::findOrFail($type->lab_id);
+        $content = [
+            'doctorName' => 'Dr. ' . $doctor->first_name,
+            'dueDate' => $scan->due_date->format('d-m-y'),
+            'scanDate' => now()->format('d-m-y'),
+            'patientName' => $scan->patient->first_name,
+            'labName' => Auth::user()->last_name,
+        ];
+
+        try {
+            Mail::to(Auth::user()->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
+            Mail::to($lab->email)->send(new ScanCreatedToLab($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
+        } catch (\Exception $e) {
+            toastr()->warning($e->getMessage());
+        }
+
+        // Send Notification
+        $notification = new Notification();
+        $notification->sender_id = Auth::user()->id;
+        $notification->receiver_id = $doctor->id;
+        $notification->message = 'New Scan Created';
+        $notification->scan_id = $scan->id;
+        $notification->save();
+
+        toastr()->success(trans('messages.scan_created_successfully'));
+        return to_route('lab.scans.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -223,14 +361,25 @@ class ScanController extends Controller
     public function complete(Request $request, $id)
     {
         $request->validate([
-            'lab_file' => 'required|file|mimes:zip', // Allow only ZIP files
+            'stl_upper_lab' => 'nullable|file',
+            'stl_lower_lab' => 'nullable|file',
         ]);
+
+        if (!$request->hasFile('stl_upper_lab') && !$request->hasFile('stl_lower_lab')) {
+            // Using Toastr to display an error message
+            toastr()->warning('Please upload at least one STL file (upper or lower).');
+            return redirect()->back();
+        }
+
+        $upperPath = $this->uploadImage($request, 'stl_upper_lab');
+        $lowerPath = $this->uploadImage($request, 'stl_lower_lab');
 
         //find scan id
         $scan = Scan::findOrFail($id);
 
-        $file = $this->uploadImage($request, 'lab_file');
-        $scan->lab_file = $file;
+        $scan->stl_upper = $upperPath;
+        $scan->stl_lower = $lowerPath;
+
         $scan->save();
 
         // Create a new status update for the scan
@@ -358,7 +507,18 @@ class ScanController extends Controller
             return back()->withErrors('Could not create ZIP file.');
         }
 
+
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
+
+        // Create a new status update for the scan
+        $statusUpdate = new Status([
+            'scan_id' => $scan->id,
+            'status' => 'downloaded', // Setting the initial status to 'pending'
+            'note' => 'Downloaded', // Assuming the note comes from the request
+            'updated_by' => Auth::id(), // Assuming the current user made this update
+        ]);
+
+        $statusUpdate->save();
     }
 
     public function printMultiple(Request $request)
@@ -419,6 +579,4 @@ class ScanController extends Controller
             return back()->withErrors('Could not create ZIP file.');
         }
     }
-
-
 }

@@ -48,7 +48,38 @@ trait FileUploadTrait
     /**
      * Remove file
      */
-    function removeImage(string $path) : void {
+    function removeImage(string $path): void
+    {
+        if (File::exists(public_path($path))) {
+            File::delete(public_path($path));
+        }
+    }
+
+    public function uploadZip(Request $request, $inputName, $scanId, $basePath = "/uploads")
+    {
+        if ($request->hasFile($inputName)) {
+            $zip = $request->file($inputName);
+            $ext = $zip->getClientOriginalExtension();
+            $fileName = 'zip_' . uniqid() . '.' . $ext;
+
+            // Create the scan-specific directory if it doesn't exist
+            $scanPath = public_path($basePath . '/' . $scanId);
+            if (!file_exists($scanPath)) {
+                mkdir($scanPath, 0777, true);
+            }
+
+            // Move the file to the scan-specific directory
+            $zip->move($scanPath, $fileName);
+
+            return $basePath . '/' . $scanId . '/' . $fileName;
+        }
+
+        return NULL;
+    }
+
+
+    public function removeFile(string $path): void
+    {
         if (File::exists(public_path($path))) {
             File::delete(public_path($path));
         }

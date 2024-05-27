@@ -51,8 +51,11 @@ class TypeofWorkController extends Controller
         $typeofwork->my_benefit = $request->my_benefit;
         $typeofwork->accessories = $request->accessories;
         $typeofwork->lab_id = $request->lab_id;
+        $typeofwork->lab_due_date = $request->lab_due_date;
         $typeofwork->second_lab_id = $request->second_lab_id;
+        $typeofwork->second_lab_due_date = $request->second_lab_due_date;
         $typeofwork->external_lab_id = $request->external_lab_id;
+        $typeofwork->external_lab_due_date = $request->external_lab_due_date;
         $typeofwork->save();
 
         toastr()->success('Type of Work Added Successfully');
@@ -103,9 +106,12 @@ class TypeofWorkController extends Controller
         $typeofwork->my_benefit = $request->my_benefit;
         $typeofwork->accessories = $request->accessories;
         $typeofwork->lab_id = $request->lab_id;
+        $typeofwork->lab_due_date = $request->lab_due_date;
         $typeofwork->second_lab_id = $request->second_lab_id;
+        $typeofwork->second_lab_due_date = $request->second_lab_due_date;
         //$typeofwork->second_lab_id = $request->input('second_lab_id');  // Get the second lab id, handles null automatically
         $typeofwork->external_lab_id = $request->external_lab_id;
+        $typeofwork->external_lab_due_date = $request->external_lab_due_date;
         $typeofwork->save();
 
         toastr()->success('Type of Work Updated Successfully');

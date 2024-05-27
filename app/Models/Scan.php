@@ -69,4 +69,11 @@ class Scan extends Model
         return $this->belongsToMany(Order::class, 'order_scans')
             ->using(OrderScan::class); // Specifies to use OrderScan pivot model
     }
+
+        // Add the printFiles relationship
+        public function printFiles()
+        {
+            return $this->hasMany(PrintFile::class, 'scan_id');
+        }
+
 }

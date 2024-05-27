@@ -166,5 +166,10 @@ return [
     'print_files' => 'Print Files',
     'create_scan' => 'Create Scan',
     'create_scans' => 'Create Scans',
-
+    'downloaded' => 'Downloaded',
+    'lab_due_date' => 'Lab Due Date',
+    'second_lab_due_date' => 'Second Lab Due Date',
+    'external_lab_due_date' => 'External Lab Due Date',
+    'second_lab' => 'Second Lab',
+    'external_lab' => 'External Lab',
 ];
