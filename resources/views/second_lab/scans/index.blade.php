@@ -15,7 +15,6 @@
         </div>
 
         <div class="section-body">
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -31,11 +30,11 @@
                                         <th>{{ trans('messages.due_date') }}</th>
                                         <th>{{ trans('messages.note') }}</th>
                                         <th>{{ trans('messages.status') }}</th>
-                                        <th>{{ trans('messages.action') }} </th>
+                                        <th>{{ trans('messages.action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($scans as $scan)
+                                    @foreach ($filteredScans as $scan)
                                         <tr>
                                             <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
                                             <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
@@ -74,7 +73,6 @@
                                                                 class="fas fa-download"></i> Download The Scan</a>
                                                     </div>
                                                 </div>
-
                                             </td>
                                         </tr>
                                     @endforeach
@@ -87,7 +85,6 @@
         </div>
     </section>
 @endsection
-
 
 @push('scripts')
     <script>
@@ -107,8 +104,7 @@
 
                                 if (selectedData.length === 1) {
                                     var scanId = selectedData[0][0];
-                                    var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id',
-                                        scanId);
+                                    var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id', scanId);
 
                                     $.ajax({
                                         url: url,
@@ -172,8 +168,7 @@
                                 if (selectedData.length === 1) {
                                     // Single selection
                                     var scanId = selectedData[0][0]; // Assuming scan ID is at index 0
-                                    var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id',
-                                        scanId);
+                                    var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id', scanId);
 
                                     $.ajax({
                                         url: url,
@@ -198,8 +193,7 @@
                                     }); // Assuming scan ID is at index 0
 
                                     scanIds.forEach(function(scanId) {
-                                        var url = "{{ route('second_lab.scans.printScan', ':id') }}"
-                                            .replace(':id', scanId);
+                                        var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id', scanId);
 
                                         $.ajax({
                                             url: url,
@@ -209,11 +203,9 @@
                                             },
                                             success: function(data) {
                                                 var a = document.createElement('a');
-                                                var url = window.URL.createObjectURL(
-                                                    data);
+                                                var url = window.URL.createObjectURL(data);
                                                 a.href = url;
-                                                a.download = 'prescription-' + scanId +
-                                                    '.pdf';
+                                                a.download = 'prescription-' + scanId + '.pdf';
                                                 document.body.appendChild(a);
                                                 a.click();
                                                 window.URL.revokeObjectURL(url);
@@ -223,49 +215,10 @@
                                 }
                             }
                         }
-
                     ]
                 }
             },
             select: true
         });
-
-        // new DataTable('#pending', {
-        //     dom: 'Bfrtip', // Define the elements in the control layout
-        //     buttons: [{
-        //             extend: 'copyHtml5',
-        //             text: '<i class="fas fa-files-o"></i>', // Using FontAwesome icons
-        //             titleAttr: 'Copy'
-        //         },
-
-        //         <
-        //         i class = "fas fa-file-excel" > < /i> {
-        //             extend: 'excelHtml5',
-        //             text: '<i class="fa fa-file-excel-o"></i>',
-        //             titleAttr: 'Excel'
-        //         },
-        //         {
-        //             extend: 'csvHtml5',
-        //             text: '<i class="fa fa-file-text-o"></i>',
-        //             titleAttr: 'CSV'
-        //         },
-        //         {
-        //             extend: 'pdfHtml5',
-        //             text: '<i class="fa fa-file-pdf-o"></i>',
-        //             titleAttr: 'PDF'
-        //         },
-        //         {
-        //             extend: 'print',
-        //             text: '<i class="fa fa-print"></i> Print all (not just selected)',
-        //             titleAttr: 'Print',
-        //             exportOptions: {
-        //                 modifier: {
-        //                     selected: null
-        //                 }
-        //             }
-        //         }
-        //     ],
-        //     select: true
-        // });
     </script>
 @endpush

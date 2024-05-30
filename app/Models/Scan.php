@@ -13,6 +13,9 @@ class Scan extends Model
         'due_date' => 'datetime',
     ];
 
+    //protected $dates = ['due_date'];
+
+
     public function doctor()
     {
         return $this->belongsTo(User::class, 'doctor_id');
@@ -47,13 +50,6 @@ class Scan extends Model
         return $this->hasMany(Status::class);
     }
 
-
-    public function getCurrentStatusAttribute()
-    {
-        // Assuming 'status' is the relationship name for all related status updates
-        return $this->status()->latest('created_at')->first()->status ?? 'pending';
-    }
-
     public function latestStatus()
     {
         return $this->hasOne(Status::class)->latestOfMany();
@@ -75,5 +71,20 @@ class Scan extends Model
         {
             return $this->hasMany(PrintFile::class, 'scan_id');
         }
+
+            // Accessor for calculating the last due date
+    public function getLastDueDateAttribute()
+    {
+        if ($this->typeofwork) {
+            $labDueDate = $this->due_date->copy()->addDays($this->typeofwork->lab_due_date ?? 0);
+            $secondLabDueDate = $this->due_date->copy()->addDays($this->typeofwork->second_lab_due_date ?? 0);
+            $externalLabDueDate = $this->due_date->copy()->addDays($this->typeofwork->external_lab_due_date ?? 0);
+
+            return max($labDueDate, $secondLabDueDate, $externalLabDueDate);
+        }
+
+        return $this->due_date;
+    }
+
 
 }

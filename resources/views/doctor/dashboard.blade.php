@@ -13,7 +13,7 @@
              Clickable div --}}
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('doctor.orders.completed') }}"
+                <a href="{{ route('doctor.orders.index') }}"
                     style="text-decoration:none; color: inherit;">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">

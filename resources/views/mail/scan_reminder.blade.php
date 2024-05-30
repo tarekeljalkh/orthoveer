@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Case Submission Confirmation for {{ $content['patientName'] }}</title>
+    <title>Scan Due Reminder for {{ $labType }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -38,19 +38,19 @@
 <body>
     <div class="email-container">
         <div class="email-header">
-            <h1>Case Submission Confirmation</h1>
+            <h1>Scan Due Reminder for {{ $scan->id }}</h1>
         </div>
         <div class="email-body">
-            <p>Dear {{ $content['doctorName'] }},</p>
-            <p>Thank you for submitting the case for <strong>{{ $content['patientName'] }}</strong>.
-                <br><strong>Scan ID: {{ $content['scanId'] }}</strong><br>
-                <a href="{{ $content['doctor_scan_url'] }}">See Scan</a>
-            <br>Our team will review it promptly and provide updates as needed.</p>
+            <p>Dear Lab,</p>
+            <p>This is a reminder that the scan with the following details is due:</p>
+            <p><strong>Scan ID:</strong> {{ $scan->id }}<br>
+               <strong>Due Date:</strong> {{ $dueDate }}</p>
+            <p>Please ensure all necessary preparations are made.</p>
             <p>Regards,</p>
-            <p>Orthoveer</p>
+            <p>Your Company Name</p>
         </div>
         <div class="email-footer">
-            &copy; {{ date('Y') }} Orthoveer. All rights reserved.
+            &copy; {{ date('Y') }} Your Company Name. All rights reserved.
         </div>
     </div>
 </body>

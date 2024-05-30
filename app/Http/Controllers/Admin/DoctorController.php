@@ -43,7 +43,10 @@ class DoctorController extends Controller
             'mobile' => ['required', 'numeric'],
             'landline' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:500'],
-            'postal_code' => ['nullable', 'string', 'max:200'],
+            'postcode' => ['nullable', 'string', 'max:200'],
+            'street' => ['nullable', 'string', 'max:200'],
+            'suburb' => ['nullable', 'string', 'max:200'],
+            'country' => ['nullable', 'string', 'max:200'],
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
@@ -58,7 +61,10 @@ class DoctorController extends Controller
         $doctor->mobile = $request->mobile;
         $doctor->landline = $request->landline;
         $doctor->address = $request->address;
-        $doctor->postal_code = $request->postal_code;
+        $doctor->postcode = $request->postcode;
+        $doctor->street = $request->street;
+        $doctor->suburb = $request->suburb;
+        $doctor->country = $request->country;
         $doctor->role = 'doctor';
         $doctor->password = bcrypt($request->password);
         if ($request->verified === 'yes') {
@@ -106,7 +112,10 @@ class DoctorController extends Controller
             'mobile' => ['required', 'numeric'],
             'landline' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:500'],
-            'postal_code' => ['nullable', 'string', 'max:200'],
+            'postcode' => ['nullable', 'string', 'max:200'],
+            'street' => ['nullable', 'string', 'max:200'],
+            'suburb' => ['nullable', 'string', 'max:200'],
+            'country' => ['nullable', 'string', 'max:200'],
         ]);
 
         /** Handle image file */
@@ -120,7 +129,11 @@ class DoctorController extends Controller
         $doctor->mobile = $request->mobile;
         $doctor->landline = $request->landline;
         $doctor->address = $request->address;
-        $doctor->postal_code = $request->postal_code;
+        $doctor->postcode = $request->postcode;
+        $doctor->street = $request->street;
+        $doctor->suburb = $request->suburb;
+        $doctor->country = $request->country;
+
         $doctor->role = 'doctor';
         if ($request->verified === 'yes') {
             $doctor->email_verified_at = Carbon::now();

@@ -10,22 +10,22 @@ lab can upload scan -> done
 
 print files to the sidebar and make hasmany to scans -> done
 
-checkboxes to download scans
+admin can make a due date in type of works for each lab -> done
 
-admin can make a due date in type of works for each lab
+add vat to type of works after my prices 20% -> done
 
-add vat to type of works after my prices 20%
+prescription: adjust the prescription template -> done
 
-prescription: adjust the prescription template
+dooctor information to be corrected with the dhl form -> done [added: OrderNumber,Date,Name,Street,Suburb,Postcode,Country]and from admin side tooand doctor profile
+
+rejection email: patient name, and scan id , and link to direct goto -> done
 
 second lab selects the scans he want to send via dhl and send them and the ones that arent sent will be displayed to the admin
 
-
-dooctor information to be corrected with the dhl form
-
-
 each doctor has is own type of work
 
+checkboxes to download scans
 
-rejection email: patient name, and scan id , and link to direct goto
 
+lab reminders -> done
+php artisan scans:send-reminders

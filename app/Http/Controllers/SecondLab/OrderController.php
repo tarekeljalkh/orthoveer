@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\SecondLab;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Scan;
-use App\Models\Status;
-use App\Services\DHLService;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -44,48 +42,28 @@ class OrderController extends Controller
         $validated = $request->validate([
             'scans' => 'required|array',
             'scans.*' => 'exists:scans,id',
-            'status' => 'required|string',
-            'date' => 'required|date',
-            'to_name' => 'required|string',
-            'destination_street' => 'required|string',
-            'destination_city' => 'required|string',
-            'destination_state' => 'required|string',
-            'destination_country' => 'required|string',
-            'destination_postcode' => 'required|string',
-            'destination_email' => 'nullable|email',
-            'destination_phone' => 'required|string',
-            'item_name' => 'nullable|string',
-            'item_price' => 'nullable|numeric',
-            'weight' => 'nullable|numeric',
-            'shipping_method' => 'nullable|string',
-            'reference' => 'nullable|string',
-            'sku' => 'nullable|string',
-            'qty' => 'nullable|integer',
-            'company' => 'nullable|string',
-            'carrier' => 'nullable|string',
-            'carrier_product_code' => 'nullable|string',
-            // ... add other validation rules as necessary
         ]);
-
-
 
         DB::beginTransaction();
         try {
-            // Create the order
-            $order = new Order($validated);
+
+            // Attach scans to the order and collect scan details
+            $scanDetails = [];
+            foreach ($validated['scans'] as $scanId) {
+                            // Create the order
+            $order = new Order();
             $order->lab_id = $request->user()->id;
+            $order->order_number = '32434';
+
             $order->save();
 
-            // Attach scans to the order
-            foreach ($validated['scans'] as $scanId) {
                 $scan = Scan::find($scanId);
-                $scan->order_id = $order->id; // Set the order ID to mark it as used
-                $scan->save();
+                $scanDetails[] = $this->extractScanDetails($scan, $order);
             }
 
 
             // Generate the CSV file
-            $csvPath = $this->generateCSV($order, $validated['scans']);
+            $csvPath = $this->generateCSV($order, $scanDetails);
 
             // Attempt to upload the CSV to the FTP server
             if ($this->uploadCSV($csvPath)) {
@@ -101,14 +79,26 @@ class OrderController extends Controller
         }
     }
 
-    private function generateCSV($order, $scans)
+    private function extractScanDetails($scan, $order)
+    {
+        $doctor = User::find($scan->doctor_id);
+
+        return [
+            'Order Number' => $scan->id,
+            'Date' => now()->format('Y-m-d'),
+            'Name' => $doctor->first_name . ' ' . $doctor->last_name,
+            'Street' => $doctor->delivery_street,
+            'Suburb' => $doctor->delivery_city,
+            'PostCode' => $doctor->delivery_postcode,
+            'Country' => $doctor->delivery_country
+        ];
+    }
+
+    private function generateCSV($order, $scanDetails)
     {
         $headers = [
-            'Order Number', 'Date', 'To Name', 'Destination Street', 'Destination City',
-            'Destination State', 'Destination Country', 'Destination Postcode',
-            'Destination Email', 'Destination Phone', 'Item Name', 'Item Price',
-            'Weight', 'Shipping Method', 'Reference', 'SKU', 'Qty',
-            'Company', 'Carrier', 'Carrier Product Code'
+            'Order Number', 'Date', 'Name', 'Street', 'Suburb',
+            'PostCode', 'Country'
         ];
 
         // Ensuring the uploads directory exists
@@ -123,30 +113,8 @@ class OrderController extends Controller
 
         fputcsv($file, $headers);
 
-        foreach ($scans as $scanId) {
-            $row = [
-                $scanId,
-                $order->date,
-                $order->to_name,
-                $order->destination_street,
-                $order->destination_city,
-                $order->destination_state,
-                $order->destination_country,
-                $order->destination_postcode,
-                $order->destination_email,
-                $order->destination_phone,
-                $order->item_name,
-                $order->item_price,
-                $order->weight,
-                $order->shipping_method,
-                $order->reference,
-                $order->sku,
-                $order->qty,
-                $order->company,
-                $order->carrier,
-                $order->carrier_product_code
-            ];
-            fputcsv($file, $row);
+        foreach ($scanDetails as $details) {
+            fputcsv($file, $details);
         }
 
         fclose($file);
@@ -167,7 +135,6 @@ class OrderController extends Controller
             return false; // Indicate failure explicitly
         }
     }
-
 
     /**
      * Display the specified order.

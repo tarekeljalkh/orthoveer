@@ -42,7 +42,7 @@
                                             </td>
                                             <td>{{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}
                                             </td>
-                                            <td>{{ $scan->due_date->format('d/m/Y') }}</td>
+                                            <td>{{ $scan->last_due_date->format('d/m/Y') }}</td>
                                             <td>
                                                 <div
                                                     class="badge

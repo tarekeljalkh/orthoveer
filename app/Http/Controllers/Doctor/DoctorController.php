@@ -25,7 +25,7 @@ class DoctorController extends Controller
 
         // Filter scans based on the last status
         $currentOrders = $scans->filter(function ($scan) {
-            return optional($scan->latestStatus)->status === 'completed';
+            return optional($scan->latestStatus)->status === 'new';
         })->count();
 
         $pendingOrders = $scans->filter(function ($scan) {

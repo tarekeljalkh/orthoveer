@@ -86,11 +86,35 @@
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.postal_code') }}</label>
-                                        <input type="text" name="postal_code" value="{{ $doctor->postal_code }}"
+                                        <label>{{ trans('messages.postcode') }}</label>
+                                        <input type="text" name="postcode" value="{{ $doctor->postcode }}"
                                             class="form-control" required="">
                                     </div>
+
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.country') }}</label>
+                                        <input type="text" name="country" value="{{ $doctor->country }}"
+                                            class="form-control" required="">
+                                    </div>
+
                                 </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.street') }}</label>
+                                        <input type="text" name="street" value="{{ $doctor->street }}"
+                                            class="form-control" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.suburb') }}</label>
+                                        <input type="text" name="suburb" value="{{ $doctor->suburb }}"
+                                            class="form-control" required="">
+                                    </div>
+
+                                </div>
+
+
 
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">

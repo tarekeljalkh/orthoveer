@@ -8,7 +8,8 @@
             </div>
             <h1>{{ trans('messages.new_scan') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.new_scan') }}</a></div>
             </div>
         </div>
@@ -24,16 +25,18 @@
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <input type="text" name="doctor_id" value={{ Auth::user()->id }} hidden >
+                                <input type="text" name="doctor_id" value={{ Auth::user()->id }} hidden>
                                 <h4>{{ trans('messages.patient') }}:</h4>
                                 {{-- <div class="card-header-action">
                                     <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
                                 </div> --}}
                                 <div class="card-header-action">
                                     <select class="form-control select2" name="patient_id" id="patientSelect">
-                                        <option value="0" disabled selected>{{ trans('messages.select_existing_patient') }}...</option>
+                                        <option value="0" disabled selected>
+                                            {{ trans('messages.select_existing_patient') }}...</option>
                                         @foreach ($patients as $patient)
-                                            <option value="{{ $patient->id }}" data-first-name="{{ $patient->first_name }}"
+                                            <option value="{{ $patient->id }}"
+                                                data-first-name="{{ $patient->first_name }}"
                                                 data-last-name="{{ $patient->last_name }}"
                                                 data-dob="{{ $patient->dob->format('Y-m-d') }}"
                                                 data-gender="{{ $patient->gender }}">{{ $patient->last_name }},
@@ -104,80 +107,83 @@
                                             value="{{ now()->toDateString() }}" min="{{ now()->toDateString() }}">
                                     </div>
 
-                                <div class="form-group col-md-12 col-12">
-                                    <label>{{ trans('messages.type') }}</label>
-                                    <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
-                                        @foreach ($typeofWorks as $typeofWork)
-                                            <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-12">
-                                    <label>{{ trans('messages.note') }}</label>
-
-                                    <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="{{ trans('messages.add_note') }}"></textarea>
-                                </div>
-
-                                <div class="form-group col-12">
-                                    <label>{{ trans('messages.upload_image_or_pdf') }}</label>
-
-                                    <div class="form-group col-12" id="previewContainer"></div> {{-- Preview Container --}}
-                                    <input type="file" name="pdf[]" id="pdfInput" class="form-control"
-                                        multiple>
-                                </div>
-
-
-
-
-
-                                <div class="row">
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Order Section --}}
-
-                    {{-- STL SECTIONS --}}
-
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.stl_upper') }} <i class="fas fa-arrow-up"></i></label>
-                                        <div id="stl_upper_container">
-                                            <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
-                                        </div>
-                                        <input type="file" name="stl_upper" class="form-control">
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.type') }}</label>
+                                        <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
+                                            @foreach ($typeofWorks as $typeofWork)
+                                                <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.stl_lower') }} <i class="fas fa-arrow-down"></i></label>
-                                        <div id="stl_lower_container">
-                                            <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
-                                        </div>
-                                        <input type="file" name="stl_lower" class="form-control">
+                                    <div class="form-group col-12">
+                                        <label>{{ trans('messages.note') }}</label>
+
+                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10"
+                                            placeholder="{{ trans('messages.add_note') }}"></textarea>
+                                    </div>
+
+                                    <div class="form-group col-12">
+                                        <label>{{ trans('messages.upload_image_or_pdf') }}</label>
+
+                                        <div class="form-group col-12" id="previewContainer"></div> {{-- Preview Container --}}
+                                        <input type="file" name="pdf[]" id="pdfInput" class="form-control" multiple>
+                                    </div>
+
+
+
+
+
+                                    <div class="row">
+
                                     </div>
 
                                 </div>
+                            </div>
+                        </div>
+                        {{-- End Order Section --}}
+
+                        {{-- STL SECTIONS --}}
+
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>{{ trans('messages.stl_upper') }} <i
+                                                    class="fas fa-arrow-up"></i></label>
+                                            <div id="stl_upper_container">
+                                                <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
+                                            </div>
+                                            <input type="file" name="stl_upper" class="form-control">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>{{ trans('messages.stl_lower') }} <i
+                                                    class="fas fa-arrow-down"></i></label>
+                                            <div id="stl_lower_container">
+                                                <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
+                                            </div>
+                                            <input type="file" name="stl_lower" class="form-control">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary"
+                                        id="submitBtn">{{ trans('messages.done') }}</button>
+                                </div>
 
                             </div>
-                            <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary" id="submitBtn">{{ trans('messages.done') }}</button>
-                            </div>
+
 
                         </div>
-
+                        {{-- End STL SECTION --}}
 
                     </div>
-                    {{-- End STL SECTION --}}
-
-                </div>
             </form>
 
         </div>

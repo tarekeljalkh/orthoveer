@@ -186,7 +186,6 @@ class ScanController extends Controller
         $scan->second_lab_id = $type->second_lab_id;
         $scan->external_lab_id = $type->external_lab_id;
         //
-
         $scan->due_date = $request->due_date;
         $scan->stl_upper = $upperPath;
         $scan->stl_lower = $lowerPath;
@@ -213,6 +212,10 @@ class ScanController extends Controller
             'scanDate' => now()->format('d-m-y'),
             'patientName' => $scan->patient->first_name,
             'labName' => $lab->first_name,
+            'scanId' => $scan->id,
+            'doctor_scan_url' => route('doctor.scans.index'),
+            'lab_scan_url' => route('lab.scans.viewer', ['id' => $scan->id]),
+            'scan_due_date' => $scan->due_date->addDays($type->lab_due_date)->format('d-m-y'),
             // Include other data as needed
         ];
 
@@ -280,10 +283,12 @@ class ScanController extends Controller
             }
 
             // Update scan details
-            $scan->doctor_id = $request->doctor_id; // Ensure this doctor_id is either coming from authenticated user or safely validated
             $type = TypeofWork::findOrFail($request->typeofwork_id);
             $scan->type_id = $request->typeofwork_id;
             $scan->lab_id = $type->lab_id;
+            $scan->second_lab_id = $type->second_lab_id;
+            $scan->external_lab_id = $type->external_lab_id;
+
             $scan->due_date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->due_date);
             $scan->stl_upper = !empty($upperPath) ? $upperPath : $scan->stl_upper;
             $scan->stl_lower = !empty($lowerPath) ? $lowerPath : $scan->lowerPath;

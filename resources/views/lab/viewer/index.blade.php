@@ -158,8 +158,8 @@
                     {{-- End Status and Rejection Section --}}
 
                     {{-- Comple Scan Section --}}
-                    @if ($lastStatus === 'new')
-                        <div class="card">
+                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                    <div class="card">
                             <div class="card-header">
                                 <h4>Upload And Complete Scan</h4>
                             </div>
@@ -203,34 +203,6 @@
 
                     {{-- End Complete Scan Section --}}
 
-                    {{-- Assign to External Lab --}}
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Assign to External Lab</h4>
-                        </div>
-                        <div class="card-body">
-                            <!-- Begin Form Content -->
-                            <form action="{{ route('lab.scans.reassign', $scan->id) }}" method="POST">
-                                @csrf
-
-                                <div class="form-group">
-                                    <label for="external_lab_id">Reassign Scan to External Lab:</label>
-                                    <select name="external_lab_id" id="external_lab_id" class="form-control">
-                                        @foreach ($external_labs as $external_lab)
-                                            <option value="{{ $external_lab->id }}">{{ $external_lab->first_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <button type="submit" class="btn btn-warning">Reassign</button>
-                            </form>
-                            <!-- End Form Content -->
-                        </div>
-                    </div>
-
-                    {{-- End Assigne to External Lab Section --}}
                 </div>
 
 

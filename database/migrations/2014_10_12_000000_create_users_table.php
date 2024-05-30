@@ -21,15 +21,20 @@ return new class extends Migration
             $table->string('landline')->nullable();
             $table->string('license')->nullable();
             $table->text('address')->nullable();
-            $table->string('postal_code')->nullable();
             $table->string('siret_number')->nullable();
             $table->enum('role', ['admin', 'doctor', 'lab', 'second_lab', 'external_lab'])->default('doctor');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // Adding delivery credentials fields
+            $table->string('street')->nullable();
+            $table->string('suburb')->nullable();
+            $table->string('postcode')->nullable();
+            $table->string('country')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });
-
     }
 
     /**

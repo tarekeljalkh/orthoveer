@@ -114,9 +114,8 @@
                                         </div>
                                         <div class="col-sm-6 col-md-6">
                                             <label for="site-title" class="form-control-label"
-                                                style="font-weight: bold;">Graph
-                                                Number:</label>
-                                            <label for="site-title" class="form-control-label">safasfg</label>
+                                                style="font-weight: bold;">Order Number:</label>
+                                            <label for="site-title" class="form-control-label">{{ $scan->id }}</label>
                                         </div>
                                     </div>
 
@@ -137,7 +136,7 @@
                                     <div class="form-group row align-items-center">
                                         <div class="col-sm-6 col-md-6">
                                             <label for="site-title" class="form-control-label"
-                                                style="font-weight: bold;">Procedure:</label>
+                                                style="font-weight: bold;">Type Of Work:</label>
                                             <label for="site-title"
                                                 class="form-control-label">{{ $scan->typeofwork->name }}</label>
                                         </div>
@@ -147,9 +146,6 @@
                                     <hr>
                                     <div class="form-group row align-items-center">
                                         <div class="col-sm-6 col-md-6">
-                                            <label for="site-title" class="form-control-label d-block"
-                                                style="font-weight: bold;">Cabinet:</label>
-                                            <label for="site-title" class="form-control-label d-block">safasfg</label>
                                             <label for="another-field" class="form-control-label d-block"
                                                 style="font-weight: bold;">Delivery Address:</label>
                                             <label for="another-field"
@@ -172,10 +168,7 @@
                                         <div class="col-sm-3 col-md-3">
                                             <label for="site-title" class="form-control-label d-block"
                                                 style="font-weight: bold;">Signature:</label>
-                                            <label for="site-title" class="form-control-label d-block">safasfg</label>
-                                            <label for="another-field" class="form-control-label d-block"
-                                                style="font-weight: bold;">License:</label>
-                                            <label for="another-field" class="form-control-label d-block">example</label>
+                                            <label for="site-title" class="form-control-label d-block">{{ $scan->doctor->last_name }}</label>
                                         </div>
                                     </div>
 

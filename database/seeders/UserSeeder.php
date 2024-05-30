@@ -1,9 +1,7 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -21,11 +19,14 @@ class UserSeeder extends Seeder
                 'mobile' => null,
                 'landline' => null,
                 'address' => null,
-                'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'admin',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'street' => null,
+                'suburb' => null,
+                'postcode' => null,
+                'country' => null,
             ],
             [
                 'first_name' => 'doctor',
@@ -34,11 +35,14 @@ class UserSeeder extends Seeder
                 'mobile' => '1234567890',
                 'landline' => '0987654321',
                 'address' => '123 Main St',
-                'postal_code' => '12345',
                 'siret_number' => '123 456 789 00112',
                 'role' => 'doctor',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'street' => '456 Doctor St',
+                'suburb' => 'MediCity',
+                'postcode' => 'HealthState',
+                'country' => 'MedLand',
             ],
             [
                 'first_name' => 'lab',
@@ -47,11 +51,14 @@ class UserSeeder extends Seeder
                 'mobile' => null,
                 'landline' => null,
                 'address' => null,
-                'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'lab',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'street' => null,
+                'suburb' => null,
+                'postcode' => null,
+                'country' => null,
             ],
             [
                 'first_name' => 'Second',
@@ -60,11 +67,14 @@ class UserSeeder extends Seeder
                 'mobile' => null,
                 'landline' => null,
                 'address' => null,
-                'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'second_lab',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'street' => null,
+                'suburb' => null,
+                'postcode' => null,
+                'country' => null,
             ],
             [
                 'first_name' => 'external',
@@ -73,11 +83,14 @@ class UserSeeder extends Seeder
                 'mobile' => null,
                 'landline' => null,
                 'address' => null,
-                'postal_code' => null,
                 'siret_number' => null,
                 'role' => 'external_lab',
                 'email_verified_at' => now(),
-                'password' => bcrypt('password')
+                'password' => bcrypt('password'),
+                'street' => null,
+                'suburb' => null,
+                'postcode' => null,
+                'country' => null,
             ],
         ]);
     }

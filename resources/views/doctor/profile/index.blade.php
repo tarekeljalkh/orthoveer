@@ -36,6 +36,67 @@
                             <label>{{ trans('messages.email') }}</label>
                             <input type="text" class="form-control" name="email" value="{{ auth()->user()->email }}">
                         </div>
+
+                        <div class="form-group">
+                            <label>{{ trans('messages.license') }}</label>
+                            <input type="text" class="form-control" name="license" value="{{ auth()->user()->license }}">
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.mobile') }}</label>
+                                <input type="number" name="mobile" class="form-control" required="" value="{{ auth()->user()->mobile }}">
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.landline') }}</label>
+                                <input type="number" name="landline" class="form-control" required="" value="{{ auth()->user()->landline }}">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-12 col-12">
+                                <label>{{ trans('messages.address') }}</label>
+                                <input type="text" name="address" class="form-control" required="" value="{{ auth()->user()->address }}">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.street') }}</label>
+                                <input type="text" name="street" class="form-control" value="{{ auth()->user()->street }}">
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.suburb') }}</label>
+                                <input type="text" name="suburb" class="form-control" required="" value="{{ auth()->user()->suburb }}">
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.postcode') }}</label>
+                                <input type="text" name="postcode" class="form-control" value="{{ auth()->user()->postcode }}">
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.country') }}</label>
+                                <input type="text" name="country" class="form-control" required="" value="{{ auth()->user()->country }}">
+                            </div>
+
+                        </div>
+
+
+
+
                         <button class="btn btn-primary" type="submit">{{ trans('messages.save') }}</button>
                     </form>
                 </div>

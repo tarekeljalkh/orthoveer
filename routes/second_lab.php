@@ -21,7 +21,6 @@ Route::get('dashboard', [SecondLabController::class, 'index'])->name('dashboard'
 
 //Scans Routes
 Route::get('scans/new', [ScanController::class, 'new'])->name('scans.new');
-Route::get('scans/pending', [ScanController::class, 'pending'])->name('scans.pending');
 Route::get('scans/viewer/{id}', [ScanController::class, 'viewer'])->name('scans.viewer');
 Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->name('scans.prescription');
 //reject Scan

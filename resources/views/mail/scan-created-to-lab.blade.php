@@ -49,7 +49,10 @@
         </div>
         <div class="email-body">
             <p>Dear {{ $content['labName'] }},</p>
-            <p>You Have a New case from: <strong>{{ $content['doctorName'] }}</strong></p>
+            <p>You Have a New case from: <strong>{{ $content['doctorName'] }}</strong> for the following Patient: <strong> {{ $content['patientName'] }}</strong></p> with following info:<br>
+            <p><strong>Scan ID: {{ $content['scanId'] }}</strong></p>
+            <a href="{{ $content['lab_scan_url'] }}">See Scan</a>
+            <p><strong>DUE DATE: {{ $content['scan_due_date'] }}</strong> </p>
             <p>Regards,</p>
             <p>Orthoveer</p>
         </div>

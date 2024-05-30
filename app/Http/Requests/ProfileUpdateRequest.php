@@ -20,6 +20,14 @@ class ProfileUpdateRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'license' => ['nullable', 'string', 'max:255'],
+            'mobile' => ['nullable', 'integer', 'max:100'],
+            'landline' => ['nullable', 'integer', 'max:100'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'street' => ['nullable', 'string', 'max:255'],
+            'suburb' => ['nullable', 'string', 'max:255'],
+            'postcode' => ['nullable', 'string', 'max:255'],
+            'country' => ['nullable', 'string', 'max:255']
         ];
     }
 }

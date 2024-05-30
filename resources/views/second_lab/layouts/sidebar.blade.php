@@ -19,10 +19,6 @@
                     href="{{ route('second_lab.scans.new') }}"><i class="fas fa-folder-open"></i>
                     <span>{{ trans('messages.new_scans') }}</span></a></li>
 
-            <li class="{{ request()->routeIs('second_lab.scans.pending') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('second_lab.scans.pending') }}"><i class="fas fa-truck-loading"></i>
-                    <span>{{ trans('messages.pending_scans') }}</span></a></li>
-
             <li class="{{ request()->routeIs('second_lab.scans.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('second_lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.all_scans') }}</span></a></li>

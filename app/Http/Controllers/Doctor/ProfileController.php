@@ -29,6 +29,14 @@ class ProfileController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->image = isset($imagePath) ? $imagePath : $user->image;
+        $user->license = $request->license;
+        $user->mobile = $request->mobile;
+        $user->landline = $request->landline;
+        $user->address = $request->address;
+        $user->street = $request->street;
+        $user->suburb = $request->suburb;
+        $user->postcode = $request->postcode;
+        $user->country = $request->country;
         $user->save();
 
         toastr('Updated Successfully!', 'success');

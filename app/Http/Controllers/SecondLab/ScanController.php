@@ -29,55 +29,43 @@ class ScanController extends Controller
     {
         $labId = Auth::user()->id;
 
-        // First, retrieve all scans for the lab within the current month.
-        $scans = Scan::with(['doctor', 'latestStatus']) // Assuming 'status' relation loads necessary data to determine current status
+        // Retrieve all scans assigned to the second lab where the first lab has completed the scan
+        $scans = Scan::with(['doctor', 'latestStatus'])
             ->where('second_lab_id', $labId)
+            ->whereHas('latestStatus', function ($query) {
+                $query->where('status', 'completed');
+            })
             ->get();
 
-        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
-        // Note: This filtering happens in memory, not in the database.
-
-
-        return view('second_lab.scans.index', compact('scans'));
-    }
-
-    public function pending()
-    {
-        $labId = Auth::user()->id;
-
-        // First, retrieve all scans for the lab within the current month.
-        $scans = Scan::with(['doctor', 'status']) // Assuming 'status' relation loads necessary data to determine current status
-            ->where('second_lab_id', $labId)
-            ->get();
-
-        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
-        // Note: This filtering happens in memory, not in the database.
-        $pendingScans = $scans->filter(function ($scan) {
-            return $scan->current_status == 'pending';
+        // Filter the scans in memory to ensure they meet the criteria
+        $filteredScans = $scans->filter(function ($scan) {
+            return $scan->latestStatus && $scan->latestStatus->status === 'completed';
         });
 
-
-        return view('second_lab.scans.pending', compact('pendingScans'));
+        return view('second_lab.scans.index', compact('filteredScans'));
     }
 
     public function new()
     {
         $labId = Auth::user()->id;
 
-        // First, retrieve all scans for the lab within the current month.
-        $scans = Scan::with(['doctor', 'status']) // Assuming 'status' relation loads necessary data to determine current status
+        // Retrieve all scans assigned to the second lab where the first lab has completed the scan
+        $scans = Scan::with(['doctor', 'latestStatus'])
             ->where('second_lab_id', $labId)
-            ->whereMonth('created_at', now()->month)
+            ->whereHas('statuses', function ($query) {
+                $query->where('status', 'completed');
+            })
             ->get();
 
-        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
-        // Note: This filtering happens in memory, not in the database.
+        // Filter the scans to show only those with a 'new' status
         $newScans = $scans->filter(function ($scan) {
-            return $scan->current_status == 'pending';
+            return $scan->latestStatus && $scan->latestStatus->status === 'new';
         });
 
         return view('second_lab.scans.new', compact('newScans'));
     }
+
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -255,18 +243,6 @@ class ScanController extends Controller
         return to_route('second_lab.dashboard');
     }
 
-    public function reassignScan(Request $request, $scanId)
-    {
-        $this->validate($request, [
-            'external_lab_id' => 'required|exists:users,id' // Ensure the reassigned lab exists
-        ]);
-
-        $scan = Scan::findOrFail($scanId);
-        $scan->external_lab_id = $request->external_lab_id;
-        $scan->save();
-
-        return redirect()->back()->with('success', 'Scan successfully reassigned to another lab.');
-    }
 
     protected function addFilesToZip($scan, $zip)
     {
