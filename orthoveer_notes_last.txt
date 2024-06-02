@@ -22,10 +22,17 @@ rejection email: patient name, and scan id , and link to direct goto -> done
 
 second lab selects the scans he want to send via dhl and send them and the ones that arent sent will be displayed to the admin
 
-each doctor has is own type of work
+each doctor has is own type of work -> not done
 
-checkboxes to download scans
+checkboxes to download scans -> not done needs to adjust all datatables
 
 
 lab reminders -> done
 php artisan scans:send-reminders
+
+dhl order -> 80%
+
+payment gateway-> 80%
+https://sogecommerce.societegenerale.eu/vads-merchant/
+bnajm0
+01874755@Bn!!
