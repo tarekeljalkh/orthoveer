@@ -26,7 +26,7 @@ class SecondLabController extends Controller
             ->get();
 
         // Filter scans based on their current status
-        $newScans = $scans->where('latestStatus.status', 'new')->count();
+        $newScans = $scans->where('latestStatus.status', 'completed')->count();
         $deliveredScans = $scans->where('latestStatus.status', 'delivered')->count();
 
         return view('second_lab.dashboard', compact('newScans', 'deliveredScans'));

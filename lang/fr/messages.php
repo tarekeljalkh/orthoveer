@@ -173,5 +173,6 @@ return [
     'external_lab_due_date' => "Date D'échéance Du Laboratoire Externe",
     'second_lab' => 'Deuxième Laboratoire',
     'external_lab' => 'Laboratoire Externe',
+    'typeofwork' => 'Type de Travail',
 
 ];

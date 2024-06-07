@@ -8,21 +8,17 @@
             </div>
             <h1>{{ trans('messages.create_new_order') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a
-                        href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('second_lab.orders.index') }}">{{ trans('messages.orders') }}</a>
-                </div>
+                <div class="breadcrumb-item active"><a href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('second_lab.orders.index') }}">{{ trans('messages.orders') }}</a></div>
                 <div class="breadcrumb-item">{{ trans('messages.create_new_order') }}</div>
             </div>
         </div>
 
         <div class="section-body">
             <div class="row">
-
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card">
-                        <form action="{{ route('second_lab.orders.store') }}" method="post" class="needs-validation" novalidate
-                            enctype="multipart/form-data">
+                        <form action="{{ route('second_lab.orders.store') }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             <div class="card-header">
                                 <h4>{{ trans('messages.create_new_order') }}</h4>
@@ -32,18 +28,19 @@
 
                                 <div class="form-group col-md-12 col-12">
                                     <label for="scans">Select Scans:</label>
-                                    <select class="form-control select2" name="scans[]" id="scans" multiple>
+                                    <select class="form-control select2" name="scans[]" id="scans" multiple required>
                                         @foreach ($completedScans as $scan)
-                                            <option value="{{ $scan->id }}">{{ $scan->name }} - {{ $scan }}</option>
+                                            <option value="{{ $scan->id }}">{{ $scan->name }} - {{ $scan->id }}</option>
                                         @endforeach
                                     </select>
+                                    <div class="invalid-feedback">
+                                        Please select at least one scan.
+                                    </div>
                                 </div>
-
                             </div>
 
                             <div class="card-footer text-right">
-                                <button type="submit"
-                                    class="btn btn-primary">{{ trans('messages.place_order') }}</button>
+                                <button type="submit" class="btn btn-primary">{{ trans('messages.place_order') }}</button>
                             </div>
                         </form>
                     </div>

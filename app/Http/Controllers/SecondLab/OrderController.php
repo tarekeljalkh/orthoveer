@@ -28,7 +28,11 @@ class OrderController extends Controller
     {
         $completedScans = Scan::whereHas('latestStatus', function ($query) {
             $query->where('status', 'completed');
-        })->get();
+        })
+        ->whereDoesntHave('orders', function ($query) {
+            $query->whereIn('status', ['pending', 'delivered']);
+        })
+        ->get();
 
         return view('second_lab.orders.create', compact('completedScans'));
     }
@@ -46,27 +50,41 @@ class OrderController extends Controller
 
         DB::beginTransaction();
         try {
-
             // Attach scans to the order and collect scan details
             $scanDetails = [];
+            $orders = [];
             foreach ($validated['scans'] as $scanId) {
-                            // Create the order
-            $order = new Order();
-            $order->lab_id = $request->user()->id;
-            $order->order_number = '32434';
+                // Check if the scan is already ordered
+                $existingOrder = Order::where('scan_id', $scanId)
+                    ->whereIn('status', ['pending', 'delivered'])
+                    ->first();
 
-            $order->save();
+                if ($existingOrder) {
+                    return back()->with('error', 'One or more scans are already ordered.');
+                }
+
+                // Create the order
+                $order = new Order();
+                $order->lab_id = $request->user()->id;
+                $order->scan_id = $scanId;
+                $order->status = 'pending';
+                $order->save();
+
+                $orders[] = $order;
 
                 $scan = Scan::find($scanId);
                 $scanDetails[] = $this->extractScanDetails($scan, $order);
             }
 
-
             // Generate the CSV file
-            $csvPath = $this->generateCSV($order, $scanDetails);
+            $csvPath = $this->generateCSV($orders, $scanDetails);
 
             // Attempt to upload the CSV to the FTP server
             if ($this->uploadCSV($csvPath)) {
+                foreach ($orders as $order) {
+                    $order->status = 'delivered';
+                    $order->save();
+                }
                 DB::commit();
                 return redirect()->route('second_lab.orders.index')->with('success', 'Order placed and CSV uploaded successfully.');
             } else {
@@ -85,20 +103,33 @@ class OrderController extends Controller
 
         return [
             'Order Number' => $scan->id,
-            'Date' => now()->format('Y-m-d'),
-            'Name' => $doctor->first_name . ' ' . $doctor->last_name,
-            'Street' => $doctor->delivery_street,
-            'Suburb' => $doctor->delivery_city,
-            'PostCode' => $doctor->delivery_postcode,
-            'Country' => $doctor->delivery_country
+            'Date' => now()->format('d/m/Y'),
+            'To Name' => $doctor->first_name . ' ' . $doctor->last_name,
+            'Destination Street' => $doctor->delivery_street,
+            'Destination Suburb' => $doctor->delivery_suburb,
+            'Destination City' => $doctor->delivery_city,
+            'Destination Postcode' => $doctor->delivery_postcode,
+            'Destination State' => $doctor->delivery_state,
+            'Destination Country' => $doctor->delivery_country,
+            'Destination Email' => $doctor->email,
+            'Weight' => 0.0, // Placeholder
+            'Shipping Method' => 'DHL Express Intl', // Placeholder
+            'Reference' => '', // Placeholder
+            'SKU' => '', // Placeholder
+            'Qty' => 1, // Placeholder
+            'Company' => '', // Placeholder
+            'Carrier' => 'DHL', // Placeholder
+            'Carrier Product Code' => 'WPX' // Placeholder
         ];
     }
 
-    private function generateCSV($order, $scanDetails)
+    private function generateCSV($orders, $scanDetails)
     {
         $headers = [
-            'Order Number', 'Date', 'Name', 'Street', 'Suburb',
-            'PostCode', 'Country'
+            'Order Number', 'Date', 'To Name', 'Destination Street', 'Destination Suburb',
+            'Destination City', 'Destination Postcode', 'Destination State', 'Destination Country',
+            'Destination Email', 'Item Name', 'Item Price', 'Weight', 'Shipping Method', 'Reference',
+            'SKU', 'Qty', 'Company', 'Carrier', 'Carrier Product Code'
         ];
 
         // Ensuring the uploads directory exists
@@ -107,7 +138,7 @@ class OrderController extends Controller
             mkdir($uploadsPath, 0777, true);
         }
 
-        $filename = "order_{$order->id}.csv";
+        $filename = "order_" . now()->format('YmdHis') . ".csv";
         $path = $uploadsPath . '/' . $filename;
         $file = fopen($path, 'w'); // Open file for writing
 

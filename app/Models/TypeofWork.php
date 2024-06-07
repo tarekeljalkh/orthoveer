@@ -23,4 +23,21 @@ class TypeofWork extends Model
     {
         return $this->belongsTo(User::class, 'external_lab_id');
     }
+
+    public function doctorPrices()
+    {
+        return $this->hasMany(DoctorWorkPrice::class, 'type_of_work_id');
+    }
+
+    public function getPriceWithTvaAttribute()
+    {
+        $price = $this->lab_price;
+        $tva = $this->vat;
+
+        if ($price !== null && $tva !== null) {
+            return $price + ($price * $tva / 100);
+        }
+
+        return $price; // If TVA is not defined, return the price without TVA
+    }
 }

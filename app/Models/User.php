@@ -83,4 +83,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Scan::class, 'external_lab_id');
     }
 
+    public function workPrices()
+    {
+        return $this->hasMany(DoctorWorkPrice::class, 'doctor_id');
+    }
+
+
 }

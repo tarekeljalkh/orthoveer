@@ -22,7 +22,7 @@
                         <div class="card-body">
                             <div class="form-group row align-items-center">
                                 @if ($scan->stl_upper || $scan->stl_lower)
-                                    <a href="{{ route('second_lab.scans.downloadStl', $scan->id) }}"
+                                    <a href="{{ route('lab.scans.downloadStl', $scan->id) }}"
                                         class="btn btn-primary">Download
                                         Files <i class="fas fa-download"></i></a>
                                 @endif
@@ -134,10 +134,10 @@
 
 
 
-                        {{-- Only show "Complete" and "Reject" buttons for "pending" or "resubmitted" statuses --}}
-                        @if ($lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                        {{-- Only show if not delivered --}}
+                        @if ($lastStatus !== 'delivered')
                             <div class="card-footer">
-                                <form action="{{ route('second_lab.scans.updateStatus', $scan->id) }}" method="post">
+                                <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
                                     @csrf
                                     @method('post')
 
@@ -158,21 +158,38 @@
                     {{-- End Status and Rejection Section --}}
 
                     {{-- Comple Scan Section --}}
-                    @if ($lastStatus === 'pending')
-                        <div class="card">
+                    @if ($lastStatus !== 'delivered')
+                    <div class="card">
                             <div class="card-header">
-                                <h4>Upload 3D And Complete Scan</h4>
+                                <h4>Upload And Complete Scan</h4>
                             </div>
                             <div class="card-body">
                                 <!-- Begin Form Content -->
-                                <form action="{{ route('second_lab.scans.complete', $scan->id) }}" method="post"
+                                <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post"
                                     enctype="multipart/form-data">
                                     @csrf
                                     @method('post')
 
-                                    <div class="form-group">
-                                        <label for="lab_file">Upload Finished Files as ZIP:</label>
-                                        <input type="file" name="lab_file" id="lab_file" class="form-control" required>
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>{{ trans('messages.stl_upper') }} <i
+                                                    class="fas fa-arrow-up"></i></label>
+                                            <div id="stl_upper_container">
+                                                <div id="stl_upper_viewer_lab" style="width:150px; height:150px;"></div>
+                                            </div>
+                                            <input type="file" name="stl_upper_lab" class="form-control">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>{{ trans('messages.stl_lower') }} <i
+                                                    class="fas fa-arrow-down"></i></label>
+                                            <div id="stl_lower_container">
+                                                <div id="stl_lower_viewer_lab" style="width:150px; height:150px;"></div>
+                                            </div>
+                                            <input type="file" name="stl_lower_lab" class="form-control">
+                                        </div>
+
                                     </div>
 
                                     <button type="submit" name="action" value="complete" class="btn btn-success">
@@ -186,34 +203,6 @@
 
                     {{-- End Complete Scan Section --}}
 
-                    {{-- Assign to External Lab --}}
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Assign to External Lab</h4>
-                        </div>
-                        <div class="card-body">
-                            <!-- Begin Form Content -->
-                            <form action="{{ route('second_lab.scans.reassign', $scan->id) }}" method="POST">
-                                @csrf
-
-                                <div class="form-group">
-                                    <label for="external_lab_id">Reassign Scan to External Lab:</label>
-                                    <select name="external_lab_id" id="external_lab_id" class="form-control">
-                                        @foreach ($external_labs as $external_lab)
-                                            <option value="{{ $external_lab->id }}">{{ $external_lab->first_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <button type="submit" class="btn btn-warning">Reassign</button>
-                            </form>
-                            <!-- End Form Content -->
-                        </div>
-                    </div>
-
-                    {{-- End Assigne to External Lab Section --}}
                 </div>
 
 

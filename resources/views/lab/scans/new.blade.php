@@ -8,7 +8,8 @@
             </div>
             <h1>{{ trans('messages.new_scans') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.new_scans') }}</a></div>
             </div>
         </div>
@@ -29,7 +30,7 @@
                                         <th>{{ trans('messages.patient') }}</th>
                                         <th>{{ trans('messages.due_date') }}</th>
                                         <th>{{ trans('messages.status') }}</th>
-                                        <th>{{ trans('messages.note') }}</th>
+                                        <th>{{ trans('messages.typeofwork') }}</th>
                                         <th>{{ trans('messages.action') }} </th>
                                     </tr>
                                 </thead>
@@ -55,7 +56,7 @@
                                                     {{ $scan->latestStatus->status }}
                                                 </div>
                                             </td>
-                                            <td>{{ $scan->latestStatus->note }}</td>
+                                            <td>{{ $scan->typeofwork->name }}</td>
                                             <td>
                                                 <div class="btn-group dropleft">
                                                     <button type="button" class="btn btn-dark dropdown-toggle"
@@ -128,6 +129,9 @@
                                             document.body.appendChild(a);
                                             a.click();
                                             window.URL.revokeObjectURL(url);
+
+                                            // Refresh the page after download
+                                            location.reload();
                                         },
                                         error: function(xhr, status, error) {
                                             console.error('Error:', status, error);
@@ -158,6 +162,9 @@
                                             document.body.appendChild(a);
                                             a.click();
                                             window.URL.revokeObjectURL(url);
+
+                                            // Refresh the page after download
+                                            location.reload();
                                         },
                                         error: function(xhr, status, error) {
                                             console.error('Error:', status, error);
@@ -166,6 +173,7 @@
                                 }
                             }
                         },
+
                         {
                             text: '<i class="fa fa-file-pdf"></i> Print Prescriptions',
                             action: function(e, dt, node, config) {

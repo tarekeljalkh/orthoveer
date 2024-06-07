@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DoctorWorkPrice;
 use App\Models\TypeofWork;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,7 +27,8 @@ class TypeofWorkController extends Controller
         $labs = User::where('role', 'lab')->get();
         $second_labs = User::where('role', 'second_lab')->get();
         $external_labs = User::where('role', 'external_lab')->get();
-        return view('admin.typeofworks.create', compact('labs', 'second_labs', 'external_labs'));
+        $doctors = User::where('role', 'doctor')->get();
+        return view('admin.typeofworks.create', compact('labs', 'second_labs', 'external_labs', 'doctors'));
     }
 
     /**
@@ -37,8 +39,16 @@ class TypeofWorkController extends Controller
         $request->validate([
             'name' => ['required', 'max:255'],
             'lab_id' => ['required', 'integer'],
-            'second_lab_id' => ['required', 'integer'],
-            'external_lab_id' => ['required', 'integer'],
+            'second_lab_id' => ['nullable', 'integer'],
+            'external_lab_id' => ['nullable', 'integer'],
+            'lab_price' => ['required', 'numeric'],
+            'bag_coule' => ['nullable', 'numeric'],
+            'my_price' => ['nullable', 'numeric'],
+            'invoice_to' => ['nullable', 'numeric'],
+            'cash_out' => ['nullable', 'numeric'],
+            'my_benefit' => ['nullable', 'numeric'],
+            'accessories' => ['nullable', 'numeric'],
+            'vat' => ['nullable', 'numeric'],
         ]);
 
         $typeofwork = new TypeofWork();
@@ -56,12 +66,24 @@ class TypeofWorkController extends Controller
         $typeofwork->second_lab_due_date = $request->second_lab_due_date;
         $typeofwork->external_lab_id = $request->external_lab_id;
         $typeofwork->external_lab_due_date = $request->external_lab_due_date;
+        $typeofwork->vat = $request->vat;
         $typeofwork->save();
 
-        toastr()->success('Type of Work Added Successfully');
-        // Redirect or return a response
-        return to_route('admin.type-of-works.index');
+        // Save doctor-specific prices
+        if ($request->has('doctor_prices')) {
+            foreach ($request->doctor_prices as $doctorPrice) {
+                if (!empty($doctorPrice['doctor_id']) && !empty($doctorPrice['price'])) {
+                    DoctorWorkPrice::create([
+                        'type_of_work_id' => $typeofwork->id,
+                        'doctor_id' => $doctorPrice['doctor_id'],
+                        'price' => $doctorPrice['price'],
+                    ]);
+                }
+            }
+        }
 
+        toastr()->success('Type of Work Added Successfully');
+        return to_route('admin.type-of-works.index');
     }
 
     /**
@@ -81,7 +103,8 @@ class TypeofWorkController extends Controller
         $labs = User::where('role', 'lab')->get();
         $second_labs = User::where('role', 'second_lab')->get();
         $external_labs = User::where('role', 'external_lab')->get();
-        return view('admin.typeofworks.edit', compact('typeofwork', 'labs', 'second_labs', 'external_labs'));
+        $doctors = User::where('role', 'doctor')->get();
+        return view('admin.typeofworks.edit', compact('typeofwork', 'labs', 'second_labs', 'external_labs', 'doctors'));
     }
 
     /**
@@ -94,6 +117,14 @@ class TypeofWorkController extends Controller
             'lab_id' => ['required', 'integer'],
             'second_lab_id' => ['nullable', 'integer'],
             'external_lab_id' => ['nullable', 'integer'],
+            'lab_price' => ['required', 'numeric'],
+            'bag_coule' => ['nullable', 'numeric'],
+            'my_price' => ['nullable', 'numeric'],
+            'invoice_to' => ['nullable', 'numeric'],
+            'cash_out' => ['nullable', 'numeric'],
+            'my_benefit' => ['nullable', 'numeric'],
+            'accessories' => ['nullable', 'numeric'],
+            'vat' => ['nullable', 'numeric'],
         ]);
 
         $typeofwork = TypeofWork::findOrFail($id);
@@ -109,15 +140,27 @@ class TypeofWorkController extends Controller
         $typeofwork->lab_due_date = $request->lab_due_date;
         $typeofwork->second_lab_id = $request->second_lab_id;
         $typeofwork->second_lab_due_date = $request->second_lab_due_date;
-        //$typeofwork->second_lab_id = $request->input('second_lab_id');  // Get the second lab id, handles null automatically
         $typeofwork->external_lab_id = $request->external_lab_id;
         $typeofwork->external_lab_due_date = $request->external_lab_due_date;
+        $typeofwork->vat = $request->vat;
         $typeofwork->save();
 
-        toastr()->success('Type of Work Updated Successfully');
-        // Redirect or return a response
-        return to_route('admin.type-of-works.index');
+        // Update doctor-specific prices
+        DoctorWorkPrice::where('type_of_work_id', $typeofwork->id)->delete();
+        if ($request->has('doctor_prices')) {
+            foreach ($request->doctor_prices as $doctorPrice) {
+                if (!empty($doctorPrice['doctor_id']) && !empty($doctorPrice['price'])) {
+                    DoctorWorkPrice::create([
+                        'type_of_work_id' => $typeofwork->id,
+                        'doctor_id' => $doctorPrice['doctor_id'],
+                        'price' => $doctorPrice['price'],
+                    ]);
+                }
+            }
+        }
 
+        toastr()->success('Type of Work Updated Successfully');
+        return to_route('admin.type-of-works.index');
     }
 
     /**

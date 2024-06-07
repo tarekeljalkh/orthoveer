@@ -10,22 +10,27 @@ class Order extends Model
     use HasFactory;
 
 
-    protected $fillable = ['lab_id', 'dhl_tracking_number', 'status', 'origin', 'destination'];
+    protected $fillable = [
+        'lab_id',
+        'scan_id',
+        'name',
+        'street',
+        'suburb',
+        'postcode',
+        'country',
+        'status',
+    ];
 
-
-    // public function scans()
-    // {
-    //     return $this->belongsToMany(Scan::class, 'order_scans');
-    // }
-
+    protected $attributes = [
+        'status' => 'pending',
+    ];
 
     public function scans()
     {
         return $this->belongsToMany(Scan::class, 'order_scans')
-            ->using(OrderScan::class); // Specifies to use OrderScan pivot model
+                    ->using(OrderScan::class);
     }
 
-    //order relation for order maker which is basically the lab
     public function lab()
     {
         return $this->belongsTo(User::class, 'lab_id');

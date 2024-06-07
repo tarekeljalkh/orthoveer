@@ -52,14 +52,14 @@ class ScanController extends Controller
         // Retrieve all scans assigned to the second lab where the first lab has completed the scan
         $scans = Scan::with(['doctor', 'latestStatus'])
             ->where('second_lab_id', $labId)
-            ->whereHas('statuses', function ($query) {
+            ->whereHas('latestStatus', function ($query) {
                 $query->where('status', 'completed');
             })
             ->get();
 
         // Filter the scans to show only those with a 'new' status
         $newScans = $scans->filter(function ($scan) {
-            return $scan->latestStatus && $scan->latestStatus->status === 'new';
+            return $scan->latestStatus && $scan->latestStatus->status === 'completed';
         });
 
         return view('second_lab.scans.new', compact('newScans'));

@@ -14,7 +14,6 @@
         </div>
 
         <div class="section-body">
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -30,35 +29,31 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>DHL TRACKING NUMBER</th>
-                                        <th>Origin</th>
-                                        <th>destination</th>
-                                        <th>Scans</th>
+                                        <th>Scan ID</th>
+                                        <th>Doctor</th>
+                                        <th>Street</th>
+                                        <th>Suburb</th>
+                                        <th>Postcode</th>
+                                        <th>Country</th>
                                         <th>Status</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $order)
-                                    <tr onclick="window.location='{{ route('second_lab.orders.show', $order->id) }}';"
-                                        style="cursor:pointer;">
-                                        <td>{{ $order->id }}</td>
-                                            <td>{{ $order->dhl_tracking_number }}</td>
-                                            <td>{{ $order->origin }}</td>
-                                            <td>{{ $order->destination }}</td>
+                                        <tr onclick="window.location='{{ route('second_lab.orders.show', $order->id) }}';" style="cursor:pointer;">
+                                            <td>{{ $order->id }}</td>
+                                            <td>{{ $order->scan_id }}</td>
+                                            <td>{{ $order->name }}</td>
+                                            <td>{{ $order->street }}</td>
+                                            <td>{{ $order->suburb }}</td>
+                                            <td>{{ $order->postcode }}</td>
+                                            <td>{{ $order->country }}</td>
                                             <td>
-                                                @foreach ($order->scans as $scan)
-                                                    {{ $scan }}
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="badge
-                                                        {{ $order->status == 'pending' ? 'badge-warning' : '' }}
-                                                        {{ $order->status == 'resubmitted' ? 'badge-info' : '' }}
-                                                        {{ $order->status == 'completed' ? 'badge-success' : '' }}
-                                                        {{ $order->status == 'rejected' ? 'badge-danger' : '' }}">
-                                                    {{ $order->status ?? 'No status' }}
+                                                <div class="badge
+                                                    {{ $order->status == 'pending' ? 'badge-warning' : '' }}
+                                                    {{ $order->status == 'delivered' ? 'badge-success' : '' }}">
+                                                    {{ $order->status }}
                                                 </div>
                                             </td>
                                             <td>{{ $order->created_at }}</td>

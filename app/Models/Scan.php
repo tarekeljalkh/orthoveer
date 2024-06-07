@@ -66,13 +66,13 @@ class Scan extends Model
             ->using(OrderScan::class); // Specifies to use OrderScan pivot model
     }
 
-        // Add the printFiles relationship
-        public function printFiles()
-        {
-            return $this->hasMany(PrintFile::class, 'scan_id');
-        }
+    // Add the printFiles relationship
+    public function printFiles()
+    {
+        return $this->hasMany(PrintFile::class, 'scan_id');
+    }
 
-            // Accessor for calculating the last due date
+    // Accessor for calculating the last due date
     public function getLastDueDateAttribute()
     {
         if ($this->typeofwork) {
@@ -87,4 +87,16 @@ class Scan extends Model
     }
 
 
+    public function getEffectivePriceAttribute()
+    {
+        $doctorPrice = DoctorWorkPrice::where('doctor_id', $this->doctor_id)
+            ->where('type_of_work_id', $this->type_id)
+            ->first();
+
+        if ($doctorPrice) {
+            return $doctorPrice->price;
+        }
+
+        return $this->typeofwork ? $this->typeofwork->lab_price : null;
+    }
 }

@@ -21,8 +21,7 @@
                         <div class="card-header">
                             <h4>Type of Works</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('admin.type-of-works.create') }}" class="btn btn-success">Create New <i
-                                        class="fas fa-plus"></i></a>
+                                <a href="{{ route('admin.type-of-works.create') }}" class="btn btn-success">Create New <i class="fas fa-plus"></i></a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -33,12 +32,14 @@
                                             <th>{{ trans('messages.id') }}</th>
                                             <th>{{ trans('messages.name') }}</th>
                                             <th>Lab Price</th>
+                                            <th>Price with TVA</th>
                                             <th>Bag Coule</th>
                                             <th>My Price</th>
                                             <th>Invoice To</th>
                                             <th>Cash Out</th>
                                             <th>My Benefit</th>
                                             <th>Accessories</th>
+                                            <th>Special Price for Doctor</th>
                                             <th>{{ trans('messages.lab') }}</th>
                                             <th>{{ trans('messages.lab_due_date') }}</th>
                                             <th>{{ trans('messages.second_lab') }}</th>
@@ -53,29 +54,30 @@
                                             <tr>
                                                 <td>{{ $typeofwork->id }}</td>
                                                 <td>{{ $typeofwork->name }}</td>
-                                                <td>{{ $typeofwork->lab_price }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->bag_coule }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->my_price }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->invoice_to }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->cash_out }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->my_benefit }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->accessories }}
-                                                    {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->lab_price }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->price_with_tva }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->bag_coule }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->my_price }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->invoice_to }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->cash_out }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->my_benefit }} {{ config('settings.site_currency_icon') }}</td>
+                                                <td>{{ $typeofwork->accessories }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>
-                                                    <span
-                                                        class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span>
+                                                    @if($typeofwork->doctorPrices->isNotEmpty())
+                                                        @foreach($typeofwork->doctorPrices as $doctorPrice)
+                                                            <div class="badge badge-info">{{ $doctorPrice->doctor->first_name }} {{ $doctorPrice->doctor->last_name }}: {{ $doctorPrice->price }} {{ config('settings.site_currency_icon') }}</div><br>
+                                                        @endforeach
+                                                    @else
+                                                        <span class="badge badge-danger">No</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-primary">{{ $typeofwork->lab->first_name }}</span>
                                                 </td>
                                                 <td>{{ $typeofwork->lab_due_date }}</td>
                                                 <td>
                                                     @if ($typeofwork->secondLab)
-                                                        <span
-                                                            class="badge badge-primary">{{ $typeofwork->secondLab->first_name }}</span>
+                                                        <span class="badge badge-primary">{{ $typeofwork->secondLab->first_name }}</span>
                                                     @else
                                                         No Secondary Lab
                                                     @endif
@@ -83,19 +85,15 @@
                                                 <td>{{ $typeofwork->second_lab_due_date }} </td>
                                                 <td>
                                                     @if ($typeofwork->externalLab)
-                                                        <span
-                                                            class="badge badge-primary">{{ $typeofwork->externalLab->first_name }}</span>
+                                                        <span class="badge badge-primary">{{ $typeofwork->externalLab->first_name }}</span>
                                                     @else
                                                         No External Lab
                                                     @endif
                                                 </td>
                                                 <td>{{ $typeofwork->external_lab_due_date }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}"
-                                                        class="btn btn-primary">Edit</a>
-
-                                                    <a href="{{ route('admin.type-of-works.destroy', $typeofwork->id) }}"
-                                                        class="btn btn-danger delete-item">Delete</a>
+                                                    <a href="{{ route('admin.type-of-works.edit', $typeofwork->id) }}" class="btn btn-primary">Edit</a>
+                                                    <a href="{{ route('admin.type-of-works.destroy', $typeofwork->id) }}" class="btn btn-danger delete-item">Delete</a>
                                                 </td>
                                             </tr>
                                         @endforeach

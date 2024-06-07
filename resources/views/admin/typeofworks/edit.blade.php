@@ -132,13 +132,40 @@
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.external_lab_due_date') }}</label>
+                                        <input name="external_lab_due_date" type="number" class="form-control" value="{{ old('external_lab_due_date', $typeofwork->external_lab_due_date ? $typeofwork->external_lab_due_date : '') }}">
+                                    </div>
+
                                 </div>
 
-
-                                <div class="form-group col-md-12 col-12">
-                                    <label>{{ trans('messages.external_lab_due_date') }}</label>
-                                    <input name="external_lab_due_date" type="number" class="form-control" value="{{ old('external_lab_due_date', $typeofwork->external_lab_due_date ? $typeofwork->external_lab_due_date : '') }}">
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>Doctor Specific Prices</label>
+                                        <div id="doctor-prices">
+                                            @foreach($typeofwork->doctorPrices as $index => $doctorPrice)
+                                                <div class="row mb-2">
+                                                    <div class="col-md-6">
+                                                        <select class="form-control select2" name="doctor_prices[{{ $index }}][doctor_id]">
+                                                            @foreach ($doctors as $doctor)
+                                                                <option value="{{ $doctor->id }}"
+                                                                    @if ($doctor->id == $doctorPrice->doctor_id) selected @endif>
+                                                                    {{ $doctor->first_name }} {{ $doctor->last_name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="number" name="doctor_prices[{{ $index }}][price]" class="form-control" value="{{ $doctorPrice->price }}">
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <button type="button" class="btn btn-success" id="add-doctor-price">Add Doctor Price</button>
+                                    </div>
                                 </div>
+
                             </div>
 
                             <div class="card-footer text-right">
@@ -150,4 +177,30 @@
             </div>
         </div>
     </section>
+
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                var doctorPriceIndex = {{ count($typeofwork->doctorPrices) }};
+
+                $('#add-doctor-price').on('click', function() {
+                    var newDoctorPrice = `
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <select class="form-control select2" name="doctor_prices[${doctorPriceIndex}][doctor_id]">
+                                    @foreach ($doctors as $doctor)
+                                        <option value="{{ $doctor->id }}">{{ $doctor->first_name }} {{ $doctor->last_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="number" name="doctor_prices[${doctorPriceIndex}][price]" class="form-control" placeholder="Price">
+                            </div>
+                        </div>`;
+                    $('#doctor-prices').append(newDoctorPrice);
+                    doctorPriceIndex++;
+                });
+            });
+        </script>
+    @endpush
 @endsection

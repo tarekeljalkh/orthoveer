@@ -72,8 +72,8 @@ class ScanController extends Controller
         $scans = Scan::with(['doctor', 'latestStatus' => function ($query) {
             $query->where('status', 'new');
         }])
-        ->where('lab_id', $labId)
-        ->get();
+            ->where('lab_id', $labId)
+            ->get();
 
         // Filter the scans to ensure they have the latest status as 'new'
         $newScans = $scans->filter(function ($scan) {
@@ -494,18 +494,24 @@ class ScanController extends Controller
             return back()->withErrors('Could not create ZIP file.');
         }
 
+        // Check if a status update already exists
+        $existingStatus = Status::where('scan_id', $scan->id)
+            ->where('status', 'downloaded')
+            ->first();
+
+        if (!$existingStatus) {
+            // Create a new status update for the scan
+            $statusUpdate = new Status([
+                'scan_id' => $scan->id,
+                'status' => 'downloaded',
+                'note' => 'Downloaded',
+                'updated_by' => Auth::id(),
+            ]);
+
+            $statusUpdate->save();
+        }
 
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
-
-        // Create a new status update for the scan
-        $statusUpdate = new Status([
-            'scan_id' => $scan->id,
-            'status' => 'downloaded', // Setting the initial status to 'pending'
-            'note' => 'Downloaded', // Assuming the note comes from the request
-            'updated_by' => Auth::id(), // Assuming the current user made this update
-        ]);
-
-        $statusUpdate->save();
     }
 
     public function printMultiple(Request $request)
@@ -561,6 +567,14 @@ class ScanController extends Controller
             }
 
             return response()->download($zipFilePath)->deleteFileAfterSend(true);
+
+            // Create a new status update for the scan
+            $statusUpdate = new Status([
+                'scan_id' => $scan->id,
+                'status' => 'downloaded', // Setting the initial status to 'pending'
+                'note' => 'Downloaded', // Assuming the note comes from the request
+                'updated_by' => Auth::id(), // Assuming the current user made this update
+            ]);
         } else {
             Log::error('Could not open ZIP file for creation at path: ' . $zipFilePath);
             return back()->withErrors('Could not create ZIP file.');

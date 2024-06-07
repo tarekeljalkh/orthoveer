@@ -175,4 +175,5 @@ return [
     'external_lab_due_date' => 'External Lab Due Date',
     'second_lab' => 'Second Lab',
     'external_lab' => 'External Lab',
+    'typeofwork' => 'Type of Work',
 ];

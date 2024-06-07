@@ -31,7 +31,7 @@
                                         <th>{{ trans('messages.patient') }}</th>
                                         <th>{{ trans('messages.due_date') }}</th>
                                         <th>{{ trans('messages.status') }}</th>
-                                        <th>{{ trans('messages.note') }}</th>
+                                        <th>{{ trans('messages.typeofwork') }}</th>
                                         <th>{{ trans('messages.action') }} </th>
                                     </tr>
                                 </thead>
@@ -54,7 +54,7 @@
                                                     {{ trans('messages.' . optional($scan->latestStatus)->status) ?? trans('messages.no_status') }}
                                                 </div>
                                             </td>
-                                            <td>{{ optional($scan->latestStatus)->note }}</td>
+                                            <td>{{ $scan->typeofwork->name }}</td>
                                             <td>
                                                 <div class="btn-group dropleft">
                                                     <button type="button" class="btn btn-dark dropdown-toggle"
