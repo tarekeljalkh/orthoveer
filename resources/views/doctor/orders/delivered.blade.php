@@ -32,7 +32,7 @@
                                             <th>{{ trans('messages.scan_date') }}</th>
                                             <th>{{ trans('messages.due_date') }}</th>
                                             <th>{{ trans('messages.status') }}</th>
-                                            <th>{{ trans('messages.note') }}</th>
+                                            <th>{{ trans('messages.typeofwork') }}</th>
                                             <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
@@ -46,17 +46,26 @@
                                                 <td>
 
                                                     @isset($order->latestStatus)
-                                                        <div class="badge badge-info">{{ $order->latestStatus->status }}</div>
+                                                        <div
+                                                            class="badge
+                                                                {{ $order->latestStatus->status == 'new' ? 'badge-primary' : '' }}
+                                                                {{ $order->latestStatus->status == 'downloaded' ? 'badge-light' : '' }}
+                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                                {{ $order->latestStatus->status == 'resubmitted' ? 'badge-info' : '' }}
+                                                                {{ $order->latestStatus->status == 'completed' ? 'badge-success' : '' }}
+                                                                {{ $order->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                            {{ $order->latestStatus->status }}
+                                                        </div>
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    @isset($order->latestStatus)
-                                                        {{ $order->latestStatus->note }}
+                                                    @isset($order->typeofwork)
+                                                        {{ $order->typeofwork->name }}
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('doctor.orders.edit', $order->id) }}"
-                                                        class="btn btn-primary">{{ trans('messages.edit') }}</a>
+                                                    <a href="{{ route('doctor.orders.show', $order->id) }}"
+                                                        class="btn btn-primary">{{ trans('messages.show') }}</a>
                                                 </td>
                                             </tr>
                                         @endforeach

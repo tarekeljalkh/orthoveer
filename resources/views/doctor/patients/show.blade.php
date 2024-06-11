@@ -45,33 +45,45 @@
                                             <tr>
                                                 <th>{{ trans('messages.id') }}</th>
                                                 <th>{{ trans('messages.scan_date') }}</th>
-                                                <th>{{ trans('messages.procedure') }}</th>
                                                 <th>{{ trans('messages.status')}}</th>
-                                                <th>{{ trans('messages.note') }}</th>
+                                                <th>{{ trans('messages.typeofwork') }}</th>
+                                                <th>{{ trans('messages.action') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($patient->scans as $scan)
-                                            <tr onclick="window.location='{{ route('doctor.orders.edit', $scan->id) }}';" style="cursor:pointer;">
+                                            <tr>
                                                 <td>{{ $scan->id }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($scan->scan_date)->format('d/m/Y') }}</td>
-                                                    <td>{{ $scan->typeofwork->name }}</td>
                                                     <td>
 
                                                         @isset($scan->latestStatus)
-                                                            <div
-                                                                class="badge
-                                                                    {{ $scan->latestStatus->status == 'pending' ? 'badge-primary' : '' }}
-                                                                    {{ $scan->latestStatus->status == 'resubmitted' ? 'badge-warning' : '' }}
-                                                                    {{ $scan->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
-                                                                    {{ $scan->latestStatus->status == 'completed' ? 'badge-success' : '' }}
-                                                                    {{ $scan->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
-                                                                {{ $scan->latestStatus->status }}
-                                                            </div>
-                                                        @endisset
+                                                        <div
+                                                            class="badge
+                                                                {{ $scan->latestStatus->status == 'new' ? 'badge-primary' : '' }}
+                                                                {{ $scan->latestStatus->status == 'downloaded' ? 'badge-light' : '' }}
+                                                                {{ $scan->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                                {{ $scan->latestStatus->status == 'resubmitted' ? 'badge-info' : '' }}
+                                                                {{ $scan->latestStatus->status == 'completed' ? 'badge-success' : '' }}
+                                                                {{ $scan->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                            {{ $scan->latestStatus->status }}
+                                                        </div>
+                                                    @endisset
+
                                                     </td>
 
-                                                    <td>{{ optional($scan->latestStatus)->note }}</td>
+                                                    <td>{{ $scan->typeofwork->name }}</td>
+
+                                                    <td>
+                                                        @if ($scan->latestStatus->status == 'rejected')
+                                                            <a href="{{ route('doctor.orders.edit', $scan->id) }}" class="btn btn-primary">{{ trans('messages.edit') }}</a>
+                                                        @else
+                                                            <a href="{{ route('doctor.orders.show', $scan->id) }}" class="btn btn-primary">{{ trans('messages.show') }}</a>
+                                                        @endif
+                                                    </td>
+
+
+
                                                 </tr>
                                             @endforeach
                                         </tbody>

@@ -32,7 +32,7 @@
                                             <th>{{ trans('messages.scan_date') }}</th>
                                             <th>{{ trans('messages.due_date') }}</th>
                                             <th>{{ trans('messages.status') }}</th>
-                                            <th>{{ trans('messages.note') }}</th>
+                                            <th>{{ trans('messages.typeofwork') }}</th>
                                             <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
@@ -48,9 +48,10 @@
                                                     @isset($order->latestStatus)
                                                         <div
                                                             class="badge
-                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-primary' : '' }}
-                                                                {{ $order->latestStatus->status == 'resubmitted' ? 'badge-warning' : '' }}
-                                                                {{ $order->latestStatus->status == 'delivered' ? 'badge-info' : '' }}
+                                                                {{ $order->latestStatus->status == 'new' ? 'badge-primary' : '' }}
+                                                                {{ $order->latestStatus->status == 'downloaded' ? 'badge-light' : '' }}
+                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                                {{ $order->latestStatus->status == 'resubmitted' ? 'badge-info' : '' }}
                                                                 {{ $order->latestStatus->status == 'completed' ? 'badge-success' : '' }}
                                                                 {{ $order->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
                                                             {{ $order->latestStatus->status }}
@@ -58,13 +59,16 @@
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    @isset($order->latestStatus)
-                                                        {{ $order->latestStatus->note }}
+                                                    @isset($order->typeofwork)
+                                                        {{ $order->typeofwork->name }}
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('doctor.orders.edit', $order->id) }}"
-                                                        class="btn btn-primary">{{ trans('messages.edit') }}</a>
+                                                    @if ($order->latestStatus->status == 'rejected')
+                                                        <a href="{{ route('doctor.orders.edit', $order->id) }}" class="btn btn-primary">{{ trans('messages.edit') }}</a>
+                                                    @else
+                                                        <a href="{{ route('doctor.orders.show', $order->id) }}" class="btn btn-primary">{{ trans('messages.show') }}</a>
+                                                    @endif
                                                 </td>
 
                                             </tr>

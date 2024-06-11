@@ -176,4 +176,7 @@ return [
     'second_lab' => 'Second Lab',
     'external_lab' => 'External Lab',
     'typeofwork' => 'Type of Work',
+    'dhl_orders' => 'DHL Orders',
+    'dhl_order' => 'DHL Order',
+    'show' => 'Show',
 ];

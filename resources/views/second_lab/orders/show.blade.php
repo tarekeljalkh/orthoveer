@@ -6,7 +6,7 @@
         <div class="section-header-back">
             <a href="{{ route('second_lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
-        <h1>{{ trans('orders') }}</h1>
+        <h1>{{ trans('messages.dhl_order') }}</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
             <div class="breadcrumb-item">{{ trans('order') }}: {{ $order->id }}</div>
@@ -18,7 +18,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>{{ trans('order') }}: {{ $order->scan_id }}</h4>
+                        <h4>{{ trans('messages.dhl_order') }}: {{ $order->scan_id }}</h4>
                     </div>
                     <div class="card-body">
                         <h2>Order Details</h2>

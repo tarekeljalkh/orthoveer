@@ -38,29 +38,29 @@ bnajm0
 01874755@Bn!!
 
 bernard address:
-ORTHOVEER 
-17 rue du petit Albi 95800 Cergy 
+ORTHOVEER
+17 rue du petit Albi 95800 Cergy
 
-Bloc C2 Porte 203 
+Bloc C2 Porte 203
 
-orthoveer@gmail.com 
+orthoveer@gmail.com
 0745556967
 
-Stl files edit doctor,
-Type of work not note in docotor
+Stl files edit doctor -> done
+Type of work not note in doctor -> done
 
+Dhl orders -> Done
+
+Pending scans in lab not showing -> become rejected scans Done
+
+doctor registration -> done
+
+Prescription date of submitting -> u mean $scan->due_date
+
+Date of delivery -> $scan->due_date plus lab due date
 
 Second lab primary note
 
-
-Prescription date of submitting
-Date of delivery
-
 Print files to second_lab
 
-
-Dhl orders
-
-Pending scans in lab not showing 
-
-Doxtor special price percent
+Doctor special price percent

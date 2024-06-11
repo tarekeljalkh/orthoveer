@@ -4,12 +4,12 @@
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="{{ route('lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                <a href="{{ route('second_lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
             <h1>{{ trans('messages.create_new_order') }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('second_lab.orders.index') }}">{{ trans('messages.orders') }}</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('second_lab.orders.index') }}">{{ trans('messages.dhl_orders') }}</a></div>
                 <div class="breadcrumb-item">{{ trans('messages.create_new_order') }}</div>
             </div>
         </div>

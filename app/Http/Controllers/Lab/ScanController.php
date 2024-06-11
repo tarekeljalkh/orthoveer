@@ -45,25 +45,6 @@ class ScanController extends Controller
         return view('lab.scans.index', compact('scans'));
     }
 
-    public function pending()
-    {
-        $labId = Auth::user()->id;
-
-        // First, retrieve all scans for the lab within the current month.
-        $scans = Scan::with(['doctor', 'status']) // Assuming 'status' relation loads necessary data to determine current status
-            ->where('lab_id', $labId)
-            ->get();
-
-        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
-        // Note: This filtering happens in memory, not in the database.
-        $pendingScans = $scans->filter(function ($scan) {
-            return $scan->current_status == 'pending';
-        });
-
-
-        return view('lab.scans.pending', compact('pendingScans'));
-    }
-
     public function new()
     {
         $labId = Auth::user()->id;

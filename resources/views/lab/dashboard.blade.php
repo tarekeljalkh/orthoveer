@@ -61,24 +61,6 @@
                 </a>
             </div>
 
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-success">
-                            <i class="fas fa-pause-circle"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>{{ trans('messages.pending_scans') }}</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $pendingScans }}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-
         </div>
         <div class="section-body">
         </div>

@@ -6,10 +6,10 @@
             <div class="section-header-back">
                 <a href="{{ route('second_lab.dashboard') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>{{ trans('messages.orders') }}</h1>
+            <h1>{{ trans('messages.dhl_orders') }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="{{ route('second_lab.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
-                <div class="breadcrumb-item"><a href="#">{{ trans('messages.orders') }}</a></div>
+                <div class="breadcrumb-item"><a href="#">{{ trans('messages.dhl_orders') }}</a></div>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>{{ trans('messages.orders') }}</h4>
+                            <h4>{{ trans('messages.dhl_orders') }}</h4>
                             <div class="card-header-action">
                                 <a href="{{ route('second_lab.orders.create') }}" class="btn btn-success">{{ trans('messages.create_new') }} <i
                                         class="fas fa-plus"></i></a>

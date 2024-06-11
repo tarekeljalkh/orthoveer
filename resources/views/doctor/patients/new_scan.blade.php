@@ -8,7 +8,8 @@
             </div>
             <h1>{{ trans('messages.new_scan') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a
+                        href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.new_scan') }}</a></div>
             </div>
         </div>
@@ -17,164 +18,102 @@
             <form action="{{ route('doctor.scans.new.store', $patient->id) }}" method="post" enctype="multipart/form-data">
                 @csrf
 
+                <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
+
                 <div class="row">
-                    <input type="hidden" name="doctor_id" value="{{ auth()->user()->id }}">
 
-                    {{-- Patient Section --}}
+                    {{-- Order Section --}}
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>{{ trans('messages.patient') }}:</h4>
-                                {{-- <div class="card-header-action">
-                                    <a href="{{ route('doctor.patients.create') }}" class="btn btn-success">Add New Patient <i class="fas fa-plus"></i></a>
-                                </div> --}}
+                                <h4>Order:</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
 
-                                    {{-- Send Patient ID --}}
-                                    <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.first_name') }}</label>
-                                        <input name="patient_first_name" type="text" class="form-control"
-                                            value="{{ $patient->first_name }}" disabled>
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.last_name') }}</label>
-                                        <input name="patient_last_name" type="text" class="form-control"
-                                            value="{{ $patient->last_name }}" disabled>
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.date_of_birth') }}</label>
-                                        <input name="patient_dob" type="date" class="form-control"
-                                            value="{{ $patient->dob->format('Y-m-d') }}" disabled>
-                                    </div>
-
-                                    <div class="form-group col-md-5 col-12">
-                                        <label class="form-label">{{ trans('messages.gender') }}</label>
-                                        <div class="selectgroup w-100">
-                                            <label class="selectgroup-item">
-                                                <input type="radio" name="patient_gender" value="male"
-                                                    class="selectgroup-input" checked="" disabled>
-                                                <span class="selectgroup-button">{{ trans('messages.male') }}</span>
-                                            </label>
-                                            <label class="selectgroup-item">
-                                                <input type="radio" name="patient_gender" value="female"
-                                                    class="selectgroup-input" disabled>
-                                                <span class="selectgroup-button">{{ trans('messages.female') }}</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <label>{{ trans('messages.chart_number') }}:</label>
-                                        <input class="form-control" type="text" name="chart_number"
-                                            value="{{ $patient->chart_number }}" disabled>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Patient Section --}}
-
-
-                    {{-- Scan Section --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>{{ trans('messages.scan') }}:</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-12 col-12">
                                         <label>{{ trans('messages.due_date') }}</label>
-                                        <input type="date" name="due_date" class="form-control" required="">
-                                    </div>
-
-                                    <div class="form-group col-md-12 col-6">
-                                        <label>{{ trans('messages.procedure') }}</label>
-                                        <select class="form-control select2" id="categorySelect" name="category_id">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <input type="date" name="due_date" class="form-control"
+                                            value="{{ now()->toDateString() }}" min="{{ now()->toDateString() }}">
                                     </div>
 
                                     <div class="form-group col-md-12 col-12">
                                         <label>{{ trans('messages.type') }}</label>
                                         <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
-                                            {{-- @foreach ($labs as $lab)
-                                                    <option value="{{ $lab->id }}">{{ $lab->first_name }}</option>
-                                                @endforeach --}}
+                                            @foreach ($typeofWorks as $typeofWork)
+                                                <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
 
-
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.stl_upper') }} <i class="fas fa-arrow-up"></i></label>
-                                        <div id="stl_upper_container">
-                                            <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
-                                        </div>
-                                        <input type="file" name="stl_upper" class="form-control">
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.stl_lower') }} <i class="fas fa-arrow-down"></i></label>
-                                        <div id="stl_lower_container">
-                                            <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
-                                        </div>
-                                        <input type="file" name="stl_lower" class="form-control">
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    {{-- End Scan Section --}}
-
-
-                    {{-- Note --}}
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>{{ trans('messages.note') }}:</h4>
-                            </div>
-                            <div class="card-body">
-
-                                <div class="row">
                                     <div class="form-group col-12">
-                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10" placeholder="{{ trans('messages.add_note') }}"></textarea>
+                                        <label>{{ trans('messages.note') }}</label>
+
+                                        <textarea class="form-control" name="note" id="note" cols="30" rows="10"
+                                            placeholder="{{ trans('messages.add_note') }}"></textarea>
                                     </div>
+
+                                    <div class="form-group col-12">
+                                        <label>{{ trans('messages.upload_image_or_pdf') }}</label>
+
+                                        <div class="form-group col-12" id="previewContainer"></div> {{-- Preview Container --}}
+                                        <input type="file" name="pdf[]" id="pdfInput" class="form-control" multiple>
+                                    </div>
+
+
+
+
+
+                                    <div class="row">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Order Section --}}
+
+                        {{-- STL SECTIONS --}}
+
+                        <div class="col-12 col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row">
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>{{ trans('messages.stl_upper') }} <i
+                                                    class="fas fa-arrow-up"></i></label>
+                                            <div id="stl_upper_container">
+                                                <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
+                                            </div>
+                                            <input type="file" name="stl_upper" class="form-control">
+                                        </div>
+
+                                        <div class="form-group col-md-6 col-12">
+                                            <label>{{ trans('messages.stl_lower') }} <i
+                                                    class="fas fa-arrow-down"></i></label>
+                                            <div id="stl_lower_container">
+                                                <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
+                                            </div>
+                                            <input type="file" name="stl_lower" class="form-control">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary"
+                                        id="submitBtn">{{ trans('messages.done') }}</button>
                                 </div>
 
                             </div>
-                            <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary" id="submitBtn">{{ trans('messages.done') }}</button>
-                            </div>
+
 
                         </div>
-
+                        {{-- End STL SECTION --}}
 
                     </div>
-                    {{-- End Note --}}
-
-                </div>
             </form>
 
         </div>
@@ -287,30 +226,8 @@
 
         // Form submission event
         $('form').on('submit', function() {
-            $('#submitBtn').prop('disabled', true).text('Submitting...');
+            $('#submitBtn').prop('disabled', true).text('{{ trans('messages.submitting') }}...');
         });
-
-
-        // convert this data into a JavaScript variable within your Blade template
-        var categoriesAndTypes = @json(
-            $categories->mapWithKeys(function ($category) {
-                return [$category->id => $category->TypeOfWorks->pluck('name', 'id')];
-            }));
-
-        $('#categorySelect').on('change', function() {
-            var categoryId = $(this).val();
-            var typesOfWork = categoriesAndTypes[categoryId] || {};
-            var $typeOfWorkSelect = $('#typeOfWorkSelect');
-
-            $typeOfWorkSelect.empty().append('<option value="">Select Type</option>'); // Reset and add placeholder
-
-            $.each(typesOfWork, function(id, name) {
-                $typeOfWorkSelect.append('<option value="' + id + '">' + name + '</option>');
-            });
-        });
-
-        //
-
 
 
         //preview files before submitting

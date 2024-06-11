@@ -174,5 +174,8 @@ return [
     'second_lab' => 'Deuxième Laboratoire',
     'external_lab' => 'Laboratoire Externe',
     'typeofwork' => 'Type de Travail',
+    'dhl_orders' => 'Commandes DHL',
+    'dhl_order' => 'Commande DHL',
+    'show' => 'Montrer',
 
 ];

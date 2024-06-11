@@ -40,6 +40,20 @@ class ScanController extends Controller
 
     public function newScanStore(Request $request, $id)
     {
+
+        // Validate the input
+        $request->validate([
+            'stl_upper' => 'nullable|file',
+            'stl_lower' => 'nullable|file',
+        ]);
+
+        if (!$request->hasFile('stl_upper') && !$request->hasFile('stl_lower')) {
+            // Using Toastr to display an error message
+            toastr()->warning('Please upload at least one STL file (upper or lower).');
+            return redirect()->back();
+        }
+
+
         //find patient id
         $patient = Patient::findOrFail($id);
 
@@ -86,17 +100,22 @@ class ScanController extends Controller
             'doctorName' => 'Dr. ' . Auth::user()->last_name,
             'dueDate' => $scan->due_date->format('d-m-y'),
             'scanDate' => now()->format('d-m-y'),
-            'patientName' => $scan->patient,
-            // Include other data as needed
+            'patientName' => $scan->patient->first_name,
+            'labName' => $lab->first_name,
+            'scanId' => $scan->id,
+            'doctor_scan_url' => route('doctor.scans.index'),
+            'lab_scan_url' => route('lab.scans.viewer', ['id' => $scan->id]),
+            'scan_due_date' => $scan->due_date->addDays($type->lab_due_date)->format('d-m-y'),
         ];
 
-        // try {
-        //     Mail::to($lab->email)->send(new OrderPlaced($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
-        // } catch (\Exception $e) {
-        //     // Handle email sending failure, log error, etc.
-        // }
+        try {
+            Mail::to(Auth::user()->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+            Mail::to($lab->email)->send(new ScanCreatedToLab($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        } catch (\Exception $e) {
+            toastr()->warning($e->getMessage());
+        }
 
-        Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+        //Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
 
         //send Notification
         $notification = new Notification();
