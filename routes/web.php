@@ -19,6 +19,19 @@ use Illuminate\Support\Facades\Route;
 // all middlewares, prefixes and suffixes are in routeserviceprovider
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        $role = Auth::user()->role;
+        $roleRedirects = [
+            'admin' => '/admin/dashboard',
+            'doctor' => '/doctor/dashboard',
+            'lab' => '/lab/dashboard',
+            'second_lab' => '/second_lab/dashboard',
+            'external_lab' => '/external_lab/dashboard',
+        ];
+
+        return redirect($roleRedirects[$role] ?? '/');
+    }
+
     return view('auth.login');
 });
 

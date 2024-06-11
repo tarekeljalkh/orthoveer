@@ -25,13 +25,6 @@ return new class extends Migration
             $table->enum('role', ['admin', 'doctor', 'lab', 'second_lab', 'external_lab'])->default('doctor');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-
-            // Adding delivery credentials fields
-            $table->string('street')->nullable();
-            $table->string('suburb')->nullable();
-            $table->string('postcode')->nullable();
-            $table->string('country')->nullable();
-
             $table->rememberToken();
             $table->timestamps();
         });

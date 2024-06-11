@@ -25,22 +25,39 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        if ($request->user()->role === 'admin') {
-            return redirect()->intended('/admin/dashboard');
-        } elseif ($request->user()->role === 'doctor') {
-            return redirect()->intended('/doctor/dashboard');
-        } elseif ($request->user()->role === 'lab') {
-            return redirect()->intended('/lab/dashboard');
-        } elseif ($request->user()->role === 'second_lab') {
-            return redirect()->intended('/second_lab/dashboard');
-        } elseif ($request->user()->role === 'external_lab') {
-            return redirect()->intended('/external_lab/dashboard');
-        }
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Define the role-based redirection logic
+        $roleRedirects = [
+            'admin' => '/admin/dashboard',
+            'doctor' => '/doctor/dashboard',
+            'lab' => '/lab/dashboard',
+            'second_lab' => '/second_lab/dashboard',
+            'external_lab' => '/external_lab/dashboard',
+        ];
+
+        // Redirect based on the user's role, defaulting to the home route
+        return redirect()->intended($roleRedirects[$request->user()->role] ?? RouteServiceProvider::HOME);
+
+        // $request->authenticate();
+
+        // $request->session()->regenerate();
+
+        // if ($request->user()->role === 'admin') {
+        //     return redirect()->intended('/admin/dashboard');
+        // } elseif ($request->user()->role === 'doctor') {
+        //     return redirect()->intended('/doctor/dashboard');
+        // } elseif ($request->user()->role === 'lab') {
+        //     return redirect()->intended('/lab/dashboard');
+        // } elseif ($request->user()->role === 'second_lab') {
+        //     return redirect()->intended('/second_lab/dashboard');
+        // } elseif ($request->user()->role === 'external_lab') {
+        //     return redirect()->intended('/external_lab/dashboard');
+        // }
+        // return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
