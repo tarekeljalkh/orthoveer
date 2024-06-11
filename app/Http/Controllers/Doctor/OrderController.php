@@ -140,7 +140,7 @@ class OrderController extends Controller
         $completedOrders = Scan::with(['patient', 'latestStatus'])
             ->where('doctor_id', Auth::user()->id)
             ->whereHas('latestStatus', function ($query) {
-                $query->where('status', 'rejected');
+                $query->where('status', 'completed');
             })->get();
 
         // Return the view with the orders

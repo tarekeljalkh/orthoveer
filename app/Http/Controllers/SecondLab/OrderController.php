@@ -104,14 +104,14 @@ class OrderController extends Controller
         return [
             'Order Number' => $scan->id,
             'Date' => now()->format('d/m/Y'),
-            'To Name' => $doctor->first_name . ' ' . $doctor->last_name,
-            'Destination Street' => $doctor->delivery_street,
-            'Destination Suburb' => $doctor->delivery_suburb,
-            'Destination City' => $doctor->delivery_city,
-            'Destination Postcode' => $doctor->delivery_postcode,
-            'Destination State' => $doctor->delivery_state,
-            'Destination Country' => $doctor->delivery_country,
-            'Destination Email' => $doctor->email,
+            'To Name' => 'ORTHOVEER',
+            'Destination Street' => '17 rue du petit Albi',
+            'Destination Suburb' => 'Cergy',
+            'Destination City' => 'Cergy',
+            'Destination Postcode' => '95800',
+            'Destination State' => 'Bloc C2 Porte 203',
+            'Destination Country' => 'France',
+            'Destination Email' => 'orthoveer@gmail.com',
             'Weight' => 0.0, // Placeholder
             'Shipping Method' => 'DHL Express Intl', // Placeholder
             'Reference' => '', // Placeholder
@@ -119,19 +119,13 @@ class OrderController extends Controller
             'Qty' => 1, // Placeholder
             'Company' => '', // Placeholder
             'Carrier' => 'DHL', // Placeholder
-            'Carrier Product Code' => 'WPX' // Placeholder
+            'Carrier Product Code' => 'WPX', // Placeholder
+            'Phone' => '0745556967', // Adding phone number
         ];
     }
 
-    private function generateCSV($orders, $scanDetails)
+    private function generateCSV($order, $scanDetails)
     {
-        $headers = [
-            'Order Number', 'Date', 'To Name', 'Destination Street', 'Destination Suburb',
-            'Destination City', 'Destination Postcode', 'Destination State', 'Destination Country',
-            'Destination Email', 'Item Name', 'Item Price', 'Weight', 'Shipping Method', 'Reference',
-            'SKU', 'Qty', 'Company', 'Carrier', 'Carrier Product Code'
-        ];
-
         // Ensuring the uploads directory exists
         $uploadsPath = storage_path('uploads');
         if (!file_exists($uploadsPath)) {
@@ -142,8 +136,6 @@ class OrderController extends Controller
         $path = $uploadsPath . '/' . $filename;
         $file = fopen($path, 'w'); // Open file for writing
 
-        fputcsv($file, $headers);
-
         foreach ($scanDetails as $details) {
             fputcsv($file, $details);
         }
@@ -152,6 +144,7 @@ class OrderController extends Controller
 
         return $path;
     }
+
 
     private function uploadCSV($csvPath)
     {

@@ -18,22 +18,20 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>{{ trans('order') }}: {{ $order->id }}</h4>
+                        <h4>{{ trans('order') }}: {{ $order->scan_id }}</h4>
                     </div>
                     <div class="card-body">
                         <h2>Order Details</h2>
-                        <div><strong>Order ID:</strong> {{ $order->id }}</div>
-                        <div><strong>Date:</strong> {{ $order->date ? $order->date->format('Y-m-d') : 'Date not set' }}</div>
-                        <div><strong>To Name:</strong> {{ $order->to_name }}</div>
-                        <div><strong>Destination Street:</strong> {{ $order->destination_street }}</div>
-                        <div><strong>Destination City:</strong> {{ $order->destination_city }}</div>
-                        <div><strong>Destination Postcode:</strong> {{ $order->destination_postcode }}</div>
-                        <div><strong>Destination State:</strong> {{ $order->destination_state }}</div>
-                        <div><strong>Destination Country:</strong> {{ $order->destination_country }}</div>
-                        <div><strong>Destination Email:</strong> {{ $order->destination_email }}</div>
-                        <div><strong>Destination Phone:</strong> {{ $order->destination_phone }}</div>
-                        <div><strong>Item Name:</strong> {{ $order->item_name }}</div>
-                        <div><strong>Item Price:</strong> {{ $order->item_price }}</div>
+                        <div><strong>Order ID:</strong> {{ $order->scan_id }}</div>
+                        <div><strong>Date:</strong> {{ $order->created_at->format('Y-m-d') }}</div>
+                        <div><strong>To Name:</strong> ORTHOVEER</div>
+                        <div><strong>Destination Street:</strong> 17 rue du petit Albi</div>
+                        <div><strong>Destination City:</strong> Cergy</div>
+                        <div><strong>Destination Postcode:</strong> 95800</div>
+                        <div><strong>Destination State:</strong> Bloc C2 Porte 203</div>
+                        <div><strong>Destination Country:</strong> France</div>
+                        <div><strong>Destination Email:</strong> orthoveer@gmail.com</div>
+                        <div><strong>Destination Phone:</strong> 0745556967</div>
                         <div><strong>Weight:</strong> {{ $order->weight }}</div>
                         <div><strong>Shipping Method:</strong> {{ $order->shipping_method }}</div>
                         <div><strong>Reference:</strong> {{ $order->reference }}</div>
