@@ -134,29 +134,6 @@
 
 
 
-                        {{-- Only show if not delivered --}}
-                        @if ($lastStatus !== 'delivered')
-                            <div class="card-footer">
-                                <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
-                                    @csrf
-                                    @method('post')
-
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" name="note" placeholder="Enter Note"
-                                            required>
-                                    </div>
-
-                                    <button type="submit" name="action" value="reject" class="btn btn-danger">
-                                        Reject
-                                    </button>
-
-                                </form>
-                            </div>
-                        @endif
-
-                    </div>
-                    {{-- End Status and Rejection Section --}}
-
                     {{-- Comple Scan Section --}}
                     @if ($lastStatus !== 'delivered')
                     <div class="card">
@@ -203,7 +180,29 @@
 
                     {{-- End Complete Scan Section --}}
 
+
+                {{-- Attach Print Files Section --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Attached Print Files</h4>
+                    </div>
+                    <div class="card-body">
+                        @if ($scan->printFiles->isEmpty())
+                        <p>No print files attached.</p>
+                        @else
+                        <ul>
+                            @foreach ($scan->printFiles as $printFile)
+                            <li>
+                                <a href="{{ route('second_lab.printfiles.download', $printFile->id) }}">
+                                    {{ $printFile->file_path }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        @endif
+                    </div>
                 </div>
+                {{-- End Attach Print Files Section --}}
 
 
             </div>

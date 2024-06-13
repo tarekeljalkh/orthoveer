@@ -13,12 +13,8 @@ return new class extends Migration
     {
         Schema::create('print_files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('scan_id');
-            $table->string('file');
+            $table->string('file_path');
             $table->timestamps();
-
-            // Add foreign key constraint if 'scans' table exists
-            $table->foreign('scan_id')->references('id')->on('scans')->onDelete('cascade');
         });
     }
 

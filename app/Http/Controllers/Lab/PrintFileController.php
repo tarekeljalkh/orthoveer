@@ -20,20 +20,17 @@ class PrintFileController extends Controller
     {
         $labId = Auth::user()->id;
         $scans = Scan::where('lab_id', $labId)->with('printFiles')->get();
+        $printFiles = PrintFile::all();
 
-        return view('lab.printfiles.index', compact('scans'));
+        return view('lab.printfiles.index', compact('scans', 'printFiles'));
     }
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $labId = Auth::user()->id;
-        $scans = Scan::where('lab_id', $labId)->get();
-
-        return view('lab.printfiles.create', compact('scans'));
+        return view('lab.printfiles.create');
     }
 
     /**
@@ -42,17 +39,14 @@ class PrintFileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'scan_id' => 'required|exists:scans,id',
             'file' => 'required|file|mimes:zip|max:20480', // max size 20MB
         ]);
 
-        $scanId = $request->scan_id;
-        $path = $this->uploadZip($request, 'file', $scanId);
+        $path = $this->uploadZip($request, 'file', 'print_files');
 
         if ($path) {
             PrintFile::create([
-                'scan_id' => $scanId,
-                'file' => $path,
+                'file_path' => $path,
             ]);
 
             return back()->with('success', 'File uploaded successfully.');
@@ -64,7 +58,7 @@ class PrintFileController extends Controller
     public function download($id)
     {
         $printFile = PrintFile::findOrFail($id);
-        $filePath = public_path($printFile->file);
+        $filePath = public_path($printFile->file_path);
 
         if (file_exists($filePath)) {
             return response()->download($filePath);
@@ -73,37 +67,58 @@ class PrintFileController extends Controller
         return back()->with('error', 'File not found.');
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function attachScans(Request $request)
     {
-        //
+        $request->validate([
+            'print_file_id' => 'required|exists:print_files,id',
+            'scan_ids' => 'required|array',
+            'scan_ids.*' => 'exists:scans,id',
+        ]);
+
+        $printFile = PrintFile::findOrFail($request->print_file_id);
+        $printFile->scans()->syncWithoutDetaching($request->scan_ids);
+
+        return redirect()->back()->with('success', 'Scans attached to print file successfully.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $printFile = PrintFile::findOrFail($id);
+        return view('lab.printfiles.edit', compact('printFile'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'file' => 'file|mimes:zip|max:20480', // max size 20MB
+        ]);
+
+        $printFile = PrintFile::findOrFail($id);
+
+        if ($request->hasFile('file')) {
+            $path = $this->uploadZip($request, 'file', 'print_files');
+            $printFile->file_path = $path;
+        }
+
+        $printFile->save();
+
+        return redirect()->route('lab.printfiles.index')->with('success', 'Print file updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $printFile = PrintFile::findOrFail($id);
+        $printFile->delete();
+
+        return redirect()->route('lab.printfiles.index')->with('success', 'Print file deleted successfully.');
     }
 }

@@ -25,16 +25,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Select Scan</label>
-                                        <select class="form-control select2" id="scan_id" name="scan_id">
-                                            @foreach ($scans as $scan)
-                                                <option value="{{ $scan->id }}">{{ $scan->id }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-12 col-12">
                                         <label>Upload Print Files (ZIP)</label>
                                         <input type="file" name="file" class="form-control" id="file" accept=".zip">
                                     </div>

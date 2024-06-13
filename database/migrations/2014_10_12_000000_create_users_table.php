@@ -21,8 +21,11 @@ return new class extends Migration
             $table->string('landline')->nullable();
             $table->string('license')->nullable();
             $table->text('address')->nullable();
+            $table->string('postcode')->nullable();
             $table->string('siret_number')->nullable();
             $table->enum('role', ['admin', 'doctor', 'lab', 'second_lab', 'external_lab'])->default('doctor');
+            //discount for doctors
+            $table->decimal('discount', 5, 2)->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

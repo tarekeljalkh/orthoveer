@@ -59,8 +59,12 @@ Prescription date of submitting -> u mean $scan->due_date
 
 Date of delivery -> $scan->due_date plus lab due date
 
+Fixed stl file when upload another one is showing -> done
+
+Doctor special price percent -> done
+
+Print files to second_lab -> done
+
 Second lab primary note
 
-Print files to second_lab
 
-Doctor special price percent

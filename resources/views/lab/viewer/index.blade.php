@@ -159,7 +159,7 @@
 
                     {{-- Comple Scan Section --}}
                     @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
-                    <div class="card">
+                        <div class="card">
                             <div class="card-header">
                                 <h4>Upload And Complete Scan</h4>
                             </div>
@@ -197,6 +197,44 @@
                                     </button>
                                 </form>
                                 <!-- End Form Content -->
+                {{-- Attach Print Files Section --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Attached Print Files</h4>
+                    </div>
+                    <div class="card-body">
+                        @if ($scan->printFiles->isEmpty())
+                        <p>No print files attached.</p>
+                        @else
+                        <ul>
+                            @foreach ($scan->printFiles as $printFile)
+                            <li>
+                                <a href="{{ route('lab.printfiles.download', $printFile->id) }}">
+                                    {{ $printFile->file_path }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        @endif
+
+                        <form action="{{ route('lab.printfiles.attach') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="scan_ids[]" value="{{ $scan->id }}">
+                            <div class="form-group">
+                                <label for="print_file_id">Attach Print File</label>
+                                <select name="print_file_id" id="print_file_id" class="form-control select2">
+                                    @foreach ($printFiles as $printFile)
+                                    <option value="{{ $printFile->id }}">{{ $printFile->file_path }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Attach</button>
+                        </form>
+                    </div>
+                </div>
+                {{-- End Attach Print Files Section --}}
+
+
                             </div>
                         </div>
                     @endif

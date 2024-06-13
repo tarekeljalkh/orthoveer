@@ -10,6 +10,7 @@ use App\Mail\ScanRejected;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Patient;
+use App\Models\PrintFile;
 use App\Models\Scan;
 use App\Models\Status;
 use App\Models\TypeofWork;
@@ -146,10 +147,11 @@ class ScanController extends Controller
     public function viewer($id)
     {
         //$order = Scan::findOrFail($id);
-        $scan = Scan::with('status')->findOrFail($id); // Assuming the correct relationship name is 'status'
+        $scan = Scan::with(['status', 'printFiles'])->findOrFail($id); // Including the relationship with print files
         $external_labs = User::where('role', 'external_lab')->get();
-        return view('lab.viewer.index', compact('scan', 'external_labs'));
-    }
+        $printFiles = PrintFile::all(); // Retrieve all print files to display in the attach form
+        return view('lab.viewer.index', compact('scan', 'external_labs', 'printFiles'));
+        }
 
     public function prescription($id)
     {

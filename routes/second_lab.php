@@ -4,6 +4,7 @@ use App\Http\Controllers\SecondLab\ChatController;
 use App\Http\Controllers\SecondLab\SecondLabController;
 use App\Http\Controllers\SecondLab\NotificationController;
 use App\Http\Controllers\SecondLab\OrderController;
+use App\Http\Controllers\SecondLab\PrintFileController;
 use App\Http\Controllers\SecondLab\ScanController;
 use App\Http\Controllers\SecondLab\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::post('scans/{id}/update-status', [ScanController::class, 'updateStatus'])
 Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('scans.complete');
 //Reassign Scan to another Lab
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
+
+//Print Files route
+Route::get('printfiles/download/{id}', [PrintFileController::class, 'download'])->name('printfiles.download');
 
 Route::resource('scans', ScanController::class);
 /** Download Scan */

@@ -66,11 +66,13 @@ class Scan extends Model
             ->using(OrderScan::class); // Specifies to use OrderScan pivot model
     }
 
-    // Add the printFiles relationship
+
+    // Relationship with print files
     public function printFiles()
     {
-        return $this->hasMany(PrintFile::class, 'scan_id');
+        return $this->belongsToMany(PrintFile::class, 'print_file_scan');
     }
+
 
     // Accessor for calculating the last due date
     public function getLastDueDateAttribute()

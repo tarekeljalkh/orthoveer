@@ -9,15 +9,13 @@ class PrintFile extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'scan_id',
-        'file',
-    ];
 
+    protected $fillable = ['file_path'];
 
-    public function scan()
+    public function scans()
     {
-        return $this->belongsTo(Scan::class, 'scan_id');
+        return $this->belongsToMany(Scan::class, 'print_file_scan');
     }
+
 
 }

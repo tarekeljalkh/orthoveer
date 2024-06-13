@@ -83,25 +83,15 @@
                                         <input type="text" name="postcode" class="form-control" required="">
                                     </div>
 
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.country') }}</label>
-                                        <input type="text" name="country" class="form-control" required="">
-                                    </div>
 
                                 </div>
 
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.street') }}</label>
-                                        <input type="text" name="street" class="form-control" required="">
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.suburb') }}</label>
-                                        <input type="text" name="suburb" class="form-control" required="">
+                                        <label>Discount (%)</label>
+                                        <input type="number" name="discount" class="form-control" min="0" max="100" step="0.01">
                                     </div>
                                 </div>
-
 
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">

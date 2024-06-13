@@ -23,10 +23,6 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'),
-                'street' => null,
-                'suburb' => null,
-                'postcode' => null,
-                'country' => null,
             ],
             [
                 'first_name' => 'doctor',
@@ -39,10 +35,6 @@ class UserSeeder extends Seeder
                 'role' => 'doctor',
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'),
-                'street' => '456 Doctor St',
-                'suburb' => 'MediCity',
-                'postcode' => 'HealthState',
-                'country' => 'MedLand',
             ],
             [
                 'first_name' => 'lab',
@@ -55,10 +47,6 @@ class UserSeeder extends Seeder
                 'role' => 'lab',
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'),
-                'street' => null,
-                'suburb' => null,
-                'postcode' => null,
-                'country' => null,
             ],
             [
                 'first_name' => 'Second',
@@ -71,10 +59,6 @@ class UserSeeder extends Seeder
                 'role' => 'second_lab',
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'),
-                'street' => null,
-                'suburb' => null,
-                'postcode' => null,
-                'country' => null,
             ],
             [
                 'first_name' => 'external',
@@ -87,10 +71,6 @@ class UserSeeder extends Seeder
                 'role' => 'external_lab',
                 'email_verified_at' => now(),
                 'password' => bcrypt('password'),
-                'street' => null,
-                'suburb' => null,
-                'postcode' => null,
-                'country' => null,
             ],
         ]);
     }

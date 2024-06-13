@@ -531,107 +531,110 @@
     <script src="{{ asset('assets/js/stl_js/stl_viewer.min.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
-            var stl_viewer_upper, stl_viewer_lower;
+$(document).ready(function() {
+    var stl_viewer_upper, stl_viewer_lower;
 
-            // Function to initialize or update STL viewer
-            function initializeOrUpdateStlViewer(viewerId, fileUrl, existingViewer = null) {
-                // If an existing viewer is passed, update it. Otherwise, create a new viewer.
-                if (existingViewer) {
-                    existingViewer.clear();
-                    existingViewer.add_model({
-                        filename: fileUrl,
-                        display: "smooth",
-                        color: "#FFC0CB"
-                    });
-                } else {
-                    return new StlViewer(document.getElementById(viewerId), {
-                        models: [{
-                            filename: fileUrl,
-                            display: "smooth",
-                            color: "#FFC0CB"
-                        }]
-                    });
-                }
-            }
+    // Function to initialize or update STL viewer
+    function initializeOrUpdateStlViewer(viewerId, fileUrl, existingViewer = null) {
+        var container = document.getElementById(viewerId);
+        // Clear the existing content of the container
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
 
-            // Initialize viewers for existing STL files
-            @if ($order->stl_upper)
-                $('#stl_upper').show();
-                stl_viewer_upper = initializeOrUpdateStlViewer("stl_upper", "{{ asset($order->stl_upper) }}");
-            @endif
-
-            @if ($order->stl_lower)
-                $('#stl_lower').show();
-                stl_viewer_lower = initializeOrUpdateStlViewer("stl_lower", "{{ asset($order->stl_lower) }}");
-            @endif
-
-            // Update viewer on new file selection
-            $('input[name="stl_upper"]').change(function(e) {
-                if (this.files && this.files[0]) {
-                    var url = URL.createObjectURL(this.files[0]);
-                    $('#stl_upper').show();
-                    stl_viewer_upper = initializeOrUpdateStlViewer("stl_upper", url, stl_viewer_upper);
-                }
+        // If an existing viewer is passed, update it. Otherwise, create a new viewer.
+        if (existingViewer) {
+            existingViewer = new StlViewer(container, {
+                models: [{
+                    filename: fileUrl,
+                    display: "smooth",
+                    color: "#FFC0CB"
+                }]
             });
-
-            $('input[name="stl_lower"]').change(function(e) {
-                if (this.files && this.files[0]) {
-                    var url = URL.createObjectURL(this.files[0]);
-                    $('#stl_lower').show();
-                    stl_viewer_lower = initializeOrUpdateStlViewer("stl_lower", url, stl_viewer_lower);
-                }
+        } else {
+            return new StlViewer(container, {
+                models: [{
+                    filename: fileUrl,
+                    display: "smooth",
+                    color: "#FFC0CB"
+                }]
             });
+        }
+    }
 
+    // Initialize viewers for existing STL files
+    @if ($order->stl_upper)
+        $('#stl_upper').show();
+        stl_viewer_upper = initializeOrUpdateStlViewer("stl_upper", "{{ asset($order->stl_upper) }}");
+    @endif
 
-        });
+    @if ($order->stl_lower)
+        $('#stl_lower').show();
+        stl_viewer_lower = initializeOrUpdateStlViewer("stl_lower", "{{ asset($order->stl_lower) }}");
+    @endif
 
-        // Form submission event
-        $('form').on('submit', function() {
-            $('#submitBtn').prop('disabled', true).text('Submitting...');
-        });
+    // Update viewer on new file selection
+    $('input[name="stl_upper"]').change(function(e) {
+        if (this.files && this.files[0]) {
+            var url = URL.createObjectURL(this.files[0]);
+            $('#stl_upper').show();
+            stl_viewer_upper = initializeOrUpdateStlViewer("stl_upper", url, stl_viewer_upper);
+        }
+    });
 
+    $('input[name="stl_lower"]').change(function(e) {
+        if (this.files && this.files[0]) {
+            var url = URL.createObjectURL(this.files[0]);
+            $('#stl_lower').show();
+            stl_viewer_lower = initializeOrUpdateStlViewer("stl_lower", url, stl_viewer_lower);
+        }
+    });
+});
 
+// Form submission event
+$('form').on('submit', function() {
+    $('#submitBtn').prop('disabled', true).text('Submitting...');
+});
 
-        //preview files before submitting
-        document.getElementById('pdfInput').addEventListener('change', function(event) {
-            var files = event.target.files;
-            var previewContainer = document.getElementById('previewContainer');
-            previewContainer.innerHTML = ''; // Clear existing previews
+// Preview files before submitting
+document.getElementById('pdfInput').addEventListener('change', function(event) {
+    var files = event.target.files;
+    var previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = ''; // Clear existing previews
 
-            for (var i = 0; i < files.length; i++) {
-                (function(file) {
-                    var reader = new FileReader();
+    for (var i = 0; i < files.length; i++) {
+        (function(file) {
+            var reader = new FileReader();
 
-                    reader.onload = function(e) {
-                        var div = document.createElement('div');
-                        div.style.marginBottom = '20px'; // Add some space between previews
+            reader.onload = function(e) {
+                var div = document.createElement('div');
+                div.style.marginBottom = '20px'; // Add some space between previews
 
-                        // Check if the file is an image
-                        if (file.type.match('image.*')) {
-                            var img = document.createElement('img');
-                            img.src = e.target.result;
-                            img.style.maxWidth = '200px'; // Set a max width for the image
-                            img.style.height = 'auto';
-                            div.appendChild(img);
-                        } else if (file.type.match('application/pdf')) {
-                            // If it's a PDF, create a link to download/view it
-                            var link = document.createElement('a');
-                            link.href = e.target.result;
-                            link.textContent = 'View PDF';
-                            link.target = '_blank'; // Open in new tab
-                            div.appendChild(link);
-                        }
+                // Check if the file is an image
+                if (file.type.match('image.*')) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '200px'; // Set a max width for the image
+                    img.style.height = 'auto';
+                    div.appendChild(img);
+                } else if (file.type.match('application/pdf')) {
+                    // If it's a PDF, create a link to download/view it
+                    var link = document.createElement('a');
+                    link.href = e.target.result;
+                    link.textContent = 'View PDF';
+                    link.target = '_blank'; // Open in new tab
+                    div.appendChild(link);
+                }
 
-                        previewContainer.appendChild(div);
-                    };
+                previewContainer.appendChild(div);
+            };
 
-                    if (file) {
-                        reader.readAsDataURL(file);
-                    }
-                })(files[i]);
+            if (file) {
+                reader.readAsDataURL(file);
             }
-        });
+        })(files[i]);
+    }
+});
 
         // $(document).ready(function() {
         //     $('.select2').select2().on('select2:select', function(e) {
