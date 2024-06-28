@@ -70,12 +70,26 @@ class PrintFileController extends Controller
     public function attachScans(Request $request)
     {
         $request->validate([
-            'print_file_id' => 'required|exists:print_files,id',
             'scan_ids' => 'required|array',
             'scan_ids.*' => 'exists:scans,id',
+            'print_file_id' => 'nullable|exists:print_files,id',
+            'new_print_file' => 'nullable|file|mimes:zip|max:20480', // max size 20MB
         ]);
 
-        $printFile = PrintFile::findOrFail($request->print_file_id);
+        if ($request->hasFile('new_print_file')) {
+            $path = $this->uploadZip($request, 'new_print_file', 'print_files');
+
+            if ($path) {
+                $printFile = PrintFile::create([
+                    'file_path' => $path,
+                ]);
+            } else {
+                return back()->with('error', 'File upload failed.');
+            }
+        } else {
+            $printFile = PrintFile::findOrFail($request->print_file_id);
+        }
+
         $printFile->scans()->syncWithoutDetaching($request->scan_ids);
 
         return redirect()->back()->with('success', 'Scans attached to print file successfully.');

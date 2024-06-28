@@ -177,5 +177,7 @@ return [
     'dhl_orders' => 'Commandes DHL',
     'dhl_order' => 'Commande DHL',
     'show' => 'Montrer',
+    'attach_scans' => 'Joindre Des Scans',
+    'attach_scan' => 'Joindre Un Scan',
 
 ];

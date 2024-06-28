@@ -30,20 +30,51 @@ class ScanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // $labId = Auth::user()->id;
+
+        // // First, retrieve all scans for the lab within the current month.
+        // $scans = Scan::with(['doctor', 'latestStatus']) // Assuming 'status' relation loads necessary data to determine current status
+        //     ->where('lab_id', $labId)
+        //     ->get();
+
+        // // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
+        // // Note: This filtering happens in memory, not in the database.
+
+
+        // return view('lab.scans.index', compact('scans'));
+
         $labId = Auth::user()->id;
+        $status = $request->query('status', null);
 
-        // First, retrieve all scans for the lab within the current month.
-        $scans = Scan::with(['doctor', 'latestStatus']) // Assuming 'status' relation loads necessary data to determine current status
-            ->where('lab_id', $labId)
-            ->get();
+        // Retrieve scans for the lab with 'new' status first
+        $scansQuery = Scan::with(['doctor', 'latestStatus'])
+            ->where('lab_id', $labId);
 
-        // Then, filter the scans based on the 'current_status' accessor to find those that are pending.
-        // Note: This filtering happens in memory, not in the database.
+        // If a status is specified, filter the scans by that status
+        if ($status) {
+            $scansQuery->whereHas('latestStatus', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
 
+        $scans = $scansQuery->get()->sortBy(function ($scan) {
+            $statusOrder = [
+                'new' => 1,
+                'pending' => 2,
+                'resubmitted' => 3,
+                'completed' => 4,
+                'downloaded' => 5,
+                'rejected' => 6
+            ];
 
-        return view('lab.scans.index', compact('scans'));
+            $status = optional($scan->latestStatus)->status ?? 'unknown';
+            return $statusOrder[$status] ?? 999;
+        });
+
+        return view('lab.scans.index', ['scans' => $scans]);
+
     }
 
     public function new()

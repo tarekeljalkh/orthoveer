@@ -64,7 +64,7 @@
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    @if ($order->latestStatus->status == 'rejected')
+                                                    @if ($order->latestStatus->status == 'rejected' || $order->latestStatus->status == 'pending')
                                                         <a href="{{ route('doctor.orders.edit', $order->id) }}" class="btn btn-primary">{{ trans('messages.edit') }}</a>
                                                     @else
                                                         <a href="{{ route('doctor.orders.show', $order->id) }}" class="btn btn-primary">{{ trans('messages.show') }}</a>

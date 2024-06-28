@@ -315,6 +315,7 @@ class ScanController extends Controller
             // Save the scan
             $scan->save();
 
+
             // Create a new status update for the scan
             $statusUpdate = new Status([
                 'scan_id' => $scan->id,
@@ -327,13 +328,25 @@ class ScanController extends Controller
             // Send Email
             $lab = User::findOrFail($type->lab_id);
 
+
             $content = [
                 'doctorName' => 'Dr. ' . Auth::user()->last_name,
                 'dueDate' => $scan->due_date->format('d-m-y'),
                 'scanDate' => now()->format('d-m-y'),
-                // Include other data as needed
+                'patientName' => $scan->patient->first_name,
+                'labName' => $lab->first_name,
+                'scanId' => $scan->id,
+                'doctor_scan_url' => route('doctor.scans.index'),
+                'lab_scan_url' => route('lab.scans.viewer', ['id' => $scan->id]),
+                'scan_due_date' => $scan->due_date->addDays($type->lab_due_date)->format('d-m-y'),
             ];
-            Mail::to($lab->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+
+            try {
+                Mail::to(Auth::user()->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+                Mail::to($lab->email)->send(new ScanCreatedToLab($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+            } catch (\Exception $e) {
+                toastr()->warning($e->getMessage());
+            }
 
             // Send Notification
             $notification = new Notification();
@@ -344,7 +357,7 @@ class ScanController extends Controller
             $notification->save();
 
             toastr()->success(trans('messages.scan_updated_successfully'));
-            return redirect()->route('doctor.scans.index');
+            return redirect()->route('doctor.orders.index');
         } catch (\Exception $e) {
             // Handle any exceptions (e.g., ModelNotFoundException)
             toastr()->error('Failed to update scan: ' . $e->getMessage());

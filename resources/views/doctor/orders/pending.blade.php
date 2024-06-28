@@ -64,8 +64,8 @@
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('doctor.orders.show', $order->id) }}"
-                                                        class="btn btn-primary">{{ trans('messages.show') }}</a>
+                                                    <a href="{{ route('doctor.orders.edit', $order->id) }}"
+                                                        class="btn btn-primary">{{ trans('messages.edit') }}</a>
                                                 </td>
                                             </tr>
                                         @endforeach

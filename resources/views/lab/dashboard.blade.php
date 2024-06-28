@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
+                <a href="{{ route('lab.scans.index', ['status' => 'downloaded']) }}" style="text-decoration:none; color: inherit;">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
                             <i class="fas fa-th-list"></i>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('lab.scans.index') }}" style="text-decoration:none; color: inherit;">
+                <a href="{{ route('lab.scans.index', ['status' => 'rejected']) }}" style="text-decoration:none; color: inherit;">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-success">
                             <i class="fas fa-arrow-circle-left"></i>

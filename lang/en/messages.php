@@ -179,4 +179,6 @@ return [
     'dhl_orders' => 'DHL Orders',
     'dhl_order' => 'DHL Order',
     'show' => 'Show',
+    'attach_scans' => 'Attach Scans',
+    'attach_scan' => 'Attach Scan',
 ];

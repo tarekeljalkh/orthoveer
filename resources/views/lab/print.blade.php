@@ -44,6 +44,8 @@
             line-height: 1.5;
             color: #333333;
             text-align: left;
+            word-wrap: break-word; /* Ensure long words wrap correctly */
+
         }
         .prescription-footer {
             text-align: center;
