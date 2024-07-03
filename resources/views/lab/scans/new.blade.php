@@ -86,6 +86,7 @@
 <script>
     $(document).ready(function () {
         var table = $('#new').DataTable({
+            order: [[4, 'asc']], // Sort by status column in ascending order
             dom: 'Bfrtip', // Define the elements in the control layout
             buttons: [
                 'excel',

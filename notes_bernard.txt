@@ -1,13 +1,11 @@
-ma7al clear badna n7ot delete
+ma7al clear badna n7ot delete -> done
 
-images can be uploaded from multiple directory, and must be beside each others
-
-fix stl file is showing with image
-
-new statuses are filtered by date too
-
-hakim byechteghil bi kaza centre
+images can be uploaded from multiple directory, and must be beside each others -> done
 
 mandatory fileds must have *
 
+new statuses are filtered by date too
+
 add print files next to type of works
+
+hakim byechteghil bi kaza centre

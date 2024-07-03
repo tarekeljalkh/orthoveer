@@ -73,11 +73,11 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = Scan::findOrFail($id);
+        $order = Scan::with('patient', 'status', 'typeofwork')->findOrFail($id);
         $patients = Patient::where('doctor_id', Auth::user()->id)->get();
         $typeofWorks = TypeofWork::all();
         return view('doctor.orders.show', compact('order', 'patients', 'typeofWorks'));
-    }
+        }
 
     /**
      * Show the form for editing the specified resource.

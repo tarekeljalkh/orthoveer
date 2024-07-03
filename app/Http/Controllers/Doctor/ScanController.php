@@ -285,14 +285,13 @@ class ScanController extends Controller
             $scan = Scan::findOrFail($id);
 
             // Upload upper and lower images
-            $upperPath = $this->uploadImage($request, 'stl_upper', $scan->upperPath);
-            $lowerPath = $this->uploadImage($request, 'stl_lower', $scan->lowerPath);
+            $upperPath = $this->uploadImage($request, 'stl_upper', $scan->stl_upper);
+            $lowerPath = $this->uploadImage($request, 'stl_lower', $scan->stl_lower);
 
             // Decode existing PDF paths into an array
             $existingPdfPaths = json_decode($scan->pdf, true) ?? [];
 
             // Use uploadFiles to handle multiple file uploads for 'pdf'
-            // This returns an array of new paths or NULL if no files were uploaded
             $newPdfPaths = $this->uploadFiles($request, 'pdf');
 
             // If there are new paths, merge them with the existing paths
@@ -310,16 +309,15 @@ class ScanController extends Controller
 
             $scan->due_date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->due_date);
             $scan->stl_upper = !empty($upperPath) ? $upperPath : $scan->stl_upper;
-            $scan->stl_lower = !empty($lowerPath) ? $lowerPath : $scan->lowerPath;
+            $scan->stl_lower = !empty($lowerPath) ? $lowerPath : $scan->stl_lower;
 
             // Save the scan
             $scan->save();
 
-
             // Create a new status update for the scan
             $statusUpdate = new Status([
                 'scan_id' => $scan->id,
-                'status' => 'pending', // Setting the initial status to 'pending'
+                'status' => 'new', // Setting the status to 'new'
                 'note' => $request->note, // Assuming the note comes from the request
                 'updated_by' => Auth::id(), // Assuming the current user made this update
             ]);
@@ -327,7 +325,6 @@ class ScanController extends Controller
 
             // Send Email
             $lab = User::findOrFail($type->lab_id);
-
 
             $content = [
                 'doctorName' => 'Dr. ' . Auth::user()->last_name,
@@ -342,8 +339,8 @@ class ScanController extends Controller
             ];
 
             try {
-                Mail::to(Auth::user()->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
-                Mail::to($lab->email)->send(new ScanCreatedToLab($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name)); //$content, 'custom@example.com', 'Custom Name'
+                Mail::to(Auth::user()->email)->send(new ScanCreated($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
+                Mail::to($lab->email)->send(new ScanCreatedToLab($content, Auth::user()->email, 'Dr. ' . Auth::user()->last_name));
             } catch (\Exception $e) {
                 toastr()->warning($e->getMessage());
             }
@@ -352,7 +349,7 @@ class ScanController extends Controller
             $notification = new Notification();
             $notification->sender_id = Auth::user()->id;
             $notification->receiver_id = $lab->id;
-            $notification->message = 'test';
+            $notification->message = 'A new scan update is available';
             $notification->scan_id = $scan->id;
             $notification->save();
 
@@ -364,6 +361,7 @@ class ScanController extends Controller
             return back();
         }
     }
+
 
 
     /**

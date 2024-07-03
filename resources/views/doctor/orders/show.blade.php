@@ -23,26 +23,20 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-
                             <div class="form-group col-md-6 col-12">
                                 <label>{{ trans('messages.first_name') }}</label>
                                 <input name="patient_first_name" type="text" class="form-control" value="{{ $order->patient->first_name }}" disabled>
                             </div>
-
                             <div class="form-group col-md-6 col-12">
                                 <label>{{ trans('messages.last_name') }}</label>
                                 <input name="patient_last_name" type="text" class="form-control" value="{{ $order->patient->last_name }}" disabled>
                             </div>
-
                         </div>
-
                         <div class="row">
-
                             <div class="form-group col-md-6 col-12">
                                 <label>{{ trans('messages.date_of_birth') }}</label>
                                 <input name="patient_dob" type="text" class="form-control" value="{{ $order->patient->dob->format('d/m/y') }}" disabled>
                             </div>
-
                             <div class="form-group col-md-5 col-12">
                                 <label class="form-label">{{ trans('messages.gender') }}</label>
                                 <div class="selectgroup w-100">
@@ -56,7 +50,6 @@
                                     </label>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -71,12 +64,10 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-
                             <div class="form-group col-md-6 col-12">
                                 <label>{{ trans('messages.due_date') }}</label>
                                 <input type="date" name="due_date" class="form-control" value="{{ $order->due_date instanceof \DateTime ? $order->due_date->format('Y-m-d') : \Carbon\Carbon::parse($order->due_date)->format('Y-m-d') }}" disabled>
                             </div>
-
                             <div class="form-group col-md-6 col-12">
                                 <label>{{ trans('messages.type') }}</label>
                                 <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id" disabled>
@@ -85,7 +76,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -141,24 +131,24 @@
                         <div class="row">
                             <div class="form-group col-12">
                                 <div class="form-group col-12">
-                                    <div class="form-group col-12" id="previewContainer"></div>
-                                    {{-- Preview Container --}}
-                                </div>
-
-                                <div style="display: flex; align-items: center; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
-                                    @if (!empty($filePaths))
-                                    @foreach ($filePaths as $filePath)
-                                    @if (pathinfo($filePath, PATHINFO_EXTENSION) === 'pdf')
-                                    <a href="{{ asset($filePath) }}" download style="flex-shrink: 0; display: inline-flex; align-items: center;">
-                                        View PDF
-                                    </a>
-                                    @else
-                                    <a href="{{ asset($filePath) }}" download style="flex-shrink: 0; display: inline-flex; align-items: center;">
-                                        <img src="{{ asset($filePath) }}" alt="Uploaded Image" style="height: 40px; width: auto;">
-                                    </a>
-                                    @endif
-                                    @endforeach
-                                    @endif
+                                    <div class="form-group col-12" id="previewContainer" style="display: flex; align-items: center; flex-wrap: nowrap; overflow-x: auto; gap: 20px;">
+                                        @php
+                                            $filePaths = $order->pdf ? json_decode($order->pdf, true) : [];
+                                        @endphp
+                                        @if (!empty($filePaths))
+                                            @foreach ($filePaths as $filePath)
+                                                @if (pathinfo($filePath, PATHINFO_EXTENSION) === 'pdf')
+                                                    <a href="{{ asset($filePath) }}" download style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                        View PDF
+                                                    </a>
+                                                @else
+                                                    <a href="{{ asset($filePath) }}" download style="flex-shrink: 0; display: inline-flex; align-items: center;">
+                                                        <img src="{{ asset($filePath) }}" alt="Uploaded Image" style="height: 40px; width: auto;">
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
