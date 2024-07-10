@@ -35,6 +35,32 @@
             color: {{ config('settings.site_color') }};
             /* Bootstrap primary color for example */
         }
+
+        .activities {
+            word-wrap: break-word;
+            /* Ensures long words or URLs break and wrap to the next line */
+        }
+
+        .activity-detail p {
+            word-break: break-word;
+            /* Ensures long words within paragraphs break and wrap to the next line */
+        }
+
+        .activity-detail {
+            overflow-wrap: break-word;
+            /* Ensures the activity details do not overflow and wrap properly */
+        }
+
+        /* Ensures the select dropdown does not exceed the page width on smaller screens */
+        .select2-container {
+            width: 100% !important;
+        }
+
+        /* Additional styling to ensure proper word wrapping within the select options */
+        .select2-selection__rendered {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+        }
     </style>
 
     <!-- Start GA -->

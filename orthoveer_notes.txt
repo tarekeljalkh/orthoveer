@@ -1,0 +1,70 @@
+pending is new scan -> done
+total scans is downloaded -> done
+and pending is the last box -> done
+
+all scans (show patient name) -> done
+
+when lab uploads data, he can upload 1 or 2 stl files -> done
+
+lab can upload scan -> done
+
+print files to the sidebar and make hasmany to scans -> done
+
+admin can make a due date in type of works for each lab -> done
+
+add vat to type of works after my prices 20% -> done
+
+prescription: adjust the prescription template -> done
+
+dooctor information to be corrected with the dhl form -> done [added: OrderNumber,Date,Name,Street,Suburb,Postcode,Country]and from admin side tooand doctor profile
+
+rejection email: patient name, and scan id , and link to direct goto -> done
+
+second lab selects the scans he want to send via dhl and send them and the ones that arent sent will be displayed to the admin
+
+each doctor has is own type of work -> not done
+
+checkboxes to download scans -> not done needs to adjust all datatables
+
+
+lab reminders -> done
+php artisan scans:send-reminders
+
+dhl order -> 80%
+
+payment gateway-> 80%
+https://sogecommerce.societegenerale.eu/vads-merchant/
+bnajm0
+01874755@Bn!!
+
+bernard address:
+ORTHOVEER
+17 rue du petit Albi 95800 Cergy
+
+Bloc C2 Porte 203
+
+orthoveer@gmail.com
+0745556967
+
+Stl files edit doctor -> done
+Type of work not note in doctor -> done
+
+Dhl orders -> Done
+
+Pending scans in lab not showing -> become rejected scans Done
+
+doctor registration -> done
+
+Prescription date of submitting -> u mean $scan->due_date
+
+Date of delivery -> $scan->due_date plus lab due date
+
+Fixed stl file when upload another one is showing -> done
+
+Doctor special price percent -> done
+
+Print files to second_lab -> done
+
+Second lab primary note
+
+

@@ -86,31 +86,44 @@
 <script>
     $(document).ready(function () {
         var table = $('#scans').DataTable({
-            order: [[5, 'asc']], // Sort by status column in ascending order
-            columnDefs: [{
-                targets: 5, // Index of the status column
-                render: function (data, type, row, meta) {
-                    if (type === 'sort') {
-                        switch (data) {
-                            case 'new':
-                                return 0;
-                            case 'pending':
-                                return 1;
-                            case 'resubmitted':
-                                return 2;
-                            case 'completed':
-                                return 3;
-                            case 'downloaded':
-                                return 4;
-                            case 'rejected':
-                                return 5;
-                            default:
-                                return 6;
+            order: [[5, 'asc'], [4, 'desc']], // Primary sort by status, secondary sort by due date
+            columnDefs: [
+                {
+                    targets: 5, // Index of the status column
+                    render: function (data, type, row, meta) {
+                        if (type === 'sort') {
+                            switch (data.toLowerCase()) {
+                                case 'new':
+                                    return 0;
+                                case 'pending':
+                                    return 1;
+                                case 'resubmitted':
+                                    return 2;
+                                case 'completed':
+                                    return 3;
+                                case 'downloaded':
+                                    return 4;
+                                case 'rejected':
+                                    return 5;
+                                default:
+                                    return 6;
+                            }
                         }
+                        return data;
                     }
-                    return data;
+                },
+                {
+                    targets: 4, // Index of the due date column
+                    render: function (data, type, row) {
+                        if (type === 'sort') {
+                            // Parse the date in DD/MM/YYYY format to YYYYMMDD for correct sorting
+                            var dateParts = data.split('/');
+                            return dateParts[2] + dateParts[1] + dateParts[0];
+                        }
+                        return data;
+                    }
                 }
-            }],
+            ],
             dom: 'Bfrtip', // Define the elements in the control layout
             buttons: [
                 'excel',

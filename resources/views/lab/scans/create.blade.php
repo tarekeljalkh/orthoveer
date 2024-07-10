@@ -41,16 +41,16 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.first_name') }}</label>
+                                        <label>{{ trans('messages.first_name') }} <span class="text-danger">*</span></label>
                                         <input name="doctor_first_name" type="text" class="form-control" required="">
                                     </div>
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.last_name') }}</label>
+                                        <label>{{ trans('messages.last_name') }} <span class="text-danger">*</span></label>
                                         <input name="doctor_last_name" type="text" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.email') }}</label>
+                                        <label>{{ trans('messages.email') }} <span class="text-danger">*</span></label>
                                         <input name="doctor_email" type="text" class="form-control" required="">
                                     </div>
 
@@ -82,21 +82,21 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.first_name') }}</label>
+                                        <label>{{ trans('messages.first_name') }} <span class="text-danger">*</span></label>
                                         <input name="patient_first_name" type="text" class="form-control" required="">
                                     </div>
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.last_name') }}</label>
+                                        <label>{{ trans('messages.last_name') }} <span class="text-danger">*</span></label>
                                         <input name="patient_last_name" type="text" class="form-control" required="">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.date_of_birth') }}</label>
+                                        <label>{{ trans('messages.date_of_birth') }} <span class="text-danger">*</span></label>
                                         <input name="patient_dob" type="date" class="form-control" required="">
                                     </div>
                                     <div class="form-group col-md-5 col-12">
-                                        <label class="form-label">{{ trans('messages.gender') }}</label>
+                                        <label class="form-label">{{ trans('messages.gender') }} <span class="text-danger">*</span></label>
                                         <div class="selectgroup w-100">
                                             <label class="selectgroup-item">
                                                 <input type="radio" name="patient_gender" value="male" class="selectgroup-input" checked="">
@@ -123,11 +123,11 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group col-md-12 col-12">
-                                        <label>{{ trans('messages.due_date') }}</label>
+                                        <label>{{ trans('messages.due_date') }} <span class="text-danger">*</span></label>
                                         <input type="date" name="due_date" class="form-control" value="{{ now()->toDateString() }}" min="{{ now()->toDateString() }}">
                                     </div>
                                     <div class="form-group col-md-12 col-12">
-                                        <label>{{ trans('messages.type') }}</label>
+                                        <label>{{ trans('messages.type') }} <span class="text-danger">*</span></label>
                                         <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
                                             @foreach ($typeofWorks as $typeofWork)
                                                 <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>

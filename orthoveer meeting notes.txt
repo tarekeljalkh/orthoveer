@@ -48,3 +48,6 @@ notes
 
 procedure = type of works
 notes in prescription
+
+
+each doctor has is own prices

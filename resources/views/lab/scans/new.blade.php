@@ -41,7 +41,7 @@
                                     <td><input type="checkbox" class="select-row" data-id="{{ $scan->id }}"></td>
                                     <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
                                     <td>{{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
-                                    <td>{{ $scan->last_due_date->format('d/m/Y') }}</td>
+                                    <td data-order="{{ $scan->last_due_date->format('Ymd') }}">{{ $scan->last_due_date->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="badge
                                             {{ $scan->latestStatus->status == 'new' ? 'badge-primary' : '' }}
@@ -86,7 +86,7 @@
 <script>
     $(document).ready(function () {
         var table = $('#new').DataTable({
-            order: [[4, 'asc']], // Sort by status column in ascending order
+            order: [[4, 'desc']], // Sort by due date column in ascending order
             dom: 'Bfrtip', // Define the elements in the control layout
             buttons: [
                 'excel',
