@@ -181,4 +181,6 @@ return [
     'show' => 'Show',
     'attach_scans' => 'Attach Scans',
     'attach_scan' => 'Attach Scan',
+    'pay' => 'Pay',
+    'payment' => 'Payment',
 ];

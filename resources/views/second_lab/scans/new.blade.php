@@ -25,7 +25,8 @@
                                 <thead>
                                     <tr>
                                         <th hidden>ID</th> <!-- Hidden ID Column -->
-                                        <th>Doctor Name</th>
+                                        <th><input type="checkbox" id="select-all"></th>
+                                            <th>Doctor Name</th>
                                         <th>Due Date</th>
                                         <th>Status</th>
                                         <th>Note</th>
@@ -36,8 +37,8 @@
                                     @foreach ($newScans as $scan)
                                         <tr>
                                             <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
-                                            </td>
-                                            <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
+                                            <td><input type="checkbox" class="select-row" data-id="{{ $scan->id }}"></td>
+                                                    <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}
                                             </td>
                                             <td>{{ $scan->due_date->format('d/m/Y') }}</td>
                                             <td>
@@ -80,6 +81,8 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
+                            <button id="download-scans" class="btn btn-secondary"><i class="fa fa-download"></i> Download Scans</button>
                         </div>
                     </div>
                 </div>
@@ -88,183 +91,149 @@
     </section>
 @endsection
 
+
 @push('scripts')
-    <script>
-        new DataTable('#new', {
-            layout: {
-                topStart: {
-                    buttons: [
-                        'excel',
-                        'pdf',
-                        'print',
-                        {
-                            text: '<i class="fa fa-download"></i> Download',
-                            action: function(e, dt, node, config) {
-                                var selectedData = dt.rows({
-                                    selected: true
-                                }).data().toArray();
-
-                                if (selectedData.length === 1) {
-                                    var scanId = selectedData[0][0];
-                                    var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id',
-                                        scanId);
-
-                                    $.ajax({
-                                        url: url,
-                                        method: 'GET',
-                                        xhrFields: {
-                                            responseType: 'blob'
-                                        },
-                                        success: function(data) {
-                                            var a = document.createElement('a');
-                                            var url = window.URL.createObjectURL(data);
-                                            a.href = url;
-                                            a.download = 'stl-files-' + scanId + '.zip';
-                                            document.body.appendChild(a);
-                                            a.click();
-                                            window.URL.revokeObjectURL(url);
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('Error:', status, error);
-                                        }
-                                    });
-                                } else if (selectedData.length > 1) {
-                                    var scanIds = selectedData.map(function(data) {
-                                        return data[0];
-                                    });
-                                    var url = "{{ route('second_lab.scans.printMultiple') }}";
-
-                                    $.ajax({
-                                        url: url,
-                                        method: 'POST',
-                                        data: JSON.stringify({
-                                            ids: scanIds,
-                                            _token: '{{ csrf_token() }}'
-                                        }), // Send as JSON string
-                                        contentType: 'application/json', // Specify content type as JSON
-                                        xhrFields: {
-                                            responseType: 'blob'
-                                        },
-                                        success: function(data) {
-                                            var a = document.createElement('a');
-                                            var url = window.URL.createObjectURL(data);
-                                            a.href = url;
-                                            a.download = 'multiple-scans.zip';
-                                            document.body.appendChild(a);
-                                            a.click();
-                                            window.URL.revokeObjectURL(url);
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('Error:', status, error);
-                                        }
-                                    });
-                                }
-                            }
-                        },
-                        {
-                            text: '<i class="fa fa-file-pdf"></i> Print Prescriptions',
-                            action: function(e, dt, node, config) {
-                                var selectedData = dt.rows({
-                                    selected: true
-                                }).data().toArray();
-
-                                if (selectedData.length === 1) {
-                                    // Single selection
-                                    var scanId = selectedData[0][0]; // Assuming scan ID is at index 0
-                                    var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id',
-                                        scanId);
-
-                                    $.ajax({
-                                        url: url,
-                                        method: 'GET',
-                                        xhrFields: {
-                                            responseType: 'blob'
-                                        },
-                                        success: function(data) {
-                                            var a = document.createElement('a');
-                                            var url = window.URL.createObjectURL(data);
-                                            a.href = url;
-                                            a.download = 'prescription-' + scanId + '.pdf';
-                                            document.body.appendChild(a);
-                                            a.click();
-                                            window.URL.revokeObjectURL(url);
-                                        }
-                                    });
-                                } else if (selectedData.length > 1) {
-                                    // Multiple selections
-                                    var scanIds = selectedData.map(function(data) {
-                                        return data[0];
-                                    }); // Assuming scan ID is at index 0
-
-                                    scanIds.forEach(function(scanId) {
-                                        var url = "{{ route('second_lab.scans.printScan', ':id') }}"
-                                            .replace(':id', scanId);
-
-                                        $.ajax({
-                                            url: url,
-                                            method: 'GET',
-                                            xhrFields: {
-                                                responseType: 'blob'
-                                            },
-                                            success: function(data) {
-                                                var a = document.createElement('a');
-                                                var url = window.URL.createObjectURL(
-                                                    data);
-                                                a.href = url;
-                                                a.download = 'prescription-' + scanId +
-                                                    '.pdf';
-                                                document.body.appendChild(a);
-                                                a.click();
-                                                window.URL.revokeObjectURL(url);
-                                            }
-                                        });
-                                    });
-                                }
-                            }
-                        }
-
-                    ]
-                }
-            },
-            select: true
+<script>
+    $(document).ready(function () {
+        var table = $('#new').DataTable({
+            order: [[4, 'desc']], // Sort by due date column in ascending order
+            dom: 'Bfrtip', // Define the elements in the control layout
+            buttons: [
+                'excel',
+                'pdf',
+                'print'
+            ],
+            select: {
+                style: 'multi',
+                selector: 'td:first-child input[type="checkbox"]'
+            }
         });
 
-        // new DataTable('#pending', {
-        //     dom: 'Bfrtip', // Define the elements in the control layout
-        //     buttons: [{
-        //             extend: 'copyHtml5',
-        //             text: '<i class="fas fa-files-o"></i>', // Using FontAwesome icons
-        //             titleAttr: 'Copy'
-        //         },
+        // Handle select all checkbox
+        $('#select-all').on('click', function() {
+            var rows = table.rows({ 'search': 'applied' }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
 
-        //         <
-        //         i class = "fas fa-file-excel" > < /i> {
-        //             extend: 'excelHtml5',
-        //             text: '<i class="fa fa-file-excel-o"></i>',
-        //             titleAttr: 'Excel'
-        //         },
-        //         {
-        //             extend: 'csvHtml5',
-        //             text: '<i class="fa fa-file-text-o"></i>',
-        //             titleAttr: 'CSV'
-        //         },
-        //         {
-        //             extend: 'pdfHtml5',
-        //             text: '<i class="fa fa-file-pdf-o"></i>',
-        //             titleAttr: 'PDF'
-        //         },
-        //         {
-        //             extend: 'print',
-        //             text: '<i class="fa fa-print"></i> Print all (not just selected)',
-        //             titleAttr: 'Print',
-        //             exportOptions: {
-        //                 modifier: {
-        //                     selected: null
-        //                 }
-        //             }
-        //         }
-        //     ],
-        //     select: true
-        // });
-    </script>
+        // Handle individual row checkboxes
+        $('#new tbody').on('change', 'input[type="checkbox"]', function() {
+            if (!this.checked) {
+                var el = $('#select-all').get(0);
+                if (el && el.checked && ('indeterminate' in el)) {
+                    el.indeterminate = true;
+                }
+            }
+        });
+
+        // Print Prescriptions
+        $('#print-prescriptions').on('click', function() {
+            var selectedIds = [];
+
+            // Collect selected IDs
+            $('.select-row:checked').each(function () {
+                selectedIds.push($(this).data('id'));
+            });
+
+            if (selectedIds.length === 1) {
+                var scanId = selectedIds[0];
+                var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id', scanId);
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    xhrFields: { responseType: 'blob' },
+                    success: function (data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'prescription-' + scanId + '.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    }
+                });
+            } else if (selectedIds.length > 1) {
+                selectedIds.forEach(function (scanId) {
+                    var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id', scanId);
+
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        xhrFields: { responseType: 'blob' },
+                        success: function (data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'prescription-' + scanId + '.pdf';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        }
+                    });
+                });
+            }
+        });
+
+        // Download Scans
+        $('#download-scans').on('click', function() {
+            var selectedIds = [];
+
+            // Collect selected IDs
+            $('.select-row:checked').each(function () {
+                selectedIds.push($(this).data('id'));
+            });
+
+            if (selectedIds.length === 1) {
+                var scanId = selectedIds[0];
+                var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id', scanId);
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    xhrFields: { responseType: 'blob' },
+                    success: function (data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'stl-files-' + scanId + '.zip';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+
+                        // Refresh the page after download
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', status, error);
+                    }
+                });
+            } else if (selectedIds.length > 1) {
+                var url = "{{ route('second_lab.scans.printMultiple') }}";
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: JSON.stringify({ ids: selectedIds, _token: '{{ csrf_token() }}' }),
+                    contentType: 'application/json',
+                    xhrFields: { responseType: 'blob' },
+                    success: function (data) {
+                        var a = document.createElement('a');
+                        var url = window.URL.createObjectURL(data);
+                        a.href = url;
+                        a.download = 'multiple-scans.zip';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+
+                        // Refresh the page after download
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', status, error);
+                    }
+                });
+            }
+        });
+    });
+</script>
 @endpush

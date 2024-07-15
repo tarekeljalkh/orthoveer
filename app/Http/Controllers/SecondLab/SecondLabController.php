@@ -17,12 +17,9 @@ class SecondLabController extends Controller
     {
         $labId = Auth::user()->id;
 
-        // Retrieve all scans assigned to the second lab where the first lab has completed the scan
+        // Retrieve all scans assigned to the second lab
         $scans = Scan::with(['latestStatus', 'typeOfWork'])
             ->where('second_lab_id', $labId)
-            ->whereHas('latestStatus', function ($query) {
-                $query->where('status', 'completed');
-            })
             ->get();
 
         // Filter scans based on their current status
@@ -32,7 +29,8 @@ class SecondLabController extends Controller
         return view('second_lab.dashboard', compact('newScans', 'deliveredScans'));
     }
 
-    function clearNotification() {
+    function clearNotification()
+    {
         $notification = Notification::query()->update(['seen' => 1]);
 
         toastr()->success('Notification Cleared Successfully!');

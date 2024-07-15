@@ -9,6 +9,7 @@ use App\Models\TypeofWork;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -77,7 +78,7 @@ class OrderController extends Controller
         $patients = Patient::where('doctor_id', Auth::user()->id)->get();
         $typeofWorks = TypeofWork::all();
         return view('doctor.orders.show', compact('order', 'patients', 'typeofWorks'));
-        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -153,13 +154,20 @@ class OrderController extends Controller
     public function delivered()
     {
         // Start building the query to get scans for the logged-in doctor
-        $deliveredOrders = Scan::with(['patient', 'latestStatus'])
+        $deliveredOrders = Scan::with(['patient', 'latestStatus', 'typeofwork'])
             ->where('doctor_id', Auth::user()->id)
-            ->whereHas('latestStatus', function ($query) {
+            ->whereHas('orders', function ($query) {
                 $query->where('status', 'delivered');
-            })->get();
+            })
+            ->where(function($query) {
+                $query->whereNull('payment_status')
+                      ->orWhere('payment_status', '!=', 'PAID');
+            }) // Exclude paid scans
+            ->get();
 
         // Return the view with the orders
         return view('doctor.orders.delivered', compact('deliveredOrders'));
     }
+
+
 }

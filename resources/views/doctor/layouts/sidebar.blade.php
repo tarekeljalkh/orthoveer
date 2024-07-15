@@ -63,11 +63,14 @@
                     <li class="{{ request()->routeIs('doctor.orders.pending') ? 'active' : '' }}"><a class="nav-link"
                             href="{{ route('doctor.orders.pending') }}">Pending Orders ({{ $pendingCount }})</a></li>
                     <li class="{{ request()->routeIs('doctor.orders.rejected') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('doctor.orders.rejected') }}">Rejected Orders ({{ $rejectedCount }})</a></li>
+                            href="{{ route('doctor.orders.rejected') }}">Rejected Orders ({{ $rejectedCount }})</a>
+                    </li>
                     <li class="{{ request()->routeIs('doctor.orders.completed') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('doctor.orders.completed') }}">Completed Orders ({{ $completedCount }})</a></li>
+                            href="{{ route('doctor.orders.completed') }}">Completed Orders ({{ $completedCount }})</a>
+                    </li>
                     <li class="{{ request()->routeIs('doctor.orders.delivered') ? 'active' : '' }}"><a class="nav-link"
-                            href="{{ route('doctor.orders.delivered') }}">Delivered Orders ({{ $deliveredCount }})</a></li>
+                            href="{{ route('doctor.orders.delivered') }}">Delivered Orders ({{ $deliveredCount }})</a>
+                    </li>
                 </ul>
             </li>
 

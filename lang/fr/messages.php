@@ -179,5 +179,7 @@ return [
     'show' => 'Montrer',
     'attach_scans' => 'Joindre Des Scans',
     'attach_scan' => 'Joindre Un Scan',
+    'pay' => 'Payer',
+    'payment' => 'Paiement',
 
 ];

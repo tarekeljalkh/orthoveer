@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'sogecommerce' => [
+        'merchant_id' => env('SOGECOMMERCE_MERCHANT_ID'),
+        'secret_key' => env('SOGECOMMERCE_SECRET_KEY'),
+        'public_key' => env('SOGECOMMERCE_PUBLIC_KEY'),
+        'api_url' => env('SOGECOMMERCE_API_URL'),
+    ],
+
+
 ];

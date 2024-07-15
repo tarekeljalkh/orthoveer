@@ -8,14 +8,12 @@
             </div>
             <h1>{{ trans('messages.orders') }}</h1>
             <div class="section-header-breadcrumb">
-                <div class="breadcrumb-item active"><a
-                        href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
+                <div class="breadcrumb-item active"><a href="{{ route('doctor.dashboard') }}">{{ trans('messages.dashboard') }}</a></div>
                 <div class="breadcrumb-item"><a href="#">{{ trans('messages.orders') }}</a></div>
             </div>
         </div>
 
         <div class="section-body">
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -24,7 +22,6 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-
                                 <table id="deliveredOrders" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
@@ -34,26 +31,24 @@
                                             <th>{{ trans('messages.status') }}</th>
                                             <th>{{ trans('messages.typeofwork') }}</th>
                                             <th>{{ trans('messages.action') }}</th>
+                                            <th>{{ trans('messages.payment') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($deliveredOrders as $order)
                                             <tr>
-                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}
-                                                </td>
+                                                <td>{{ $order->patient->last_name }}, {{ $order->patient->first_name }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->scan_date)->format('d/m/Y') }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($order->due_date)->format('d/m/Y') }}</td>
                                                 <td>
-
                                                     @isset($order->latestStatus)
-                                                        <div
-                                                            class="badge
-                                                                {{ $order->latestStatus->status == 'new' ? 'badge-primary' : '' }}
-                                                                {{ $order->latestStatus->status == 'downloaded' ? 'badge-light' : '' }}
-                                                                {{ $order->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
-                                                                {{ $order->latestStatus->status == 'resubmitted' ? 'badge-info' : '' }}
-                                                                {{ $order->latestStatus->status == 'completed' ? 'badge-success' : '' }}
-                                                                {{ $order->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
+                                                        <div class="badge
+                                                            {{ $order->latestStatus->status == 'new' ? 'badge-primary' : '' }}
+                                                            {{ $order->latestStatus->status == 'downloaded' ? 'badge-light' : '' }}
+                                                            {{ $order->latestStatus->status == 'pending' ? 'badge-warning' : '' }}
+                                                            {{ $order->latestStatus->status == 'resubmitted' ? 'badge-info' : '' }}
+                                                            {{ $order->latestStatus->status == 'completed' ? 'badge-success' : '' }}
+                                                            {{ $order->latestStatus->status == 'rejected' ? 'badge-danger' : '' }}">
                                                             {{ $order->latestStatus->status }}
                                                         </div>
                                                     @endisset
@@ -64,8 +59,15 @@
                                                     @endisset
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('doctor.orders.show', $order->id) }}"
-                                                        class="btn btn-primary">{{ trans('messages.show') }}</a>
+                                                    <a href="{{ route('doctor.orders.show', $order->id) }}" class="btn btn-primary">{{ trans('messages.show') }}</a>
+                                                </td>
+                                                <td>
+                                                    <!-- Payment button -->
+                                                    @if($order->payment_status != 'paid')
+                                                        <a href="{{ route('doctor.scans.pay', $order->id) }}" class="btn btn-success">{{ trans('messages.pay') }}</a>
+                                                    @else
+                                                        <span>{{ trans('messages.paid') }}</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -76,7 +78,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
 @endsection

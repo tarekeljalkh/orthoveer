@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('stl_lower')->nullable();
             $table->string('pdf')->nullable();
             $table->string('lab_file')->nullable();
+            $table->string('payment_status')->nullable();
             $table->timestamps();
         });
 

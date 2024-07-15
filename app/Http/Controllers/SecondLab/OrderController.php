@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\SecondLab;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Scan;
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,10 +31,10 @@ class OrderController extends Controller
         $completedScans = Scan::whereHas('latestStatus', function ($query) {
             $query->where('status', 'completed');
         })
-        ->whereDoesntHave('orders', function ($query) {
-            $query->whereIn('status', ['pending', 'delivered']);
-        })
-        ->get();
+            ->whereDoesntHave('orders', function ($query) {
+                $query->whereIn('status', ['pending', 'delivered']);
+            })
+            ->get();
 
         return view('second_lab.orders.create', compact('completedScans'));
     }
@@ -84,18 +86,36 @@ class OrderController extends Controller
                 foreach ($orders as $order) {
                     $order->status = 'delivered';
                     $order->save();
+
+                    // Create a new status update for the scan
+                    $statusUpdate = new Status([
+                        'scan_id' => $order->scan_id,
+                        'status' => 'delivered',
+                        'note' => 'Order completed and delivered',
+                        'updated_by' => auth()->user()->id,
+                    ]);
+                    $statusUpdate->save();
                 }
                 DB::commit();
                 return redirect()->route('second_lab.orders.index')->with('success', 'Order placed and CSV uploaded successfully.');
             } else {
+                // Remove the generated CSV file if upload fails
+                if (file_exists($csvPath)) {
+                    unlink($csvPath);
+                }
                 DB::rollBack();
                 return back()->with('error', 'Failed to upload the CSV to the FTP server.');
             }
         } catch (\Exception $e) {
+            // Remove the generated CSV file if an error occurs
+            if (file_exists($csvPath)) {
+                unlink($csvPath);
+            }
             DB::rollBack();
             return back()->with('error', 'An error occurred while processing your request: ' . $e->getMessage());
         }
     }
+
 
     private function extractScanDetails($scan, $order)
     {

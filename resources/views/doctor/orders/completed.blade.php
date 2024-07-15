@@ -33,6 +33,7 @@
                                             <th>{{ trans('messages.due_date') }}</th>
                                             <th>{{ trans('messages.status') }}</th>
                                             <th>{{ trans('messages.typeofwork') }}</th>
+                                            <th>{{ trans('messages.action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>

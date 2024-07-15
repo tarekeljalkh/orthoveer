@@ -5,6 +5,7 @@ use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Doctor\NotificationController;
 use App\Http\Controllers\Doctor\OrderController;
 use App\Http\Controllers\Doctor\PatientController;
+use App\Http\Controllers\Doctor\PaymentController;
 use App\Http\Controllers\Doctor\ScanController;
 use App\Http\Controllers\Doctor\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -49,3 +50,7 @@ Route::get('clear-notification', [DoctorController::class, 'clearNotification'])
 Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+
+/** Payment Routes */
+Route::get('/scans/{scan}/pay', [PaymentController::class, 'pay'])->name('scans.pay');
+Route::post('/payment-callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');

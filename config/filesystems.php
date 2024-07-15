@@ -57,15 +57,14 @@ return [
         ],
 
         'ftp' => [
-            'driver' => 'ftp', // or 'sftp' depending on your server
-            'host' => env('FTP_HOST', 'default-host'),
-            'username' => env('FTP_USERNAME', 'default-username'),
-            'password' => env('FTP_PASSWORD', 'default-password'),
-            'port' => (int) env('FTP_PORT', 21), // Cast the port to an integer
-            'root' => env('FTP_ROOT', 'web/dhl'), // The directory where your DHL CSV should be uploaded
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'port' => (int) env('FTP_PORT', 21),
+            'root' => env('FTP_ROOT', '/'),
             'passive' => true,
             'timeout' => 30,
-
         ],
 
 
