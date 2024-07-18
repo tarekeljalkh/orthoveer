@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
             TypeofWorkSeeder::class,
             // ScanSeeder::class,
             StatusSeeder::class,
-            ChatSeeder::class,
             SettingSeeder::class,
         ]);
     }

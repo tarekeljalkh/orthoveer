@@ -85,7 +85,6 @@ return [
     'messages' => 'Messages',
     'type_a_message' => 'Tapez Un Message',
     'new_message' => 'Nouveau Message',
-    'chat_with' => 'Parler Avec',
     'who_is_online' => "Qui Est En Ligne",
     'welcome_to' => 'Bienvenue à',
     'no_status_updates_available' => 'Aucune Mise à Jour De Statut Disponible',
@@ -181,5 +180,6 @@ return [
     'attach_scan' => 'Joindre Un Scan',
     'pay' => 'Payer',
     'payment' => 'Paiement',
+    'received' => 'Recu',
 
 ];

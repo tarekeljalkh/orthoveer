@@ -21,6 +21,3 @@ Broadcast::channel('scan-created', function(){
     return true;
 });
 
-Broadcast::channel('chat.{id}', function($user, $id){
-    return $user->id == $id;
-});

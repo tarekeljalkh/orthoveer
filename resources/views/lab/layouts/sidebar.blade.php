@@ -31,15 +31,6 @@
                         href="{{ route('lab.printfiles.index') }}"><i class="fas fa-file-upload"></i>
                         <span>{{ trans('messages.print_files') }}</span></a></li>
 
-            @php
-                $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
-            @endphp
-
-
-            <li class="{{ request()->routeIs('lab.chat.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('lab.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
-
         </ul>
 
     </aside>

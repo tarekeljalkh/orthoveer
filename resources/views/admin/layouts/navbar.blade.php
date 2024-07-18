@@ -12,17 +12,7 @@
         @php
             $notifications = \App\Models\Notification::latest()->take(10)->get();
 
-            $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
-
         @endphp
-
-        @if (auth()->user()->role === 'admin')
-            <li class="dropdown dropdown-list-toggle">
-                <a href="{{ route('admin.chat.index') }}"
-                    class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i
-                        class="far fa-envelope"></i></a>
-            </li>
-        @endif
 
 
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"

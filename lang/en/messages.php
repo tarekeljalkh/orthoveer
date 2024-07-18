@@ -87,7 +87,6 @@ return [
     'messages' => 'Messages',
     'type_a_message' => 'Type A Message',
     'new_message' => 'New Message',
-    'chat_with' => 'Chat With',
     'who_is_online' => "Who's Online",
     'welcome_to' => 'Welcome To',
     'no_status_updates_available' => 'No Status Updates Available',
@@ -183,4 +182,6 @@ return [
     'attach_scan' => 'Attach Scan',
     'pay' => 'Pay',
     'payment' => 'Payment',
+    'received' => 'Received',
+
 ];

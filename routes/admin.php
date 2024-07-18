@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExternalLabController;
 use App\Http\Controllers\Admin\LabController;
@@ -57,11 +56,6 @@ Route::put('/appearance-setting', [SettingController::class, 'UpdateAppearanceSe
 Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
-
-/** chat Routes */
-Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
-Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
-Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
 
 
 /** Notifications Routes */

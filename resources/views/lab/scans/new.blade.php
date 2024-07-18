@@ -21,16 +21,22 @@
                         <h4>{{ trans('messages.new_scans') }}</h4>
                     </div>
                     <div class="card-body">
+
+                        <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
+                        <button id="download-scans" class="btn btn-danger"><i class="fa fa-download"></i> Download Scans</button>
+
                         <table id="new" class="display nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th hidden>ID</th> <!-- Hidden ID Column -->
                                     <th><input type="checkbox" id="select-all"></th>
-                                    <th>{{ trans('messages.doctor') }}</th>
+                                    <th>{{ trans('messages.received') }}</th>
+                                    <th>{{ trans('messages.id') }}</th>
                                     <th>{{ trans('messages.patient') }}</th>
+                                    <th>{{ trans('messages.doctor') }}</th>
+                                    <th>{{ trans('messages.typeofwork') }}</th>
                                     <th>{{ trans('messages.due_date') }}</th>
                                     <th>{{ trans('messages.status') }}</th>
-                                    <th>{{ trans('messages.typeofwork') }}</th>
                                     <th>{{ trans('messages.action') }}</th>
                                 </tr>
                             </thead>
@@ -39,8 +45,11 @@
                                 <tr>
                                     <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
                                     <td><input type="checkbox" class="select-row" data-id="{{ $scan->id }}"></td>
-                                    <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                    <td>received</td>
+                                    <td>{{ $scan->id }}</td>
                                     <td>{{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
+                                    <td>{{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                    <td>{{ $scan->typeofwork->name }}</td>
                                     <td data-order="{{ $scan->last_due_date->format('Ymd') }}">{{ $scan->last_due_date->format('d/m/Y') }}</td>
                                     <td>
                                         <div class="badge
@@ -53,7 +62,6 @@
                                             {{ $scan->latestStatus->status }}
                                         </div>
                                     </td>
-                                    <td>{{ $scan->typeofwork->name }}</td>
                                     <td>
                                         <div class="btn-group dropleft">
                                             <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -72,8 +80,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
-                        <button id="download-scans" class="btn btn-secondary"><i class="fa fa-download"></i> Download Scans</button>
                     </div>
                 </div>
             </div>
@@ -86,7 +92,7 @@
 <script>
     $(document).ready(function () {
         var table = $('#new').DataTable({
-            order: [[4, 'desc']], // Sort by due date column in ascending order
+            order: [[7, 'desc']], // Sort by due date column in descending order
             dom: 'Bfrtip', // Define the elements in the control layout
             buttons: [
                 'excel',
@@ -99,10 +105,26 @@
             }
         });
 
+        function toggleActionButtons() {
+            var count = $('.select-row:checked').length;
+            var anyChecked = count > 0;
+            $('#print-prescriptions').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+            $('#download-scans').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+
+            if (anyChecked) {
+                $('#print-prescriptions').html('<i class="fa fa-file-pdf"></i> Print Prescriptions (' + count + ')');
+                $('#download-scans').html('<i class="fa fa-download"></i> Download Scans (' + count + ')');
+            } else {
+                $('#print-prescriptions').html('<i class="fa fa-file-pdf"></i> Print Prescriptions');
+                $('#download-scans').html('<i class="fa fa-download"></i> Download Scans');
+            }
+        }
+
         // Handle select all checkbox
         $('#select-all').on('click', function() {
             var rows = table.rows({ 'search': 'applied' }).nodes();
             $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            toggleActionButtons();
         });
 
         // Handle individual row checkboxes
@@ -113,7 +135,11 @@
                     el.indeterminate = true;
                 }
             }
+            toggleActionButtons();
         });
+
+        // Initial state of action buttons
+        toggleActionButtons();
 
         // Print Prescriptions
         $('#print-prescriptions').on('click', function() {
@@ -224,6 +250,7 @@
                 });
             }
         });
+
     });
 </script>
 @endpush

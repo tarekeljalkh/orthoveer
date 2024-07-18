@@ -1,0 +1,40 @@
+Downloaded on lab not showing -> done
+
+Same as itero dashboard -> done
+
+Download scans change color
+On  click change color -> done
+
+
+Patient dob not mandatory
+
+
+
+New scans, rejected scans, downloaded scans -> done
+
+
+Print files remove from viewer
+
+Due date -> submitted date
+
+
+Print files when done the second lab will see the scan id
+
+Remove chat system
+
+
+secondlab :
+
+No scans from lab side are showing in the viewer
+Can download the print files
+
+Invoice nice template
+
+
+Dhl tickets
+
+
+
+Doctor: rejected orders not shown
+
+Add Siren number and tva info and not mandatory to doctor from admin side

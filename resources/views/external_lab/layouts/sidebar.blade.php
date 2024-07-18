@@ -27,11 +27,6 @@
                     href="{{ route('external_lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>All Scans</span></a></li>
 
-            <li class="{{ request()->routeIs('external_lab.chat.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('external_lab.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>Messages</span></a></li>
-
-
 
         </ul>
 

@@ -36,6 +36,10 @@
             color: {{ config('settings.site_color') }};
             /* Bootstrap primary color for example */
         }
+        .no-click {
+    cursor: not-allowed;
+}
+
     </style>
 
     <!-- Start GA -->

@@ -26,13 +26,15 @@
                                 <thead>
                                     <tr>
                                         <th hidden>ID</th> <!-- Hidden ID Column -->
-                                        <th>{{ trans('messages.doctor') }}</th>
+                                        <th>{{ trans('messages.scan_date') }}</th>
+                                        <th>{{ trans('messages.id') }}</th>
                                         <th>{{ trans('messages.patient') }}</th>
+                                        <th>{{ trans('messages.doctor') }}</th>
+                                        <th>{{ trans('messages.typeofwork') }}</th>
                                         <th>{{ trans('messages.due_date') }}</th>
                                         <th>{{ trans('messages.status') }}</th>
-                                        <th>{{ trans('messages.typeofwork') }}</th>
-                                        <th>{{ trans('messages.action') }} </th>
-                                    </tr>
+                                        <th>{{ trans('messages.action') }}</th>
+                                        </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($pendingScans as $scan)
@@ -94,8 +96,9 @@
 @endsection
 
 @push('scripts')
-    <script>
-        new DataTable('#pending', {
+<script>
+    $(document).ready(function () {
+        var table = new DataTable('#pending', {
             layout: {
                 topStart: {
                     buttons: [
@@ -111,8 +114,7 @@
 
                                 if (selectedData.length === 1) {
                                     var scanId = selectedData[0][0];
-                                    var url = "{{ route('lab.scans.downloadStl', ':id') }}".replace(':id',
-                                        scanId);
+                                    var url = "{{ route('lab.scans.downloadStl', ':id') }}".replace(':id', scanId);
 
                                     $.ajax({
                                         url: url,
@@ -176,8 +178,7 @@
                                 if (selectedData.length === 1) {
                                     // Single selection
                                     var scanId = selectedData[0][0]; // Assuming scan ID is at index 0
-                                    var url = "{{ route('lab.scans.printScan', ':id') }}".replace(':id',
-                                        scanId);
+                                    var url = "{{ route('lab.scans.printScan', ':id') }}".replace(':id', scanId);
 
                                     $.ajax({
                                         url: url,
@@ -202,8 +203,7 @@
                                     }); // Assuming scan ID is at index 0
 
                                     scanIds.forEach(function(scanId) {
-                                        var url = "{{ route('lab.scans.printScan', ':id') }}"
-                                            .replace(':id', scanId);
+                                        var url = "{{ route('lab.scans.printScan', ':id') }}".replace(':id', scanId);
 
                                         $.ajax({
                                             url: url,
@@ -213,11 +213,9 @@
                                             },
                                             success: function(data) {
                                                 var a = document.createElement('a');
-                                                var url = window.URL.createObjectURL(
-                                                    data);
+                                                var url = window.URL.createObjectURL(data);
                                                 a.href = url;
-                                                a.download = 'prescription-' + scanId +
-                                                    '.pdf';
+                                                a.download = 'prescription-' + scanId + '.pdf';
                                                 document.body.appendChild(a);
                                                 a.click();
                                                 window.URL.revokeObjectURL(url);
@@ -227,49 +225,35 @@
                                 }
                             }
                         }
-
                     ]
                 }
             },
             select: true
         });
 
-        // new DataTable('#pending', {
-        //     dom: 'Bfrtip', // Define the elements in the control layout
-        //     buttons: [{
-        //             extend: 'copyHtml5',
-        //             text: '<i class="fas fa-files-o"></i>', // Using FontAwesome icons
-        //             titleAttr: 'Copy'
-        //         },
+        function toggleActionButtons() {
+            var count = table.rows({ selected: true }).count();
+            var anyChecked = count > 0;
+            $('.dt-buttons .btn').each(function() {
+                var button = $(this).find('button');
+                button.prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+            });
 
-        //         <
-        //         i class = "fas fa-file-excel" > < /i> {
-        //             extend: 'excelHtml5',
-        //             text: '<i class="fa fa-file-excel-o"></i>',
-        //             titleAttr: 'Excel'
-        //         },
-        //         {
-        //             extend: 'csvHtml5',
-        //             text: '<i class="fa fa-file-text-o"></i>',
-        //             titleAttr: 'CSV'
-        //         },
-        //         {
-        //             extend: 'pdfHtml5',
-        //             text: '<i class="fa fa-file-pdf-o"></i>',
-        //             titleAttr: 'PDF'
-        //         },
-        //         {
-        //             extend: 'print',
-        //             text: '<i class="fa fa-print"></i> Print all (not just selected)',
-        //             titleAttr: 'Print',
-        //             exportOptions: {
-        //                 modifier: {
-        //                     selected: null
-        //                 }
-        //             }
-        //         }
-        //     ],
-        //     select: true
-        // });
-    </script>
+            if (anyChecked) {
+                $('.dt-buttons .btn:contains("Download")').html('<i class="fa fa-download"></i> Download (' + count + ')');
+                $('.dt-buttons .btn:contains("Print Prescriptions")').html('<i class="fa fa-file-pdf"></i> Print Prescriptions (' + count + ')');
+            } else {
+                $('.dt-buttons .btn:contains("Download")').html('<i class="fa fa-download"></i> Download');
+                $('.dt-buttons .btn:contains("Print Prescriptions")').html('<i class="fa fa-file-pdf"></i> Print Prescriptions');
+            }
+        }
+
+        table.on('select deselect', function() {
+            toggleActionButtons();
+        });
+
+        // Initial state of action buttons
+        toggleActionButtons();
+    });
+</script>
 @endpush

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SecondLab\ChatController;
 use App\Http\Controllers\SecondLab\SecondLabController;
 use App\Http\Controllers\SecondLab\NotificationController;
 use App\Http\Controllers\SecondLab\OrderController;
@@ -49,10 +48,6 @@ Route::get('clear-notification', [SecondLabController::class, 'clearNotification
 //Order Routes
 Route::resource('orders', OrderController::class);
 
-/** chat Routes */
-Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
-Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
-Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
 
 /** Notification Routes */
 Route::get('/notifications/seen/{notification}', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');

@@ -14,16 +14,8 @@
                 ->latest()
                 ->take(10)
                 ->get();
-            $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
         @endphp
 
-        @if (auth()->user()->role === 'doctor')
-            <li class="dropdown dropdown-list-toggle">
-                <a href="{{ route('doctor.chat.index') }}"
-                    class="nav-link nav-link-lg message-envelope {{ $unseenMessages > 0 ? 'beep' : '' }}"><i
-                        class="far fa-envelope"></i></a>
-            </li>
-        @endif
 
         @if (count($notifications) > 0)
             <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"

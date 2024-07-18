@@ -51,12 +51,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Patient::class, 'doctor_id');
     }
 
-    function chats()
-    {
-        return $this->hasMany(Chat::class, 'sender_id', 'id')
-            ->orWhere('receiver_id', $this->id);
-    }
-
     public function notificationsReceived()
     {
         return $this->hasMany(Notification::class, 'receiver_id');

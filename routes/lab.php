@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Lab\ChatController;
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
 use App\Http\Controllers\Lab\PrintFileController;
@@ -46,12 +45,6 @@ Route::post('/scans/printMultiple', [ScanController::class, 'printMultiple'])->n
 
 /** Scan Notification Routes */
 Route::get('clear-notification', [LabController::class, 'clearNotification'])->name('clear-notification');
-
-
-/** chat Routes */
-Route::get('chat', [ChatController::class, 'index'])->name('chat.index');
-Route::get('chat/get-conversation/{senderId}', [ChatController::class, 'getConversation'])->name('chat.get-conversation');
-Route::post('chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send-message');
 
 /** Notification Routes */
 Route::get('/notifications/seen/{notification}', [NotificationController::class, 'markAsSeen'])->name('notifications.seen');

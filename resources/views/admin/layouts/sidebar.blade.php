@@ -45,13 +45,6 @@
                     href="{{ route('admin.type-of-works.index') }}"><i class="fas fa-vials"></i>
                     <span>{{ trans('messages.type_of_works') }}</span></a></li>
 
-            @php
-                $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
-            @endphp
-
-            <li class="{{ request()->routeIs('admin.chat.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('admin.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
 
             <li class="{{ request()->routeIs('admin.setting.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.setting.index') }}"><i class="fas fa-cog"></i>
