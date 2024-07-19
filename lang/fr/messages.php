@@ -181,5 +181,6 @@ return [
     'pay' => 'Payer',
     'payment' => 'Paiement',
     'received' => 'Recu',
-
+    'completed_date' => 'Date de Din',
+    'prescription' => 'Ordonnance'
 ];

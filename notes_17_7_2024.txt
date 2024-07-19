@@ -5,23 +5,18 @@ Same as itero dashboard -> done
 Download scans change color
 On  click change color -> done
 
+New scans, rejected scans, downloaded scans -> done
 
 Patient dob not mandatory
 
-
-
-New scans, rejected scans, downloaded scans -> done
-
-
-Print files remove from viewer
+Remove chat system -> done
 
 Due date -> submitted date
 
 
+Print files remove from viewer
+
 Print files when done the second lab will see the scan id
-
-Remove chat system
-
 
 secondlab :
 
@@ -32,8 +27,6 @@ Invoice nice template
 
 
 Dhl tickets
-
-
 
 Doctor: rejected orders not shown
 

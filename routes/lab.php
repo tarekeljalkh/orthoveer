@@ -20,6 +20,9 @@ Route::get('dashboard', [LabController::class, 'index'])->name('dashboard');
 
 //Scans Routes
 Route::get('scans/new', [ScanController::class, 'new'])->name('scans.new');
+Route::get('scans/rejected', [ScanController::class, 'rejected'])->name('scans.rejected');
+Route::get('scans/downloaded', [ScanController::class, 'downloaded'])->name('scans.downloaded');
+Route::get('scans/completed', [ScanController::class, 'completed'])->name('scans.completed');
 Route::get('scans/viewer/{id}', [ScanController::class, 'viewer'])->name('scans.viewer');
 Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->name('scans.prescription');
 //reject Scan

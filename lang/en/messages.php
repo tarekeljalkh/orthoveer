@@ -183,5 +183,7 @@ return [
     'pay' => 'Pay',
     'payment' => 'Payment',
     'received' => 'Received',
+    'completed_date' => 'Completed Date',
+    'prescription' => 'Prescription'
 
 ];

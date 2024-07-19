@@ -96,6 +96,64 @@ class ScanController extends Controller
         return view('lab.scans.new', compact('newScans'));
     }
 
+    public function rejected()
+    {
+        $labId = Auth::user()->id;
+
+        // Retrieve all scans assigned to the lab where the latest status is 'rejected'
+        $scans = Scan::with(['doctor', 'latestStatus' => function ($query) {
+            $query->where('status', 'rejected');
+        }])
+            ->where('lab_id', $labId)
+            ->get();
+
+        // Filter the scans to ensure they have the latest status as 'rejected'
+        $rejectedScans = $scans->filter(function ($scan) {
+            return $scan->latestStatus && $scan->latestStatus->status === 'rejected';
+        });
+
+        return view('lab.scans.rejected', compact('rejectedScans'));
+    }
+
+    public function downloaded()
+    {
+        $labId = Auth::user()->id;
+
+        // Retrieve all scans assigned to the lab where the latest status is 'downloaded'
+        $scans = Scan::with(['doctor', 'latestStatus' => function ($query) {
+            $query->where('status', 'downloaded');
+        }])
+            ->where('lab_id', $labId)
+            ->get();
+
+        // Filter the scans to ensure they have the latest status as 'downloaded'
+        $downloadedScans = $scans->filter(function ($scan) {
+            return $scan->latestStatus && $scan->latestStatus->status === 'downloaded';
+        });
+
+        return view('lab.scans.downloaded', compact('downloadedScans'));
+    }
+
+    public function completed()
+    {
+        $labId = Auth::user()->id;
+
+        // Retrieve all scans assigned to the lab where the latest status is 'completed'
+        $scans = Scan::with(['doctor', 'latestStatus' => function ($query) {
+            $query->where('status', 'completed');
+        }])
+            ->where('lab_id', $labId)
+            ->get();
+
+        // Filter the scans to ensure they have the latest status as 'completed'
+        $completedScans = $scans->filter(function ($scan) {
+            return $scan->latestStatus && $scan->latestStatus->status === 'completed';
+        });
+
+        return view('lab.scans.completed', compact('completedScans'));
+    }
+
+
     // public function printScan(Scan $scan)
     // {
     //     $pdf = PDF::loadView('lab.print', compact('scan'));
