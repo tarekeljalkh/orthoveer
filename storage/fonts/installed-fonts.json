@@ -1,0 +1,15 @@
+{
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_c7798f254d0dd6398ca7713e0cb57da6"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/font_awesome_5_free_normal_70ea0a66076b860dc2fbc791c6e33905",
+        "900": "font_awesome_5_free_900_30374b3c297d36aa98394ddf31844b5b"
+    },
+    "nunito": {
+        "normal": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/nunito_normal_17ae93a87461f287e677832d4033c260",
+        "600": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/nunito_600_d9a57963ad2837b1056bc6d6c9603fb7",
+        "bold": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/nunito_bold_18dcb326903847efb95be3f9bd0562c4",
+        "800": "nunito_800_39ec07f6d87bb95e25ad213c5606508e"
+    }
+}

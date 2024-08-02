@@ -90,9 +90,22 @@
                                         <input type="text" name="postcode" value="{{ $doctor->postcode }}"
                                             class="form-control" required="">
                                     </div>
-
-
                                 </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.siret_number') }}</label>
+                                        <input type="text" name="siret_number" value="{{ $doctor->siret_number }}"
+                                            class="form-control" required="">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.vat') }}</label>
+                                        <input type="number" max="99" name="vat" value="{{ $doctor->vat }}"
+                                            class="form-control">
+                                    </div>
+                                </div>
+
 
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">

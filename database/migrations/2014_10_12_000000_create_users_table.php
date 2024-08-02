@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('license')->nullable();
             $table->text('address')->nullable();
             $table->string('postcode')->nullable();
+            $table->string('vat')->nullable();
             $table->string('siret_number')->nullable();
             $table->enum('role', ['admin', 'doctor', 'lab', 'second_lab', 'external_lab'])->default('doctor');
             //discount for doctors

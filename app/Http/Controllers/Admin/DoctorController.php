@@ -45,6 +45,8 @@ class DoctorController extends Controller
             'address' => ['required', 'string', 'max:500'],
             'postcode' => ['nullable', 'string', 'max:200'],
             'discount' => 'nullable|numeric|min:0|max:100',
+            'vat' => 'nullable|numeric|min:0|max:99',
+            'siret_number' => ['nullable', 'string', 'max:200'],
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
@@ -60,6 +62,8 @@ class DoctorController extends Controller
         $doctor->landline = $request->landline;
         $doctor->address = $request->address;
         $doctor->postcode = $request->postcode;
+        $doctor->vat = $request->vat;
+        $doctor->siret_number = $request->siret_number;
         $doctor->discount = $request->discount;
         $doctor->role = 'doctor';
         $doctor->password = bcrypt($request->password);
@@ -109,9 +113,9 @@ class DoctorController extends Controller
             'landline' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:500'],
             'postcode' => ['nullable', 'string', 'max:200'],
-            'street' => ['nullable', 'string', 'max:200'],
-            'suburb' => ['nullable', 'string', 'max:200'],
-            'country' => ['nullable', 'string', 'max:200'],
+            'vat' => 'nullable|numeric|min:0|max:99',
+            'siret_number' => ['nullable', 'string', 'max:200'],
+            'discount' => 'nullable|numeric|min:0|max:100',
         ]);
 
         /** Handle image file */
@@ -125,10 +129,10 @@ class DoctorController extends Controller
         $doctor->mobile = $request->mobile;
         $doctor->landline = $request->landline;
         $doctor->address = $request->address;
+        $doctor->vat = $request->vat;
+        $doctor->siret_number = $request->siret_number;
         $doctor->postcode = $request->postcode;
-        $doctor->street = $request->street;
-        $doctor->suburb = $request->suburb;
-        $doctor->country = $request->country;
+        $doctor->discount = $request->discount;
 
         $doctor->role = 'doctor';
         if ($request->verified === 'yes') {

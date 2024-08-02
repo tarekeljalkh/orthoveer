@@ -33,10 +33,9 @@ class ProfileController extends Controller
         $user->mobile = $request->mobile;
         $user->landline = $request->landline;
         $user->address = $request->address;
-        $user->street = $request->street;
-        $user->suburb = $request->suburb;
         $user->postcode = $request->postcode;
-        $user->country = $request->country;
+        $user->vat = $request->vat;
+        $user->siret_number = $request->siret_number;
         $user->save();
 
         toastr('Updated Successfully!', 'success');

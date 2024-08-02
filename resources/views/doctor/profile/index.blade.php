@@ -67,34 +67,25 @@
                         </div>
 
                         <div class="row">
-
-                            <div class="form-group col-md-6 col-12">
-                                <label>{{ trans('messages.street') }}</label>
-                                <input type="text" name="street" class="form-control" value="{{ auth()->user()->street }}">
-                            </div>
-
-                            <div class="form-group col-md-6 col-12">
-                                <label>{{ trans('messages.suburb') }}</label>
-                                <input type="text" name="suburb" class="form-control" required="" value="{{ auth()->user()->suburb }}">
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="form-group col-md-6 col-12">
+                            <div class="form-group col-md-12 col-12">
                                 <label>{{ trans('messages.postcode') }}</label>
                                 <input type="text" name="postcode" class="form-control" value="{{ auth()->user()->postcode }}">
                             </div>
-
-                            <div class="form-group col-md-6 col-12">
-                                <label>{{ trans('messages.country') }}</label>
-                                <input type="text" name="country" class="form-control" required="" value="{{ auth()->user()->country }}">
-                            </div>
-
                         </div>
 
 
+                        <div class="row">
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.siret_number') }}</label>
+                                <input type="text" name="siret_number" class="form-control" value="{{ auth()->user()->siret_number }}">
+                            </div>
+
+                            <div class="form-group col-md-6 col-12">
+                                <label>{{ trans('messages.vat') }}</label>
+                                <input type="number" name="vat" class="form-control" max="99" required="" value="{{ auth()->user()->vat }}">
+                            </div>
+
+                        </div>
 
 
                         <button class="btn btn-primary" type="submit">{{ trans('messages.save') }}</button>
