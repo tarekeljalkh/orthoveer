@@ -40,6 +40,22 @@
     cursor: not-allowed;
 }
 
+
+        .note {
+            word-wrap: break-word;
+            /* Allows long words to break and wrap to the next line */
+            white-space: pre-wrap;
+            /* Preserves whitespace and allows line breaks within the text */
+            overflow-wrap: break-word;
+            /* Ensures that the text breaks if it overflows the container */
+            word-break: break-word;
+            /* Ensures that the word breaks properly in different browsers */
+            max-width: 100%;
+            /* Ensures that the note does not exceed the container's width */
+            margin-bottom: 1em;
+            /* Adds some spacing after the paragraph */
+        }
+
     </style>
 
     <!-- Start GA -->

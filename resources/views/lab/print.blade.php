@@ -1,213 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Invoice &mdash; Stisla</title>
+    <title>Order Details</title>
+
+    <link rel="stylesheet" href="{{ public_path('assets/modules/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ public_path('assets/modules/fontawesome/css/all.min.css') }}">
+
     <style>
-        /* General styles */
         body {
-            font-family: 'Helvetica', sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            margin: 0;
-            padding: 0;
+            font-size: 9px;
         }
-
-        /* Layout styles */
-        .container {
-            width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .invoice-title {
-            text-align: left;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        .invoice-number {
-            float: right;
-            font-size: 18px;
-            font-weight: normal;
-            color: #555;
-        }
-
-        .address,
-        .payment-method {
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            color: #e67e22;
-            margin-top: 20px;
+        .section-header, .invoice-title, .general-info, .notes, .additional-scans {
             margin-bottom: 10px;
-            font-weight: bold;
         }
-
-        .section-lead {
-            font-size: 12px;
-            color: #777;
-            margin-bottom: 15px;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
         .table th, .table td {
+            padding: 5px;
+        }
+        .general-info, .notes, .additional-scans {
             padding: 10px;
-            border: 1px solid #ddd;
-            font-size: 12px;
-            text-align: left;
+            box-shadow: none;
         }
-
-        .table th {
-            background-color: #f9f9f9;
-            color: #555;
-            font-weight: bold;
+        .main-content {
+            padding: 10px;
         }
-
-        .text-right {
-            text-align: right;
+        .notes p {
+            word-wrap: break-word;
+            word-break: break-all;
+            margin-bottom: 5px;
+            line-height: 1.5;
         }
-
-        .text-center {
-            text-align: center;
+        .notes {
+            max-width: 100%; /* Ensure the notes section takes the available width */
         }
-
-        .invoice-detail-item {
-            margin-top: 10px;
-            padding: 5px 0;
-            font-size: 12px;
-            color: #333;
-        }
-
-        hr {
-            border: 0;
-            border-top: 1px solid #eee;
-            margin: 20px 0;
-        }
-
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-
-        .no-print {
-            display: none;
+        .page-break {
+            page-break-before: auto;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="invoice-title">
-            Invoice
-            <div class="invoice-number">Order #12345</div>
-        </div>
-        <hr>
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="address">
-                    <strong>Billed To:</strong><br>
-                    Ujang Maman<br>
-                    1234 Main<br>
-                    Apt. 4B<br>
-                    Bogor Barat, Indonesia
-                </div>
-            </div>
-            <div class="col-md-6 text-right">
-                <div class="address">
-                    <strong>Shipped To:</strong><br>
-                    Muhamad Nauval Azhar<br>
-                    1234 Main<br>
-                    Apt. 4B<br>
-                    Bogor Barat, Indonesia
-                </div>
-            </div>
-        </div>
-        <div class="row clearfix">
-            <div class="col-md-6">
-                <div class="payment-method">
-                    <strong>Payment Method:</strong><br>
-                    Visa ending **** 4242<br>
-                    ujang@maman.com
-                </div>
-            </div>
-            <div class="col-md-6 text-right">
-                <div class="address">
-                    <strong>Order Date:</strong><br>
-                    September 19, 2018<br><br>
-                </div>
-            </div>
-        </div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-header">
+                        <h1>Order ID #{{ $scan->id }}</h1>
+                    </div>
 
-        <div class="section-title">Order Summary</div>
-        <p class="section-lead">All items here cannot be deleted.</p>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Item</th>
-                    <th class="text-center">Price</th>
-                    <th class="text-center">Quantity</th>
-                    <th class="text-right">Totals</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mouse Wireless</td>
-                    <td class="text-center">$10.99</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">$10.99</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Keyboard Wireless</td>
-                    <td class="text-center">$20.00</td>
-                    <td class="text-center">3</td>
-                    <td class="text-right">$60.00</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Headphone Blitz TDR-3000</td>
-                    <td class="text-center">$600.00</td>
-                    <td class="text-center">1</td>
-                    <td class="text-right">$600.00</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="row clearfix">
-            <div class="col-lg-8">
-                <!-- Additional content if needed -->
-            </div>
-            <div class="col-lg-4 text-right">
-                <div class="invoice-detail-item">
-                    <div class="invoice-detail-name">Subtotal</div>
-                    <div class="invoice-detail-value">$670.99</div>
-                </div>
-                <div class="invoice-detail-item">
-                    <div class="invoice-detail-name">Shipping</div>
-                    <div class="invoice-detail-value">$15</div>
-                </div>
-                <hr>
-                <div class="invoice-detail-item">
-                    <div class="invoice-detail-name">Total</div>
-                    <div class="invoice-detail-value invoice-detail-value-lg">$685.99</div>
-                </div>
+                    <div class="section-body">
+                        <div class="invoice">
+                            <div class="invoice-print">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="general-info">
+                                            <h5>General Info</h5>
+                                            <table class="table">
+                                                <tr>
+                                                    <td><strong>Patient:</strong> {{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
+                                                    <td><strong>Chart #:</strong> --</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Doctor:</strong> {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                                    <td><strong>Procedure:</strong> {{ $scan->typeofwork->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Practice:</strong> Orthodontie Exclusive</td>
+                                                    <td><strong>Type:</strong> --</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Ship to Address:</strong> {{ $scan->doctor->address }}</td>
+                                                    <td><strong>Status:</strong> {{ $scan->latestStatus->status }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="notes">
+                                            <h5>Notes</h5>
+                                            @foreach ($scan->status as $status)
+                                                <p>{{ $status->updatedBy->last_name }}, {{ $status->updatedBy->first_name }}<br>
+                                                {{ \Carbon\Carbon::parse($status->created_at)->format('d/m/Y, H:i') }}<br>
+                                                {{ $status->note }}</p>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="page-break"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </div>

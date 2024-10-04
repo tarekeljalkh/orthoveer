@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('print_files', function (Blueprint $table) {
             $table->id();
             $table->string('file_path');
+            $table->unsignedBigInteger('scan_id');
+            $table->foreign('scan_id')->references('id')->on('scans')->onDelete('cascade');
             $table->timestamps();
         });
     }

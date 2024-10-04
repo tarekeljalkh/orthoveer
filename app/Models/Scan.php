@@ -75,7 +75,7 @@ class Scan extends Model
     // Relationship with print files
     public function printFiles()
     {
-        return $this->belongsToMany(PrintFile::class, 'print_file_scan');
+        return $this->hasMany(PrintFile::class, 'scan_id');
     }
 
 

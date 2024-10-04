@@ -31,6 +31,7 @@ Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('s
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 
 //Print Files route
+Route::get('printfiles', [PrintFileController::class, 'index'])->name('printfiles.index');
 Route::get('printfiles/download/{id}', [PrintFileController::class, 'download'])->name('printfiles.download');
 
 Route::resource('scans', ScanController::class);

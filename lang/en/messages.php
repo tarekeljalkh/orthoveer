@@ -184,8 +184,6 @@ return [
     'payment' => 'Payment',
     'received' => 'Received',
     'completed_date' => 'Completed Date',
-    'prescription' => 'Prescription',
-    'license' => 'License',
-    'siret_number' => 'Siret Number',
-    'vat' => 'VAT',
+    'prescription' => 'Prescription'
+
 ];

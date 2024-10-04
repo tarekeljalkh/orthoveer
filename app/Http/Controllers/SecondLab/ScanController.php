@@ -65,6 +65,12 @@ class ScanController extends Controller
         return view('second_lab.scans.new', compact('newScans'));
     }
 
+    public function printScan(Request $request, $scanId)
+    {
+        $scan = Scan::findOrFail($scanId);
+        $pdf = PDF::loadView('lab.print', compact('scan'));
+        return $pdf->download('prescription-' . $scan->id . '.pdf');
+    }
 
 
     public function updateStatus(Request $request, $id)
@@ -299,6 +305,22 @@ class ScanController extends Controller
             Log::error("Lower STL file not found or is not a file: {$lowerFilePath}");
         }
 
+        // Add STL upper Lab file if it exists
+        $upperLabFilePath = public_path('uploads/' . basename($scan->stl_upper_lab));
+        if (file_exists($upperLabFilePath) && is_file($upperLabFilePath)) {
+            $zip->addFile($upperLabFilePath, basename($upperLabFilePath));
+        } else {
+            Log::error("Upper STL file not found or is not a file: {$upperLabFilePath}");
+        }
+
+        // Add STL lower file if it exists
+        $lowerLabFilePath = public_path('uploads/' . basename($scan->stl_lower_la));
+        if (file_exists($lowerLabFilePath) && is_file($lowerLabFilePath)) {
+            $zip->addFile($lowerLabFilePath, basename($lowerLabFilePath));
+        } else {
+            Log::error("Lower STL file not found or is not a file: {$lowerLabFilePath}");
+        }
+
         // Add PDF files if they exist
         $pdfPaths = json_decode($scan->pdf, true) ?? [];
         foreach ($pdfPaths as $pdfPath) {
@@ -315,16 +337,25 @@ class ScanController extends Controller
             return back()->withErrors('Could not create ZIP file.');
         }
 
+        // Check if a status update already exists
+        $existingStatus = Status::where('scan_id', $scan->id)
+            ->where('status', 'downloaded')
+            ->first();
+
+        if (!$existingStatus) {
+            // Create a new status update for the scan
+            $statusUpdate = new Status([
+                'scan_id' => $scan->id,
+                'status' => 'downloaded',
+                'note' => 'Downloaded',
+                'updated_by' => Auth::id(),
+            ]);
+
+            $statusUpdate->save();
+        }
+
         return response()->download($zipFilePath)->deleteFileAfterSend(true);
     }
-
-    public function printScan(Request $request, $scanId)
-    {
-        $scan = Scan::findOrFail($scanId);
-        $pdf = PDF::loadView('lab.print', compact('scan'));
-        return $pdf->download('prescription-' . $scan->id . '.pdf');
-    }
-
 
     public function printMultiple(Request $request)
     {
@@ -349,6 +380,9 @@ class ScanController extends Controller
 
                 $upperFilePath = public_path('uploads/' . basename($scan->stl_upper));
                 $lowerFilePath = public_path('uploads/' . basename($scan->stl_lower));
+                //lab files
+                $upperLabFilePath = public_path('uploads/' . basename($scan->stl_upper_lab));
+                $lowerLabFilePath = public_path('uploads/' . basename($scan->stl_lower_lab));
 
                 if (file_exists($upperFilePath) && is_file($upperFilePath)) {
                     $zip->addFile($upperFilePath, "{$id}/" . basename($upperFilePath));
@@ -361,6 +395,20 @@ class ScanController extends Controller
                 } else {
                     Log::error("Lower STL file not found or is not a file for scan ID {$id}: {$lowerFilePath}");
                 }
+
+                //lab files
+                if (file_exists($upperLabFilePath) && is_file($upperLabFilePath)) {
+                    $zip->addFile($upperLabFilePath, "{$id}/" . basename($upperLabFilePath));
+                } else {
+                    Log::error("Upper STL file not found or is not a file for scan ID {$id}: {$upperLabFilePath}");
+                }
+
+                if (file_exists($lowerLabFilePath) && is_file($lowerLabFilePath)) {
+                    $zip->addFile($lowerLabFilePath, "{$id}/" . basename($lowerLabFilePath));
+                } else {
+                    Log::error("Lower STL file not found or is not a file for scan ID {$id}: {$lowerLabFilePath}");
+                }
+
 
                 $pdfPaths = json_decode($scan->pdf, true) ?? [];
                 foreach ($pdfPaths as $pdfPath) {
@@ -379,11 +427,17 @@ class ScanController extends Controller
             }
 
             return response()->download($zipFilePath)->deleteFileAfterSend(true);
+
+            // Create a new status update for the scan
+            $statusUpdate = new Status([
+                'scan_id' => $scan->id,
+                'status' => 'downloaded', // Setting the initial status to 'pending'
+                'note' => 'Downloaded by second La', // Assuming the note comes from the request
+                'updated_by' => Auth::id(), // Assuming the current user made this update
+            ]);
         } else {
             Log::error('Could not open ZIP file for creation at path: ' . $zipFilePath);
             return back()->withErrors('Could not create ZIP file.');
         }
     }
-
-
 }

@@ -1,15 +1,15 @@
 {
     "font awesome 5 brands": {
-        "normal": "font_awesome_5_brands_normal_c7798f254d0dd6398ca7713e0cb57da6"
+        "normal": "font_awesome_5_brands_normal_55945baea0ea7d64ab8081ae4d90ada0"
     },
     "font awesome 5 free": {
-        "normal": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/font_awesome_5_free_normal_70ea0a66076b860dc2fbc791c6e33905",
-        "900": "font_awesome_5_free_900_30374b3c297d36aa98394ddf31844b5b"
+        "normal": "\/home\/u236778855\/domains\/efslb.com\/public_html\/orthoveer\/storage\/fonts\/font_awesome_5_free_normal_bb84b7bbe9c5adf7de35be81c48bb475",
+        "900": "font_awesome_5_free_900_efee0e3b932d51d536ea7e9749863bac"
     },
     "nunito": {
-        "normal": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/nunito_normal_17ae93a87461f287e677832d4033c260",
-        "600": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/nunito_600_d9a57963ad2837b1056bc6d6c9603fb7",
-        "bold": "C:\\Users\\Thinkpad\\Desktop\\orthoveer\\storage\\fonts\/nunito_bold_18dcb326903847efb95be3f9bd0562c4",
-        "800": "nunito_800_39ec07f6d87bb95e25ad213c5606508e"
+        "normal": "\/Users\/mac\/Sites\/orthoveer\/public\/fonts\/\/nunito_normal_f64d77321cb949b4c8a98523be912fdc",
+        "600": "\/Users\/mac\/Sites\/orthoveer\/public\/fonts\/\/nunito_600_b64e4f462426fa5b592864fa530de583",
+        "bold": "\/Users\/mac\/Sites\/orthoveer\/public\/fonts\/\/nunito_bold_8b1e6f94b95d55e294332d03ee94aed3",
+        "800": "nunito_800_aeb6eb5f17872445c5a70e93f8dd51d8"
     }
 }

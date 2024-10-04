@@ -120,7 +120,7 @@
                                                     class="text-job text-info">{{ $status->created_at->format('d/m/Y') }}</span>
                                             </div>
                                             <p><span style="font-weight: bold">Status:</span> {{ $status->status }}</p>
-                                            <p><span style="font-weight: bold">Note:</span> {{ $status->note }}</p>
+                                            <p class="note"><span style="font-weight: bold">Note:</span> {{ $status->note }}</p>
                                         </div>
                                     </div>
                                 @empty
@@ -135,7 +135,7 @@
 
 
                         {{-- Only show "Complete" and "Reject" buttons for "pending" or "resubmitted" statuses --}}
-                        @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
+                        @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
                             <div class="card-footer">
                                 <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
                                     @csrf
@@ -158,7 +158,7 @@
                     {{-- End Status and Rejection Section --}}
 
                     {{-- Comple Scan Section --}}
-                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
+                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
                         <div class="card">
                             <div class="card-header">
                                 <h4>Upload And Complete Scan</h4>

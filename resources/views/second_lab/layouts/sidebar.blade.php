@@ -23,18 +23,13 @@
                     href="{{ route('second_lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.all_scans') }}</span></a></li>
 
+                    <li class="{{ request()->routeIs('second_lab.printfiles.index') ? 'active' : '' }}"><a class="nav-link"
+                        href="{{ route('second_lab.printfiles.index') }}"><i class="fas fa-file-upload"></i>
+                        <span>{{ trans('messages.print_files') }}</span></a></li>
+
             <li class="{{ request()->routeIs('second_lab.orders.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('second_lab.orders.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.dhl_orders') }}</span></a></li>
-
-                    @php
-                    $unseenMessages = \App\Models\Chat::where(['receiver_id' => auth()->user()->id, 'seen' => 0])->count();
-                @endphp
-
-
-            <li class="{{ request()->routeIs('second_lab.chat.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('second_lab.chat.index') }}"><i class="fas fa-envelope"></i>
-                    <span>{{ trans('messages.messages') }} ({{ $unseenMessages }})</span></a></li>
 
         </ul>
 

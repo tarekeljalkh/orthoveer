@@ -24,8 +24,8 @@ class ProfileUpdateRequest extends FormRequest
             'mobile' => ['nullable', 'integer', 'max:100'],
             'landline' => ['nullable', 'integer', 'max:100'],
             'address' => ['nullable', 'string', 'max:255'],
-            'vat' => ['nullable', 'string', 'max:255'],
-            'siret_number' => ['nullable', 'string', 'max:255'],
+            'street' => ['nullable', 'string', 'max:255'],
+            'suburb' => ['nullable', 'string', 'max:255'],
             'postcode' => ['nullable', 'string', 'max:255'],
             'country' => ['nullable', 'string', 'max:255']
         ];

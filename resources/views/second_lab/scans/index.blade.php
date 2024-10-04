@@ -22,6 +22,10 @@
                             <h4>{{ trans('messages.all_scans') }}</h4>
                         </div>
                         <div class="card-body">
+
+                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
+                            <button id="download-scans" class="btn btn-danger"><i class="fa fa-download"></i> Download Scans</button>
+
                             <table id="scans" class="display nowrap" style="width:100%">
                                 <thead>
                                     <tr>
@@ -80,8 +84,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
-                            <button id="download-scans" class="btn btn-secondary"><i class="fa fa-download"></i> Download Scans</button>
+
                         </div>
                     </div>
                 </div>
@@ -140,10 +143,26 @@
             ]
         });
 
+        function toggleActionButtons() {
+            var count = $('.select-row:checked').length;
+            var anyChecked = count > 0;
+            $('#print-prescriptions').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+            $('#download-scans').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+
+            if (anyChecked) {
+                $('#print-prescriptions').text('Print Prescriptions (' + count + ')');
+                $('#download-scans').text('Download Scans (' + count + ')');
+            } else {
+                $('#print-prescriptions').text('Print Prescriptions');
+                $('#download-scans').text('Download Scans');
+            }
+        }
+
         // Handle select all checkbox
         $('#select-all').on('click', function() {
             var rows = table.rows({ 'search': 'applied' }).nodes();
             $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            toggleActionButtons();
         });
 
         // Handle individual row checkboxes
@@ -154,7 +173,11 @@
                     el.indeterminate = true;
                 }
             }
+            toggleActionButtons();
         });
+
+        // Initial state of action buttons
+        toggleActionButtons();
 
         // Print Prescriptions
         $('#print-prescriptions').on('click', function() {
@@ -230,6 +253,9 @@
                         document.body.appendChild(a);
                         a.click();
                         window.URL.revokeObjectURL(url);
+
+                        // Refresh the page after download
+                        location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', status, error);
@@ -252,6 +278,9 @@
                         document.body.appendChild(a);
                         a.click();
                         window.URL.revokeObjectURL(url);
+
+                        // Refresh the page after download
+                        location.reload();
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', status, error);

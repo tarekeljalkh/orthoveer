@@ -32,6 +32,8 @@ return new class extends Migration
             $table->date('scan_date')->format('d/m/Y');
             $table->string('stl_upper')->nullable();
             $table->string('stl_lower')->nullable();
+            $table->string('stl_upper_lab')->nullable();
+            $table->string('stl_lower_lab')->nullable();
             $table->string('pdf')->nullable();
             $table->string('lab_file')->nullable();
             $table->string('payment_status')->nullable();

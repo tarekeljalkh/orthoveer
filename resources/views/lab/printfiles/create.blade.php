@@ -25,9 +25,15 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <!-- Hidden field to store scan_id -->
+                                    <input type="hidden" name="scan_id" value="{{ $scan_id }}">
+
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Upload Print Files (ZIP)</label>
-                                        <input type="file" name="file" class="form-control" id="file" accept=".zip">
+                                        <label>Upload Print File (ZIP)</label>
+                                        <input type="file" name="file" class="form-control" id="file" accept=".zip" required>
+                                        <div class="invalid-feedback">
+                                            Please upload a valid ZIP file.
+                                        </div>
                                     </div>
                                 </div>
                             </div>

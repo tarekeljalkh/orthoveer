@@ -79,7 +79,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.due_date') }}</label>
+                                            <label>{{ trans('messages.due_date') }} <span class="text-danger">*</span></label>
                                             <input type="date" name="due_date" class="form-control"
                                                 value="{{ $order->due_date instanceof \DateTime ? $order->due_date->format('Y-m-d') : \Carbon\Carbon::parse($order->due_date)->format('Y-m-d') }}"
                                                 min="{{ now()->toDateString() }}">

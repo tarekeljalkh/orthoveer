@@ -1,90 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Prescription</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Order Details</title>
+
+    <link rel="stylesheet" href="{{ public_path('assets/modules/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ public_path('assets/modules/fontawesome/css/all.min.css') }}">
+
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            font-size: 14px;
-            margin: 0;
-            padding: 0;
+            font-size: 9px;
         }
-        .prescription-container {
-            max-width: 800px;
-            margin: 20mm auto;
-            background: #ffffff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .prescription-header {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px 0;
-        }
-        .prescription-header-left,
-        .prescription-header-right {
-            flex: 1;
-        }
-        .prescription-header-left {
-            text-align: left;
-        }
-        .prescription-header-right {
-            text-align: right;
-        }
-        .prescription-header-left img {
-            max-width: 150px;
+        .section-header, .invoice-title, .general-info, .notes, .additional-scans {
             margin-bottom: 10px;
         }
-        .prescription-body {
-            padding: 20px;
-            line-height: 1.5;
-            color: #333333;
-            text-align: left;
+        .table th, .table td {
+            padding: 5px;
         }
-        .prescription-footer {
-            text-align: center;
-            padding: 10px 20px;
-            font-size: 12px;
+        .general-info, .notes, .additional-scans {
+            padding: 10px;
+            box-shadow: none;
+        }
+        .main-content {
+            padding: 10px;
+        }
+        .notes p {
+            word-wrap: break-word;
+            word-break: break-all;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+        .notes {
+            max-width: 100%; /* Ensure the notes section takes the available width */
+        }
+        .page-break {
+            page-break-before: auto;
         }
     </style>
 </head>
+
 <body>
-    <div class="prescription-container">
-        <div class="prescription-header">
-            <div class="prescription-header-left">
-                <img src="{{ public_path('/assets/logo.jpg') }}" alt="Logo" height="75px">
-                <p><strong>ORTHOVEER</strong><br>
-                17 rue du petit Albi<br>
-                95800 Cergy<br>
-                Bloc C2 Porte 203<br>
-                orthoveer@gmail.com<br>
-                0745556967</p>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-header">
+                        <h1>Order ID #{{ $scan->id }}</h1>
+                    </div>
+
+                    <div class="section-body">
+                        <div class="invoice">
+                            <div class="invoice-print">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="general-info">
+                                            <h5>General Info</h5>
+                                            <table class="table">
+                                                <tr>
+                                                    <td><strong>Patient:</strong> {{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
+                                                    <td><strong>Chart #:</strong> --</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Doctor:</strong> {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                                    <td><strong>Procedure:</strong> {{ $scan->typeofwork->name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Practice:</strong> Orthodontie Exclusive</td>
+                                                    <td><strong>Type:</strong> --</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Ship to Address:</strong> {{ $scan->doctor->address }}</td>
+                                                    <td><strong>Status:</strong> {{ $scan->latestStatus->status }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="notes">
+                                            <h5>Notes</h5>
+                                            @foreach ($scan->status as $status)
+                                                <p>{{ $status->updatedBy->last_name }}, {{ $status->updatedBy->first_name }}<br>
+                                                {{ \Carbon\Carbon::parse($status->created_at)->format('d/m/Y, H:i') }}<br>
+                                                {{ $status->note }}</p>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="page-break"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div class="prescription-header-right">
-                <p><strong>Doctor:</strong><br>
-                {{ $scan->doctor->first_name }} {{ $scan->doctor->last_name }}<br>
-                {{ $scan->doctor->address }}<br>
-                {{ $scan->doctor->email }}<br>
-                {{ $scan->doctor->mobile }}</p>
-            </div>
-        </div>
-        <div class="prescription-body">
-            <h1>Prescription</h1>
-            <p><strong>Patient:</strong> {{ $scan->patient->first_name }} {{ $scan->patient->last_name }}</p>
-            <p><strong>Date:</strong> {{ $scan->due_date->format('d/m/Y') }}</p>
-            <p><strong>Type Of Work:</strong> {{ $scan->typeofwork->name }}</p>
-            <p><strong>Notes:</strong> {{ $scan->latestStatus->note ?? 'No Note' }}</p>
-            <p><strong>Delivery Date:</strong>
-                {{ \Carbon\Carbon::now()->addDays($scan->typeofwork->second_lab_due_date)->format('d/m/Y') }}</p>
-            <!-- Add more prescription details as needed -->
-        </div>
-        <div class="prescription-footer">
-            &copy; {{ date('Y') }} Orthoveer. All rights reserved.
         </div>
     </div>
 </body>
+
 </html>

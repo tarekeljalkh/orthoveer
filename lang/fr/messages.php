@@ -182,9 +182,5 @@ return [
     'payment' => 'Paiement',
     'received' => 'Recu',
     'completed_date' => 'Date de Din',
-    'prescription' => 'Ordonnance',
-    'license' => 'License',
-    'siret_number' => 'Siret Number',
-    'vat' => 'VAT',
-
+    'prescription' => 'Ordonnance'
 ];

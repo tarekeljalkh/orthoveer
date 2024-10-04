@@ -33,10 +33,11 @@ Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('s
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 
 //print files
-Route::get('printfiles/download/{id}', [PrintFileController::class, 'download'])->name('printfiles.download');
+Route::get('/printfiles/create/{id}', [PrintFileController::class, 'create'])->name('printfiles.create');
+Route::get('/printfiles/download/{id}', [PrintFileController::class, 'download'])->name('printfiles.download');
 Route::post('printfiles/attach', [PrintFileController::class, 'attachScans'])->name('printfiles.attach');
-Route::resource('printfiles', PrintFileController::class);
-
+// Resource route excluding 'create' and 'show' because they are either handled by custom routes or not needed
+Route::resource('printfiles', PrintFileController::class)->except(['create']);
 
 Route::resource('scans', ScanController::class);
 /** Download Scan */

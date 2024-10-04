@@ -448,8 +448,8 @@ class ScanController extends Controller
         //find scan id
         $scan = Scan::findOrFail($id);
 
-        $scan->stl_upper = $upperPath;
-        $scan->stl_lower = $lowerPath;
+        $scan->stl_upper_lab = $upperPath;
+        $scan->stl_lower_lab = $lowerPath;
 
         $scan->save();
 

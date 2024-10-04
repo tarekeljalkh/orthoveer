@@ -21,7 +21,11 @@
                             <h4>{{ trans('messages.new_scans') }}</h4>
                         </div>
                         <div class="card-body">
-                            <table id="new" class="display nowrap" style="width:100%">
+
+                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
+                            <button id="download-scans" class="btn btn-danger"><i class="fa fa-download"></i> Download Scans</button>
+
+                            <table id="scans" class="display nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th hidden>ID</th> <!-- Hidden ID Column -->
@@ -81,8 +85,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
-                            <button id="download-scans" class="btn btn-secondary"><i class="fa fa-download"></i> Download Scans</button>
                         </div>
                     </div>
                 </div>
@@ -95,7 +97,7 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
-        var table = $('#new').DataTable({
+        var table = $('#scans').DataTable({
             order: [[4, 'desc']], // Sort by due date column in ascending order
             dom: 'Bfrtip', // Define the elements in the control layout
             buttons: [
@@ -103,27 +105,43 @@
                 'pdf',
                 'print'
             ],
-            select: {
-                style: 'multi',
-                selector: 'td:first-child input[type="checkbox"]'
-            }
         });
+
+        function toggleActionButtons() {
+            var count = $('.select-row:checked').length;
+            var anyChecked = count > 0;
+            $('#print-prescriptions').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+            $('#download-scans').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+
+            if (anyChecked) {
+                $('#print-prescriptions').text('Print Prescriptions (' + count + ')');
+                $('#download-scans').text('Download Scans (' + count + ')');
+            } else {
+                $('#print-prescriptions').text('Print Prescriptions');
+                $('#download-scans').text('Download Scans');
+            }
+        }
 
         // Handle select all checkbox
         $('#select-all').on('click', function() {
             var rows = table.rows({ 'search': 'applied' }).nodes();
             $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            toggleActionButtons();
         });
 
         // Handle individual row checkboxes
-        $('#new tbody').on('change', 'input[type="checkbox"]', function() {
+        $('#scans tbody').on('change', 'input[type="checkbox"]', function() {
             if (!this.checked) {
                 var el = $('#select-all').get(0);
                 if (el && el.checked && ('indeterminate' in el)) {
                     el.indeterminate = true;
                 }
             }
+            toggleActionButtons();
         });
+
+        // Initial state of action buttons
+        toggleActionButtons();
 
         // Print Prescriptions
         $('#print-prescriptions').on('click', function() {
