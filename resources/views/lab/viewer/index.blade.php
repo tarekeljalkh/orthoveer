@@ -135,7 +135,7 @@
 
 
                         {{-- Only show "Complete" and "Reject" buttons for "pending" or "resubmitted" statuses --}}
-                        @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                        @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
                             <div class="card-footer">
                                 <form action="{{ route('lab.scans.updateStatus', $scan->id) }}" method="post">
                                     @csrf
@@ -158,7 +158,7 @@
                     {{-- End Status and Rejection Section --}}
 
                     {{-- Comple Scan Section --}}
-                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted')
+                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
                         <div class="card">
                             <div class="card-header">
                                 <h4>Upload And Complete Scan</h4>
@@ -192,7 +192,7 @@
 
                                     </div>
 
-                                    <button type="submit" name="action" value="complete" class="btn btn-success">
+                                    <button type="submit" name="action" value="done" class="btn btn-success">
                                         Complete
                                     </button>
                                 </form>

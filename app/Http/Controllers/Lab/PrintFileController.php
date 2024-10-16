@@ -52,7 +52,7 @@ class PrintFileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:zip',
+            'file' => 'required|file',
             'scan_id' => 'required|exists:scans,id',
         ]);
 
@@ -95,7 +95,7 @@ class PrintFileController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'file' => 'nullable|file|mimes:zip|max:20480', // max size 20MB
+            'file' => 'nullable|file',
         ]);
 
         $printFile = PrintFile::findOrFail($id);

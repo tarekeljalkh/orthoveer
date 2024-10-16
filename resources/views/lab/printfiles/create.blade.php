@@ -29,7 +29,7 @@
                                     <input type="hidden" name="scan_id" value="{{ $scan_id }}">
 
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Upload Print File (ZIP)</label>
+                                        <label>Upload Print File</label>
                                         <input type="file" name="file" class="form-control" id="file" accept=".zip" required>
                                         <div class="invalid-feedback">
                                             Please upload a valid ZIP file.

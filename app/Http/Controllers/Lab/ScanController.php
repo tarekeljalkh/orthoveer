@@ -140,14 +140,14 @@ class ScanController extends Controller
 
         // Retrieve all scans assigned to the lab where the latest status is 'completed'
         $scans = Scan::with(['doctor', 'latestStatus' => function ($query) {
-            $query->where('status', 'completed');
+            $query->where('status', 'done');
         }])
             ->where('lab_id', $labId)
             ->get();
 
         // Filter the scans to ensure they have the latest status as 'completed'
         $completedScans = $scans->filter(function ($scan) {
-            return $scan->latestStatus && $scan->latestStatus->status === 'completed';
+            return $scan->latestStatus && $scan->latestStatus->status === 'done';
         });
 
         return view('lab.scans.completed', compact('completedScans'));
@@ -170,13 +170,13 @@ class ScanController extends Controller
     {
         $request->validate([
             'note' => 'required|max:200',
-            'action' => 'required|in:reject,complete',
+            'action' => 'required|in:reject,done',
         ]);
 
         $scan = Scan::findOrFail($id);
 
         $action = $request->input('action');
-        $status = $action === 'reject' ? 'rejected' : 'completed';
+        $status = $action === 'reject' ? 'rejected' : 'done';
 
         // Create a new status update for the scan
         $statusUpdate = new Status([
@@ -456,7 +456,7 @@ class ScanController extends Controller
         // Create a new status update for the scan
         $statusUpdate = new Status([
             'scan_id' => $scan->id,
-            'status' => 'completed', // Setting the initial status to 'pending'
+            'status' => 'done', // Setting the initial status to 'pending'
             'note' => 'Completed', // Assuming the note comes from the request
             'updated_by' => Auth::id(), // Assuming the current user made this update
         ]);

@@ -33,7 +33,7 @@
                                     </p>
                                 </div>
                                 <div class="form-group col-md-12 col-12">
-                                    <label>Upload New Print File (ZIP)</label>
+                                    <label>Upload New Print File</label>
                                     <input type="file" name="file" class="form-control" id="file" accept=".zip">
                                     <small class="form-text text-muted">Leave blank if you don't want to replace the existing file.</small>
                                 </div>

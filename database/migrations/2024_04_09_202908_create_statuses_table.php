@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('scan_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['new', 'downloaded', 'pending', 'completed', 'rejected', 'resubmitted', 'delivered'])->default('new');
+            $table->enum('status', ['new', 'downloaded', 'pending', 'completed', 'rejected', 'resubmitted', 'delivered', 'done'])->default('new');
             $table->text('note')->nullable(); // Optional, for storing the reason for the status change
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null'); // Optional, to track who updated the status
             $table->timestamps();
