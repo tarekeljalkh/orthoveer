@@ -42,9 +42,7 @@ class TypeofWorkController extends Controller
             'second_lab_id' => ['nullable', 'integer'],
             'external_lab_id' => ['nullable', 'integer'],
             'lab_price' => ['required', 'numeric'],
-            'bag_coule' => ['nullable', 'numeric'],
             'my_price' => ['nullable', 'numeric'],
-            'invoice_to' => ['nullable', 'numeric'],
             'cash_out' => ['nullable', 'numeric'],
             'my_benefit' => ['nullable', 'numeric'],
             'accessories' => ['nullable', 'numeric'],
@@ -54,9 +52,7 @@ class TypeofWorkController extends Controller
         $typeofwork = new TypeofWork();
         $typeofwork->name = $request->name;
         $typeofwork->lab_price = $request->lab_price;
-        $typeofwork->bag_coule = $request->bag_coule;
         $typeofwork->my_price = $request->my_price;
-        $typeofwork->invoice_to = $request->invoice_to;
         $typeofwork->cash_out = $request->cash_out;
         $typeofwork->my_benefit = $request->my_benefit;
         $typeofwork->accessories = $request->accessories;
@@ -118,9 +114,7 @@ class TypeofWorkController extends Controller
             'second_lab_id' => ['nullable', 'integer'],
             'external_lab_id' => ['nullable', 'integer'],
             'lab_price' => ['required', 'numeric'],
-            'bag_coule' => ['nullable', 'numeric'],
             'my_price' => ['nullable', 'numeric'],
-            'invoice_to' => ['nullable', 'numeric'],
             'cash_out' => ['nullable', 'numeric'],
             'my_benefit' => ['nullable', 'numeric'],
             'accessories' => ['nullable', 'numeric'],
@@ -130,9 +124,7 @@ class TypeofWorkController extends Controller
         $typeofwork = TypeofWork::findOrFail($id);
         $typeofwork->name = $request->name;
         $typeofwork->lab_price = $request->lab_price;
-        $typeofwork->bag_coule = $request->bag_coule;
         $typeofwork->my_price = $request->my_price;
-        $typeofwork->invoice_to = $request->invoice_to;
         $typeofwork->cash_out = $request->cash_out;
         $typeofwork->my_benefit = $request->my_benefit;
         $typeofwork->accessories = $request->accessories;

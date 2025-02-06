@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->double('lab_price')->nullable();
-            $table->double('bag_coule')->nullable();
             $table->double('my_price')->nullable();
-            $table->double('invoice_to')->nullable();
             $table->double('cash_out')->nullable();
             $table->double('my_benefit')->nullable();
             $table->double('accessories')->nullable();

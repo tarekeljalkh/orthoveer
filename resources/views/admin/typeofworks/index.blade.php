@@ -33,9 +33,7 @@
                                             <th>{{ trans('messages.name') }}</th>
                                             <th>Lab Price</th>
                                             <th>Price with TVA</th>
-                                            <th>Bag Coule</th>
                                             <th>My Price</th>
-                                            <th>Invoice To</th>
                                             <th>Cash Out</th>
                                             <th>My Benefit</th>
                                             <th>Accessories</th>
@@ -56,9 +54,7 @@
                                                 <td>{{ $typeofwork->name }}</td>
                                                 <td>{{ $typeofwork->lab_price }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->price_with_tva }} {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->bag_coule }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->my_price }} {{ config('settings.site_currency_icon') }}</td>
-                                                <td>{{ $typeofwork->invoice_to }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->cash_out }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->my_benefit }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->accessories }} {{ config('settings.site_currency_icon') }}</td>
