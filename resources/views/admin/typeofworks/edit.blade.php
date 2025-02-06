@@ -26,6 +26,18 @@
                                 <h4>Edit Type of Works</h4>
                             </div>
                             <div class="card-body">
+
+                                <div class="row">
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>{{ trans('messages.image') }}</label>
+                                        <div id="image-preview" class="image-preview">
+                                            <label for="image-upload"
+                                                id="image-label">{{ trans('messages.choose_image') }}</label>
+                                            <input type="file" name="image" id="image-upload" />
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
                                         <label>Name</label>
@@ -78,7 +90,8 @@
 
                                     <div class="form-group col-md-12 col-12">
                                         <label>{{ trans('messages.lab_due_date') }}</label>
-                                        <input name="lab_due_date" type="number" class="form-control" value="{{ old('lab_due_date', $typeofwork->lab_due_date ? $typeofwork->lab_due_date : '') }}">
+                                        <input name="lab_due_date" type="number" class="form-control"
+                                            value="{{ old('lab_due_date', $typeofwork->lab_due_date ? $typeofwork->lab_due_date : '') }}">
                                     </div>
 
                                 </div>
@@ -101,7 +114,8 @@
 
                                     <div class="form-group col-md-12 col-12">
                                         <label>{{ trans('messages.second_lab_due_date') }}</label>
-                                        <input name="second_lab_due_date" type="number" class="form-control" value="{{ old('second_lab_due_date', $typeofwork->second_lab_due_date ? $typeofwork->second_lab_due_date : '') }}">
+                                        <input name="second_lab_due_date" type="number" class="form-control"
+                                            value="{{ old('second_lab_due_date', $typeofwork->second_lab_due_date ? $typeofwork->second_lab_due_date : '') }}">
                                     </div>
                                 </div>
 
@@ -123,7 +137,8 @@
 
                                     <div class="form-group col-md-12 col-12">
                                         <label>{{ trans('messages.external_lab_due_date') }}</label>
-                                        <input name="external_lab_due_date" type="number" class="form-control" value="{{ old('external_lab_due_date', $typeofwork->external_lab_due_date ? $typeofwork->external_lab_due_date : '') }}">
+                                        <input name="external_lab_due_date" type="number" class="form-control"
+                                            value="{{ old('external_lab_due_date', $typeofwork->external_lab_due_date ? $typeofwork->external_lab_due_date : '') }}">
                                     </div>
 
                                 </div>
@@ -132,10 +147,11 @@
                                     <div class="form-group col-md-12 col-12">
                                         <label>Doctor Specific Prices</label>
                                         <div id="doctor-prices">
-                                            @foreach($typeofwork->doctorPrices as $index => $doctorPrice)
+                                            @foreach ($typeofwork->doctorPrices as $index => $doctorPrice)
                                                 <div class="row mb-2">
                                                     <div class="col-md-6">
-                                                        <select class="form-control select2" name="doctor_prices[{{ $index }}][doctor_id]">
+                                                        <select class="form-control select2"
+                                                            name="doctor_prices[{{ $index }}][doctor_id]">
                                                             @foreach ($doctors as $doctor)
                                                                 <option value="{{ $doctor->id }}"
                                                                     @if ($doctor->id == $doctorPrice->doctor_id) selected @endif>
@@ -145,12 +161,15 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="number" name="doctor_prices[{{ $index }}][price]" class="form-control" value="{{ $doctorPrice->price }}">
+                                                        <input type="number"
+                                                            name="doctor_prices[{{ $index }}][price]"
+                                                            class="form-control" value="{{ $doctorPrice->price }}">
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <button type="button" class="btn btn-success" id="add-doctor-price">Add Doctor Price</button>
+                                        <button type="button" class="btn btn-success" id="add-doctor-price">Add Doctor
+                                            Price</button>
                                     </div>
                                 </div>
 
@@ -169,10 +188,18 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                var doctorPriceIndex = {{ count($typeofwork->doctorPrices) }};
 
-                $('#add-doctor-price').on('click', function() {
-                    var newDoctorPrice = `
+                $('.image-preview').css({
+                    'background-image': 'url({{ asset($typeofwork->image) }})',
+                    'background-size': 'cover',
+                    'background-position': 'center center'
+                })
+            })
+
+            var doctorPriceIndex = {{ count($typeofwork->doctorPrices) }};
+
+            $('#add-doctor-price').on('click', function() {
+                var newDoctorPrice = `
                         <div class="row mb-2">
                             <div class="col-md-6">
                                 <select class="form-control select2" name="doctor_prices[${doctorPriceIndex}][doctor_id]">
@@ -185,9 +212,8 @@
                                 <input type="number" name="doctor_prices[${doctorPriceIndex}][price]" class="form-control" placeholder="Price">
                             </div>
                         </div>`;
-                    $('#doctor-prices').append(newDoctorPrice);
-                    doctorPriceIndex++;
-                });
+                $('#doctor-prices').append(newDoctorPrice);
+                doctorPriceIndex++;
             });
         </script>
     @endpush

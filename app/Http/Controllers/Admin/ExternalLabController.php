@@ -152,6 +152,7 @@ class ExternalLabController extends Controller
     {
         try {
             $external_lab = User::findOrFail($id);
+            $this->removeImage($external_lab->image);
             $external_lab->delete();
             return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
         } catch (\Exception $e) {

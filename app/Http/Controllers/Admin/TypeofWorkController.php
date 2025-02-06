@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\DoctorWorkPrice;
 use App\Models\TypeofWork;
 use App\Models\User;
+use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 
 class TypeofWorkController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -49,7 +52,12 @@ class TypeofWorkController extends Controller
             'vat' => ['nullable', 'numeric'],
         ]);
 
+        //handle Image Upload
+        $imagePath = $this->uploadImage($request, 'image');
+
+
         $typeofwork = new TypeofWork();
+        $typeofwork->image = !empty($imagePath) ? $imagePath : 'uploads/type.png';
         $typeofwork->name = $request->name;
         $typeofwork->lab_price = $request->lab_price;
         $typeofwork->my_price = $request->my_price;
@@ -122,6 +130,11 @@ class TypeofWorkController extends Controller
         ]);
 
         $typeofwork = TypeofWork::findOrFail($id);
+
+        /** Handle image file */
+        $imagePath = $this->uploadImage($request, 'image', $typeofwork->image);
+
+        $typeofwork->image = !empty($imagePath) ? $imagePath : $typeofwork->image;
         $typeofwork->name = $request->name;
         $typeofwork->lab_price = $request->lab_price;
         $typeofwork->my_price = $request->my_price;
@@ -162,6 +175,7 @@ class TypeofWorkController extends Controller
     {
         try {
             $typeofwork = TypeofWork::findOrFail($id);
+            $this->removeImage($typeofwork->image);
             $typeofwork->delete();
             return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
         } catch (\Exception $e) {

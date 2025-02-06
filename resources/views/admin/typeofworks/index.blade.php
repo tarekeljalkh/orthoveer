@@ -31,6 +31,7 @@
                                         <tr>
                                             <th>{{ trans('messages.id') }}</th>
                                             <th>{{ trans('messages.name') }}</th>
+                                            <th>Image</th>
                                             <th>Lab Price</th>
                                             <th>Price with TVA</th>
                                             <th>My Price</th>
@@ -52,6 +53,7 @@
                                             <tr>
                                                 <td>{{ $typeofwork->id }}</td>
                                                 <td>{{ $typeofwork->name }}</td>
+                                                <td><img src="{{ asset($typeofwork->image) }}" width="40px"></td>
                                                 <td>{{ $typeofwork->lab_price }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->price_with_tva }} {{ config('settings.site_currency_icon') }}</td>
                                                 <td>{{ $typeofwork->my_price }} {{ config('settings.site_currency_icon') }}</td>

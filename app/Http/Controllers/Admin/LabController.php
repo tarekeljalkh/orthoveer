@@ -145,6 +145,7 @@ class LabController extends Controller
     {
         try {
             $lab = User::findOrFail($id);
+            $this->removeImage($lab->image);
             $lab->delete();
             return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
         } catch (\Exception $e) {

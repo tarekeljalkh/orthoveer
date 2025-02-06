@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('typeof_works', function (Blueprint $table) {
             $table->id();
+            $table->string('image')->default('uploads/type.png')->nullable();
             $table->string('name');
             $table->double('lab_price')->nullable();
             $table->double('my_price')->nullable();
