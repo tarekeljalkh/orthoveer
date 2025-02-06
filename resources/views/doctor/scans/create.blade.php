@@ -51,7 +51,8 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.first_name') }} <span class="text-danger">*</span></label>
+                                        <label>{{ trans('messages.first_name') }} <span
+                                                class="text-danger">*</span></label>
                                         <input name="patient_first_name" type="text" class="form-control" required="">
                                     </div>
 
@@ -65,12 +66,14 @@
                                 <div class="row">
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label>{{ trans('messages.date_of_birth') }} <span class="text-danger">*</span></label>
+                                        <label>{{ trans('messages.date_of_birth') }} <span
+                                                class="text-danger">*</span></label>
                                         <input name="patient_dob" type="date" class="form-control" required="">
                                     </div>
 
                                     <div class="form-group col-md-5 col-12">
-                                        <label class="form-label">{{ trans('messages.gender') }} <span class="text-danger">*</span></label>
+                                        <label class="form-label">{{ trans('messages.gender') }} <span
+                                                class="text-danger">*</span></label>
                                         <div class="selectgroup w-100">
                                             <label class="selectgroup-item">
                                                 <input type="radio" name="patient_gender" value="male"
@@ -111,7 +114,10 @@
                                         <label>{{ trans('messages.type') }} <span class="text-danger">*</span></label>
                                         <select class="form-control select2" id="typeOfWorkSelect" name="typeofwork_id">
                                             @foreach ($typeofWorks as $typeofWork)
-                                                <option value="{{ $typeofWork->id }}">{{ $typeofWork->name }}</option>
+                                                <option value="{{ $typeofWork->id }}"
+                                                    data-image="{{ asset($typeofWork->image) }}">
+                                                    {{ $typeofWork->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -127,7 +133,8 @@
                                         <label>{{ trans('messages.upload_image_or_pdf') }}</label>
 
                                         <div class="form-group col-12" id="previewContainer"></div> {{-- Preview Container --}}
-                                        <input type="file" name="pdf[]" id="pdfInput" class="form-control" multiple>
+                                        <input type="file" name="pdf[]" id="pdfInput" class="form-control"
+                                            multiple>
                                     </div>
 
 
@@ -218,6 +225,8 @@
         }
 
         $(document).ready(function() {
+
+
             $('input[name="stl_upper"]').change(function(e) {
                 if (this.files && this.files[0]) {
                     const url = URL.createObjectURL(this.files[0]);
@@ -234,7 +243,22 @@
 
 
             // Initialize select2
-            $('.select2').select2();
+            $('#typeOfWorkSelect').select2({
+                templateResult: function(data) {
+                    if (!data.id) return data.text; // Return just the text if no image is available
+
+                    var imageUrl = $(data.element).data(
+                    'image'); // Get the image URL from the data-image attribute
+                    var $result = $('<span><img src="' + imageUrl +
+                        '" style="width: 20px; height: 20px; margin-right: 10px;" />' + data.text +
+                        '</span>');
+
+                    return $result;
+                },
+                templateSelection: function(data) {
+                    return data.text; // Show only the name in the selection box
+                }
+            });
 
             // Disable clear button initially
             $('#clearForm').css({
