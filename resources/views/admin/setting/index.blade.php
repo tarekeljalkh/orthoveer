@@ -23,8 +23,8 @@
                                     aria-controls="home" aria-selected="true">Logo Settings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="home-tab4" data-toggle="tab" href="#appearance-setting" role="tab"
-                                    aria-controls="home" aria-selected="true">Appearance Settings</a>
+                                <a class="nav-link" id="home-tab4" data-toggle="tab" href="#appearance-setting"
+                                    role="tab" aria-controls="home" aria-selected="true">Appearance Settings</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="profile-tab4" data-toggle="tab" href="#pusher-setting"
@@ -33,6 +33,16 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="" data-toggle="tab" href="#mail-setting" role="tab"
                                     aria-controls="contact" aria-selected="false">Mail Settings</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" id="" data-toggle="tab" href="#translations-setting"
+                                    role="tab" aria-controls="contact" aria-selected="false">Translations</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin.backupDatabase') }}" role="tab"
+                                    aria-controls="contact" aria-selected="false">Backup Database</a>
                             </li>
                         </ul>
                     </div>
@@ -49,6 +59,7 @@
 
                             @include('admin.setting.sections.mail-setting')
 
+                            @include('admin.setting.sections.translations-setting')
                         </div>
                     </div>
                 </div>
@@ -56,3 +67,7 @@
         </div>
     </section>
 @endsection
+
+
+
+

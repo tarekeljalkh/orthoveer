@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DiskController;
 use App\Http\Controllers\Admin\DoctorController;
 use App\Http\Controllers\Admin\ExternalLabController;
 use App\Http\Controllers\Admin\LabController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Admin\SecondLabController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TranslationController;
 use App\Http\Controllers\Admin\TypeofWorkController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // all middlewares, prefixes and suffixes are in routeserviceprovider
+
+
 //Route::get('admin/dashboard', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.dashboard');
 
 Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
@@ -50,7 +54,10 @@ Route::put('/pusher-setting', [SettingController::class, 'UpdatePusherSetting'])
 Route::put('/mail-setting', [SettingController::class, 'UpdateMailSetting'])->name('mail-setting.update');
 Route::put('/logo-setting', [SettingController::class, 'UpdateLogoSetting'])->name('logo-setting.update');
 Route::put('/appearance-setting', [SettingController::class, 'UpdateAppearanceSetting'])->name('appearance-setting.update');
-
+// Update translations
+Route::put('/translations-setting', [SettingController::class, 'updateTranslations'])->name('translations-setting.update');
+// Backup Database
+Route::get('/backup-db', [SettingController::class, 'backupDatabase'])->name('backupDatabase');
 
 /** Profile Routes */
 Route::get('profile', [ProfileController::class, 'index'])->name('profile');
