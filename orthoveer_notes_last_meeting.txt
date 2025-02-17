@@ -1,0 +1,14 @@
+Error in smtp - done (for future we must buy smtp server to be able to send emails)
+Backup Database - done (inside admin/ settings)
+Sidebar admin rename in settings - Done (Translations can be edited from admin/settings)
+Remove bag coule from type of works - DONE
+Add image to type of works - done
+And in the doctor - done
+
+
+
+Secondary lab will handle dhl by tag without connecting to direct account dhl
+Invoices
+Add payment gateway
+
+

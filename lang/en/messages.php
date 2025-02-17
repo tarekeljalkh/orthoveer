@@ -115,6 +115,7 @@ return [
     'external_lab' => 'External Lab',
     'external_labs' => 'External Labs',
     'create_new' => 'Create New',
+    'create_new_ticket' => 'Create New Ticket',
     'edit' => 'Edit',
     'delete' => 'Delete',
     'see scans' => 'See Scans',

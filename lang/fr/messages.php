@@ -113,6 +113,7 @@ return [
     'external_lab' => 'Laboratoire Externe',
     'external_labs' => 'Laboratoires Externes',
     'create_new' => 'Créer Un Nouveau',
+    'create_new_ticket' => 'Créer Un Nouveau Billet',
     'edit' => 'Modifier',
     'delete' => 'Supprimer',
     'see scans' => 'Voir Les Analyses',

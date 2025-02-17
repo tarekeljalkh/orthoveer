@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Lab\LabController;
 use App\Http\Controllers\Lab\NotificationController;
-use App\Http\Controllers\Lab\PrintFileController;
 use App\Http\Controllers\Lab\ScanController;
 use App\Http\Controllers\Lab\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +31,6 @@ Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('s
 //Reassign Scan to another Lab
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 
-//print files
-Route::get('/printfiles/create/{id}', [PrintFileController::class, 'create'])->name('printfiles.create');
-Route::get('/printfiles/download/{id}', [PrintFileController::class, 'download'])->name('printfiles.download');
-Route::post('printfiles/attach', [PrintFileController::class, 'attachScans'])->name('printfiles.attach');
-// Resource route excluding 'create' and 'show' because they are either handled by custom routes or not needed
-Route::resource('printfiles', PrintFileController::class)->except(['create']);
 
 Route::resource('scans', ScanController::class);
 /** Download Scan */

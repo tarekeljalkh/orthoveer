@@ -30,8 +30,8 @@
                                 <tr>
                                     <th hidden>ID</th> <!-- Hidden ID Column -->
                                     <th><input type="checkbox" id="select-all"></th>
-                                    <th>{{ trans('messages.received') }}</th>
                                     <th>{{ trans('messages.id') }}</th>
+                                    <th>{{ trans('messages.scan_date') }}</th>
                                     <th>{{ trans('messages.patient') }}</th>
                                     <th>{{ trans('messages.doctor') }}</th>
                                     <th>{{ trans('messages.typeofwork') }}</th>
@@ -45,8 +45,8 @@
                                 <tr>
                                     <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
                                     <td><input type="checkbox" class="select-row" data-id="{{ $scan->id }}"></td>
-                                    <td>received</td>
                                     <td>{{ $scan->id }}</td>
+                                    <td>{{ $scan->created_at->format('d/m/Y h:i A') }}</td>
                                     <td>{{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
                                     <td>{{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
                                     <td>{{ $scan->typeofwork->name }}</td>

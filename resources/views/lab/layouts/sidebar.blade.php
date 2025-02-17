@@ -41,10 +41,6 @@
                     href="{{ route('lab.scans.create') }}"><i class="fas fa-plus"></i>
                     <span>{{ trans('messages.create_scan') }}</span></a></li>
 
-            <li class="{{ request()->routeIs('lab.printfiles.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('lab.printfiles.index') }}"><i class="fas fa-file-upload"></i>
-                    <span>{{ trans('messages.print_files') }}</span></a></li>
-
         </ul>
 
     </aside>

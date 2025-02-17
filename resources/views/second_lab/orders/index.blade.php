@@ -21,7 +21,7 @@
                         <div class="card-header">
                             <h4>{{ trans('messages.dhl_orders') }}</h4>
                             <div class="card-header-action">
-                                <a href="{{ route('second_lab.orders.create') }}" class="btn btn-success">{{ trans('messages.create_new') }} <i
+                                <a href="{{ route('second_lab.orders.create') }}" class="btn btn-success">{{ trans('messages.create_new_ticket') }} <i
                                         class="fas fa-plus"></i></a>
                             </div>
                         </div>
