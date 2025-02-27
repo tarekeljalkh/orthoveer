@@ -19,27 +19,8 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        // Retrieve the 'status' and 'due_date' query parameters from the request, if any
-        $status = $request->query('status');
-        $dueDate = $request->query('due_date');
-
         // Start building the query to get scans for the logged-in doctor
-        $ordersQuery = Scan::with(['patient', 'latestStatus'])->where('doctor_id', Auth::user()->id);
-
-        // If a status is provided in the query parameters, filter scans based on latest status attributes
-        if (!empty($status)) {
-            $ordersQuery->whereHas('latestStatus', function ($query) use ($status) {
-                $query->where('status', $status);
-            });
-        }
-
-        // If a due_date is provided in the query parameters, add a where condition
-        if (!empty($dueDate)) {
-            $ordersQuery->whereDate('due_date', $dueDate);
-        }
-
-        // Execute the query to get the results
-        $orders = $ordersQuery->get();
+        $orders = Scan::with(['patient', 'latestStatus'])->where('doctor_id', Auth::user()->id)->orderBy('created_at', 'asc')->get();
 
         // Return the view with the orders (filtered by status and due_date if applicable)
         return view('doctor.orders.index', compact('orders'));
@@ -159,15 +140,13 @@ class OrderController extends Controller
             ->whereHas('orders', function ($query) {
                 $query->where('status', 'delivered');
             })
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->whereNull('payment_status')
-                      ->orWhere('payment_status', '!=', 'PAID');
+                    ->orWhere('payment_status', '!=', 'PAID');
             }) // Exclude paid scans
             ->get();
 
         // Return the view with the orders
         return view('doctor.orders.delivered', compact('deliveredOrders'));
     }
-
-
 }

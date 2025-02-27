@@ -26,8 +26,7 @@ Route::get('scans/viewer/{id}', [ScanController::class, 'viewer'])->name('scans.
 Route::get('scans/prescription/{id}', [ScanController::class, 'prescription'])->name('scans.prescription');
 //reject Scan
 Route::post('scans/{id}/update-status', [ScanController::class, 'updateStatus'])->name('scans.updateStatus');
-//Complete Scan
-Route::post('scans/{id}/complete', [Scancontroller::class, 'complete'])->name('scans.complete');
+
 //Reassign Scan to another Lab
 Route::post('/scans/{scan}/reassign', [Scancontroller::class, 'reassignScan'])->name('scans.reassign');
 

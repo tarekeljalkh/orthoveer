@@ -89,6 +89,7 @@
 @push('scripts')
     <script>
         new DataTable('#orders', {
+            order: [], // Disables DataTables sorting
             layout: {
                 topStart: {
                     buttons: [

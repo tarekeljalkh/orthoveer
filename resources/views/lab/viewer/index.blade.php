@@ -157,52 +157,6 @@
                     </div>
                     {{-- End Status and Rejection Section --}}
 
-                    {{-- Comple Scan Section --}}
-                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Upload And Complete Scan</h4>
-                            </div>
-                            <div class="card-body">
-                                <!-- Begin Form Content -->
-                                <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('post')
-
-                                    <div class="row">
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_upper') }} <i
-                                                    class="fas fa-arrow-up"></i></label>
-                                            <div id="stl_upper_container">
-                                                <div id="stl_upper_viewer_lab" style="width:150px; height:150px;"></div>
-                                            </div>
-                                            <input type="file" name="stl_upper_lab" class="form-control">
-                                        </div>
-
-                                        <div class="form-group col-md-6 col-12">
-                                            <label>{{ trans('messages.stl_lower') }} <i
-                                                    class="fas fa-arrow-down"></i></label>
-                                            <div id="stl_lower_container">
-                                                <div id="stl_lower_viewer_lab" style="width:150px; height:150px;"></div>
-                                            </div>
-                                            <input type="file" name="stl_lower_lab" class="form-control">
-                                        </div>
-
-                                    </div>
-
-                                    <button type="submit" name="action" value="done" class="btn btn-success">
-                                        Complete
-                                    </button>
-                                </form>
-                                <!-- End Form Content -->
-                            </div>
-                        </div>
-                    @endif
-
-                    {{-- End Complete Scan Section --}}
-
                 </div>
             </div>
 
