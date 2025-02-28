@@ -1,11 +1,11 @@
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('admin.dashboard') }}"><img style="width: 60px" src="{{ asset(config('settings.logo')) }}"
+            <a href="{{ route('admin.dashboard') }}"><img style="width: 160px" src="{{ asset(config('settings.logo')) }}"
                 alt="OV"></a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="{{ route('admin.dashboard') }}"><img style="width: 35px" src="{{ asset(config('settings.logo')) }}"
+            <a href="{{ route('admin.dashboard') }}"><img style="width: 65px" src="{{ asset(config('settings.logo')) }}"
                     alt="OV"></a>
         </div>
         <ul class="sidebar-menu">

@@ -19,6 +19,10 @@
                     href="{{ route('lab.scans.new') }}"><i class="fas fa-flask"></i>
                     <span>{{ trans('messages.new_scans') }}</span></a></li>
 
+                    <li class="{{ request()->routeIs('lab.scans.create') ? 'active' : '' }}"><a class="nav-link"
+                        href="{{ route('lab.scans.create') }}"><i class="fas fa-plus"></i>
+                        <span>{{ trans('messages.create_scan') }}</span></a></li>
+
             <li class="{{ request()->routeIs('lab.scans.rejected') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('lab.scans.rejected') }}"><i class="fas fa-arrow-circle-left"></i>
                     <span>{{ trans('messages.rejected') }}</span></a></li>
@@ -37,9 +41,6 @@
                     href="{{ route('lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.all_scans') }}</span></a></li> --}}
 
-            <li class="{{ request()->routeIs('lab.scans.create') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('lab.scans.create') }}"><i class="fas fa-plus"></i>
-                    <span>{{ trans('messages.create_scan') }}</span></a></li>
 
         </ul>
 
