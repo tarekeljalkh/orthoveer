@@ -429,28 +429,10 @@ class ScanController extends Controller
 
 
 
-    public function complete(Request $request, $id)
+    public function complete($id)
     {
-        $request->validate([
-            'stl_upper_lab' => 'nullable|file',
-            'stl_lower_lab' => 'nullable|file',
-        ]);
-
-        if (!$request->hasFile('stl_upper_lab') && !$request->hasFile('stl_lower_lab')) {
-            // Using Toastr to display an error message
-            toastr()->warning('Please upload at least one STL file (upper or lower).');
-            return redirect()->back();
-        }
-
-        $upperPath = $this->uploadImage($request, 'stl_upper_lab');
-        $lowerPath = $this->uploadImage($request, 'stl_lower_lab');
-
         //find scan id
         $scan = Scan::findOrFail($id);
-
-        $scan->stl_upper_lab = $upperPath;
-        $scan->stl_lower_lab = $lowerPath;
-
         $scan->save();
 
         // Create a new status update for the scan

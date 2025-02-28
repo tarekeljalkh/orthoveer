@@ -183,5 +183,8 @@ return [
     'payment' => 'Paiement',
     'received' => 'Recu',
     'completed_date' => 'Date de Din',
-    'prescription' => 'Ordonnance'
+    'prescription' => 'Ordonnance',
+    'new_cases' => 'Nouveaux Cas',
+    'delivered' => 'Livré',
+    'vat' => 'TVA',
 ];

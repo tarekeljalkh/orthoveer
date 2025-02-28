@@ -21,7 +21,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>{{ trans('messages.current_orders') }}</h4>
+                                <h4>{{ trans('messages.new_cases') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $currentOrders }}
@@ -32,25 +32,6 @@
 
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('doctor.orders.pending') }}"
-                    style="text-decoration:none; color: inherit;">
-
-                    <div class="card card-statistic-1">
-                        <div class="card-icon bg-warning">
-                            <i class="fas fa-hourglass-half"></i>
-                        </div>
-                        <div class="card-wrap">
-                            <div class="card-header">
-                                <h4>{{ trans('messages.pending_orders') }}</h4>
-                            </div>
-                            <div class="card-body">
-                                {{ $pendingOrders }}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <a href="{{ route('doctor.orders.index') }}" style="text-decoration:none; color: inherit;">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-info">
@@ -58,7 +39,7 @@
                         </div>
                         <div class="card-wrap">
                             <div class="card-header">
-                                <h4>{{ trans('messages.total_orders') }}</h4>
+                                <h4>{{ trans('messages.delivered') }}</h4>
                             </div>
                             <div class="card-body">
                                 {{ $totalOrders }}

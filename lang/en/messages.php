@@ -185,6 +185,8 @@ return [
     'payment' => 'Payment',
     'received' => 'Received',
     'completed_date' => 'Completed Date',
-    'prescription' => 'Prescription'
-
+    'prescription' => 'Prescription',
+    'new_cases' => 'New Cases',
+    'delivered' => 'Delivered',
+    'vat' => 'VAT',
 ];

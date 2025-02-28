@@ -28,17 +28,13 @@ class DoctorController extends Controller
             return optional($scan->latestStatus)->status === 'new';
         })->count();
 
-        $pendingOrders = $scans->filter(function ($scan) {
-            return optional($scan->latestStatus)->status === 'pending';
-        })->count();
-
         $rejectedOrders = $scans->filter(function ($scan) {
             return optional($scan->latestStatus)->status === 'rejected';
         })->count();
 
         $totalOrders = $scans->count();
 
-        return view('doctor.dashboard', compact('currentOrders', 'pendingOrders', 'totalOrders', 'rejectedOrders'));
+        return view('doctor.dashboard', compact('currentOrders', 'totalOrders', 'rejectedOrders'));
     }
 
 

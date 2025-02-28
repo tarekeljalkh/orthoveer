@@ -114,6 +114,30 @@
                                     </div>
                                 </div>
 
+
+                                <div class="row">
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.payment') }}</label>
+                                        <select class="form-control" name="payment">
+                                            <option value="france" {{ $doctor->payment === 'france' ? 'selected' : '' }}>{{ trans('France') }}
+                                            </option>
+                                            <option value="netherland" {{ $doctor->payment === 'netherland' ? 'selected' : '' }}>{{ trans('Netherland') }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label>{{ trans('messages.vat') }}</label>
+                                        <select class="form-control" name="vat">
+                                            <option value="yes" {{ $doctor->vat === 'yes' ? 'selected' : '' }}>{{ trans('Yes') }}
+                                            </option>
+                                            <option value="no" {{ $doctor->vat === 'no' ? 'selected' : '' }}>{{ trans('No') }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
                             </div>
                             <div class="card-footer text-right">
                                 <button class="btn btn-primary">{{ trans('messages.update') }}</button>
