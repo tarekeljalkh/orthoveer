@@ -18,6 +18,18 @@
                     href="{{ route('doctor.scans.index') }}"><i class="far fa-file"></i>
                     <span>{{ trans('messages.new_scan') }}</span></a></li>
 
+            <li class="nav-item dropdown {{ request()->routeIs('doctor.treatment-plans.*') ? 'active' : '' }}">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-notes-medical"></i><span>Treatment
+                        Plans</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('doctor.treatment-plans.index') }}">All Treatment Plans</a>
+                    </li>
+                    <li><a class="nav-link" href="{{ route('doctor.treatment-plans.create') }}">New Treatment Plan</a>
+                    </li>
+                </ul>
+            </li>
+
+
             <li class="{{ request()->routeIs('doctor.patients.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('doctor.patients.index') }}"><i class="fas fa-user-injured"></i>
                     <span>{{ trans('messages.patients') }}</span></a></li>

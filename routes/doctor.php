@@ -1,13 +1,14 @@
 <?php
 
-use App\Http\Controllers\Doctor\DoctorController;
-use App\Http\Controllers\Doctor\NotificationController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Doctor\ScanController;
 use App\Http\Controllers\Doctor\OrderController;
+use App\Http\Controllers\Doctor\DoctorController;
 use App\Http\Controllers\Doctor\PatientController;
 use App\Http\Controllers\Doctor\PaymentController;
-use App\Http\Controllers\Doctor\ScanController;
 use App\Http\Controllers\Doctor\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Doctor\NotificationController;
+use App\Http\Controllers\Doctor\TreatmentPlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +49,17 @@ Route::put('profile/password', [ProfileController::class, 'updatePassword'])->na
 /** Payment Routes */
 Route::get('/scans/{scan}/pay', [PaymentController::class, 'pay'])->name('scans.pay');
 Route::post('/payment-callback', [PaymentController::class, 'paymentCallback'])->name('payment.callback');
+
+
+Route::get('treatment-plans', [TreatmentPlanController::class, 'index'])->name('treatment-plans.index');
+Route::get('treatment-plans/create', [TreatmentPlanController::class, 'create'])->name('treatment-plans.create');
+Route::post('treatment-plans', [TreatmentPlanController::class, 'store'])->name('treatment-plans.store');
+
+
+Route::get('treatment-plans/{id}/review', [TreatmentPlanController::class, 'review'])->name('doctor.treatment-plans.review');
+Route::post('treatment-plans/{id}/approve', [TreatmentPlanController::class, 'approve'])->name('doctor.treatment-plans.approve');
+Route::post('treatment-plans/{id}/reject', [TreatmentPlanController::class, 'reject'])->name('doctor.treatment-plans.reject');
+Route::prefix('doctor/treatment-plans')->name('treatment-plans.')->group(function () {
+    Route::patch('{id}/accept', [TreatmentPlanController::class, 'accept'])->name('accept');
+    Route::patch('{id}/refuse', [TreatmentPlanController::class, 'refuse'])->name('refuse');
+});

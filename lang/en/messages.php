@@ -189,4 +189,11 @@ return [
     'new_cases' => 'New Cases',
     'delivered' => 'Delivered',
     'vat' => 'VAT',
+    'treatment_plans' => 'Treatment Plans',
+    'new_treatment_plan' => 'New Treatment Plan',
+    'stl_file_link' => 'STL File Link',
+    'upload_files' => 'Upload Files',
+    'notes' => 'Notes',
+    'approve' => 'Approve',
+    'reject' => 'Reject',
 ];

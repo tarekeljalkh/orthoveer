@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SecondLab\TreatmentPlanController;
 use App\Http\Controllers\SecondLab\SecondLabController;
 use App\Http\Controllers\SecondLab\NotificationController;
 use App\Http\Controllers\SecondLab\OrderController;
@@ -59,3 +60,9 @@ Route::resource('notifications', NotificationController::class);
 Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 Route::put('profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+
+
+Route::get('/treatment-plans', [TreatmentPlanController::class, 'index'])->name('treatment-plans.index');
+Route::get('/treatment-plans/{id}', [TreatmentPlanController::class, 'show'])->name('treatment-plans.show');
+Route::post('/treatment-plans/{id}/submit-link', [TreatmentPlanController::class, 'submitLink'])->name('treatment-plans.submit-link');
+

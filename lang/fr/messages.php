@@ -187,4 +187,11 @@ return [
     'new_cases' => 'Nouveaux Cas',
     'delivered' => 'Livré',
     'vat' => 'TVA',
+    'treatment_plans' => 'Plans de traitement',
+    'new_treatment_plan' => 'Nouveau plan de traitement',
+    'stl_file_link' => 'Lien du fichier STL',
+    'upload_files' => 'Télécharger les fichiers',
+    'notes' => 'Remarques',
+    'approve' => 'Approuver',
+    'reject' => 'Rejeter',
 ];
