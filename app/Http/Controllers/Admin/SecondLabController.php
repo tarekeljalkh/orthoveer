@@ -41,7 +41,7 @@ class SecondLabController extends Controller
             'first_name' => ['string', 'max:200'],
             'last_name' => ['string', 'max:200'],
             'email' => ['required', 'email', 'unique:users,email,' . Auth::user()->id],
-            'mobile' => ['required', 'numeric'],
+            'mobile' => ['required', 'numeric', 'unique:users,mobile'],
             'password' => ['required', 'min:8', 'confirmed'],
         ]);
 
@@ -114,8 +114,8 @@ class SecondLabController extends Controller
             'image' => ['nullable', 'image', 'mimes:png,jpg'],
             'first_name' => ['string', 'max:200'],
             'last_name' => ['string', 'max:200'],
-            'email' => ['required', 'email', 'unique:users,email,'.$second_lab->id],
-            'mobile' => ['required', 'numeric'],
+            'email' => ['required', 'email', 'unique:users,email,' . $second_lab->id],
+            'mobile' => ['required', 'numeric', 'unique:users,mobile,' . $second_lab->id],
         ]);
 
         /** Handle image file */
