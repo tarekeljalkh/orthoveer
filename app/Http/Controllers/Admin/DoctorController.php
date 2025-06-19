@@ -111,7 +111,7 @@ class DoctorController extends Controller
             'landline' => ['nullable', 'numeric'],
             'address' => ['required', 'string', 'max:500'],
             'postcode' => ['nullable', 'string', 'max:200'],
-            'discount' => 'nullable|numeric|min:0|max:100',
+            'discount' => 'numeric|min:0|max:100',
         ]);
 
         /** Handle image file */
