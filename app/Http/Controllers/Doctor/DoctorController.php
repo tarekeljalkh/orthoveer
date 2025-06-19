@@ -20,8 +20,8 @@ class DoctorController extends Controller
 
         // Retrieve all scans for the doctor along with their related last status
         $scans = Scan::with(['latestStatus'])
-                     ->where('doctor_id', $doctorId)
-                     ->get();
+            ->where('doctor_id', $doctorId)
+            ->get();
 
         // Filter scans based on the last status
         $currentOrders = $scans->filter(function ($scan) {
@@ -32,9 +32,13 @@ class DoctorController extends Controller
             return optional($scan->latestStatus)->status === 'rejected';
         })->count();
 
-        $totalOrders = $scans->count();
+        $deliveredOrders = $scans->filter(function ($scan) {
+            return optional($scan->latestStatus)->status === 'delivered';
+        })->count();
 
-        return view('doctor.dashboard', compact('currentOrders', 'totalOrders', 'rejectedOrders'));
+
+        $totalOrders = $scans->count();
+        return view('doctor.dashboard', compact('currentOrders', 'deliveredOrders', 'rejectedOrders'));
     }
 
 

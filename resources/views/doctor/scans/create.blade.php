@@ -164,7 +164,7 @@
                                             <div id="stl_upper_container">
                                                 <div id="stl_upper_viewer" style="width:300px; height:300px;"></div>
                                             </div>
-                                            <input type="file" name="stl_upper" class="form-control">
+                                            <input type="file" name="stl_upper" accept=".stl" class="form-control">
                                         </div>
 
                                         <div class="form-group col-md-6 col-12">
@@ -173,7 +173,7 @@
                                             <div id="stl_lower_container">
                                                 <div id="stl_lower_viewer" style="width:300px; height:300px;"></div>
                                             </div>
-                                            <input type="file" name="stl_lower" class="form-control">
+                                            <input type="file" name="stl_lower" accept=".stl" class="form-control">
                                         </div>
 
                                     </div>

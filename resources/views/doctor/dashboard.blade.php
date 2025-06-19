@@ -32,7 +32,7 @@
 
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                <a href="{{ route('doctor.orders.index') }}" style="text-decoration:none; color: inherit;">
+                <a href="{{ route('doctor.orders.delivered') }}" style="text-decoration:none; color: inherit;">
                     <div class="card card-statistic-1">
                         <div class="card-icon bg-info">
                             <i class="fas fa-briefcase"></i>
@@ -42,7 +42,7 @@
                                 <h4>{{ trans('messages.delivered') }}</h4>
                             </div>
                             <div class="card-body">
-                                {{ $totalOrders }}
+                                {{ $deliveredOrders }}
                             </div>
                         </div>
                     </div>

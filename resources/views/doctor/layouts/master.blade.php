@@ -86,6 +86,22 @@
 
             <!-- Main Content -->
             <div class="main-content">
+
+                @if ($errors->any())
+                    <div class="container mt-3">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
+
                 @yield('content')
             </div>
 
@@ -134,7 +150,7 @@
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
 
     <!-- Toastr Error  -->
-    <script>
+    {{-- <script>
         toastr.options.closeButton = true;
 
         @if ($errors->any())
@@ -142,7 +158,7 @@
                 toastr.error("{{ $error }}");
             @endforeach
         @endif
-    </script>
+    </script> --}}
 
     @stack('scripts')
 </body>
