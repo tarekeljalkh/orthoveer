@@ -23,15 +23,19 @@
                         </div>
                         <div class="card-body">
 
-                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print Prescriptions</button>
-                            <button id="download-scans" class="btn btn-danger"><i class="fa fa-download"></i> Download Scans</button>
+                            <button id="print-prescriptions" class="btn btn-primary"><i class="fa fa-file-pdf"></i> Print
+                                Prescriptions</button>
+                            <button id="download-scans" class="btn btn-danger"><i class="fa fa-download"></i> Download
+                                Scans</button>
 
                             <table id="scans" class="display nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th hidden>ID</th> <!-- Hidden ID Column -->
                                         <th><input type="checkbox" id="select-all"></th>
-                                            <th>{{ trans('messages.doctor') }}</th>
+                                        <th>{{ trans('messages.doctor') }}</th>
+                                        <th>Patient Name</th>
+                                        <th>ID Number</th>
                                         <th>{{ trans('messages.due_date') }}</th>
                                         <th>{{ trans('messages.note') }}</th>
                                         <th>{{ trans('messages.status') }}</th>
@@ -42,8 +46,15 @@
                                     @foreach ($filteredScans as $scan)
                                         <tr>
                                             <td style="display:none;">{{ $scan->id }}</td> <!-- Hidden ID Cell -->
-                                            <td><input type="checkbox" class="select-row" data-id="{{ $scan->id }}"></td>
-                                                    <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                            <td><input type="checkbox" class="select-row" data-id="{{ $scan->id }}">
+                                            </td>
+                                            <td>Dr. {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
+                                            <td>
+                                                {{ $scan->patient->first_name }} {{ $scan->patient->last_name }}
+                                            </td>
+                                            <td>
+                                                {{ $scan->id }}
+                                            </td>
                                             <td>{{ $scan->due_date->format('d/m/Y') }}</td>
                                             <td>{{ optional($scan->latestStatus)->note }}</td>
                                             <td>
@@ -94,127 +105,115 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function () {
-        var table = $('#scans').DataTable({
-            order: [[5, 'asc'], [4, 'desc']], // Primary sort by status, secondary sort by due date
-            columnDefs: [
-                {
-                    targets: 5, // Index of the status column
-                    render: function (data, type, row, meta) {
-                        if (type === 'sort') {
-                            switch (data.toLowerCase()) {
-                                case 'new':
-                                    return 0;
-                                case 'pending':
-                                    return 1;
-                                case 'resubmitted':
-                                    return 2;
-                                case 'completed':
-                                    return 3;
-                                case 'downloaded':
-                                    return 4;
-                                case 'rejected':
-                                    return 5;
-                                default:
-                                    return 6;
+    <script>
+        $(document).ready(function() {
+            var table = $('#scans').DataTable({
+                order: [
+                    [5, 'asc'],
+                    [4, 'desc']
+                ], // Primary sort by status, secondary sort by due date
+                columnDefs: [{
+                        targets: 5, // Index of the status column
+                        render: function(data, type, row, meta) {
+                            if (type === 'sort') {
+                                switch (data.toLowerCase()) {
+                                    case 'new':
+                                        return 0;
+                                    case 'pending':
+                                        return 1;
+                                    case 'resubmitted':
+                                        return 2;
+                                    case 'completed':
+                                        return 3;
+                                    case 'downloaded':
+                                        return 4;
+                                    case 'rejected':
+                                        return 5;
+                                    default:
+                                        return 6;
+                                }
                             }
+                            return data;
                         }
-                        return data;
-                    }
-                },
-                {
-                    targets: 4, // Index of the due date column
-                    render: function (data, type, row) {
-                        if (type === 'sort') {
-                            // Parse the date in DD/MM/YYYY format to YYYYMMDD for correct sorting
-                            var dateParts = data.split('/');
-                            return dateParts[2] + dateParts[1] + dateParts[0];
+                    },
+                    {
+                        targets: 4, // Index of the due date column
+                        render: function(data, type, row) {
+                            if (type === 'sort') {
+                                // Parse the date in DD/MM/YYYY format to YYYYMMDD for correct sorting
+                                var dateParts = data.split('/');
+                                return dateParts[2] + dateParts[1] + dateParts[0];
+                            }
+                            return data;
                         }
-                        return data;
                     }
-                }
-            ],
-            dom: 'Bfrtip', // Define the elements in the control layout
-            buttons: [
-                'excel',
-                'pdf',
-                'print'
-            ]
-        });
-
-        function toggleActionButtons() {
-            var count = $('.select-row:checked').length;
-            var anyChecked = count > 0;
-            $('#print-prescriptions').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
-            $('#download-scans').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
-
-            if (anyChecked) {
-                $('#print-prescriptions').text('Print Prescriptions (' + count + ')');
-                $('#download-scans').text('Download Scans (' + count + ')');
-            } else {
-                $('#print-prescriptions').text('Print Prescriptions');
-                $('#download-scans').text('Download Scans');
-            }
-        }
-
-        // Handle select all checkbox
-        $('#select-all').on('click', function() {
-            var rows = table.rows({ 'search': 'applied' }).nodes();
-            $('input[type="checkbox"]', rows).prop('checked', this.checked);
-            toggleActionButtons();
-        });
-
-        // Handle individual row checkboxes
-        $('#scans tbody').on('change', 'input[type="checkbox"]', function() {
-            if (!this.checked) {
-                var el = $('#select-all').get(0);
-                if (el && el.checked && ('indeterminate' in el)) {
-                    el.indeterminate = true;
-                }
-            }
-            toggleActionButtons();
-        });
-
-        // Initial state of action buttons
-        toggleActionButtons();
-
-        // Print Prescriptions
-        $('#print-prescriptions').on('click', function() {
-            var selectedIds = [];
-
-            // Collect selected IDs
-            $('.select-row:checked').each(function () {
-                selectedIds.push($(this).data('id'));
+                ],
+                dom: 'Bfrtip', // Define the elements in the control layout
+                buttons: [
+                    'excel',
+                    'pdf',
+                    'print'
+                ]
             });
 
-            if (selectedIds.length === 1) {
-                var scanId = selectedIds[0];
-                var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id', scanId);
+            function toggleActionButtons() {
+                var count = $('.select-row:checked').length;
+                var anyChecked = count > 0;
+                $('#print-prescriptions').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
+                $('#download-scans').prop('disabled', !anyChecked).toggleClass('no-click', !anyChecked);
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    xhrFields: { responseType: 'blob' },
-                    success: function (data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'prescription-' + scanId + '.pdf';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
+                if (anyChecked) {
+                    $('#print-prescriptions').text('Print Prescriptions (' + count + ')');
+                    $('#download-scans').text('Download Scans (' + count + ')');
+                } else {
+                    $('#print-prescriptions').text('Print Prescriptions');
+                    $('#download-scans').text('Download Scans');
+                }
+            }
+
+            // Handle select all checkbox
+            $('#select-all').on('click', function() {
+                var rows = table.rows({
+                    'search': 'applied'
+                }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+                toggleActionButtons();
+            });
+
+            // Handle individual row checkboxes
+            $('#scans tbody').on('change', 'input[type="checkbox"]', function() {
+                if (!this.checked) {
+                    var el = $('#select-all').get(0);
+                    if (el && el.checked && ('indeterminate' in el)) {
+                        el.indeterminate = true;
                     }
+                }
+                toggleActionButtons();
+            });
+
+            // Initial state of action buttons
+            toggleActionButtons();
+
+            // Print Prescriptions
+            $('#print-prescriptions').on('click', function() {
+                var selectedIds = [];
+
+                // Collect selected IDs
+                $('.select-row:checked').each(function() {
+                    selectedIds.push($(this).data('id'));
                 });
-            } else if (selectedIds.length > 1) {
-                selectedIds.forEach(function (scanId) {
+
+                if (selectedIds.length === 1) {
+                    var scanId = selectedIds[0];
                     var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id', scanId);
 
                     $.ajax({
                         url: url,
                         method: 'GET',
-                        xhrFields: { responseType: 'blob' },
-                        success: function (data) {
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        success: function(data) {
                             var a = document.createElement('a');
                             var url = window.URL.createObjectURL(data);
                             a.href = url;
@@ -224,70 +223,98 @@
                             window.URL.revokeObjectURL(url);
                         }
                     });
-                });
-            }
-        });
+                } else if (selectedIds.length > 1) {
+                    selectedIds.forEach(function(scanId) {
+                        var url = "{{ route('second_lab.scans.printScan', ':id') }}".replace(':id',
+                            scanId);
 
-        // Download Scans
-        $('#download-scans').on('click', function() {
-            var selectedIds = [];
-
-            // Collect selected IDs
-            $('.select-row:checked').each(function () {
-                selectedIds.push($(this).data('id'));
+                        $.ajax({
+                            url: url,
+                            method: 'GET',
+                            xhrFields: {
+                                responseType: 'blob'
+                            },
+                            success: function(data) {
+                                var a = document.createElement('a');
+                                var url = window.URL.createObjectURL(data);
+                                a.href = url;
+                                a.download = 'prescription-' + scanId + '.pdf';
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(url);
+                            }
+                        });
+                    });
+                }
             });
 
-            if (selectedIds.length === 1) {
-                var scanId = selectedIds[0];
-                var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id', scanId);
+            // Download Scans
+            $('#download-scans').on('click', function() {
+                var selectedIds = [];
 
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    xhrFields: { responseType: 'blob' },
-                    success: function (data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'stl-files-' + scanId + '.zip';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-
-                        // Refresh the page after download
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', status, error);
-                    }
+                // Collect selected IDs
+                $('.select-row:checked').each(function() {
+                    selectedIds.push($(this).data('id'));
                 });
-            } else if (selectedIds.length > 1) {
-                var url = "{{ route('second_lab.scans.printMultiple') }}";
 
-                $.ajax({
-                    url: url,
-                    method: 'POST',
-                    data: JSON.stringify({ ids: selectedIds, _token: '{{ csrf_token() }}' }),
-                    contentType: 'application/json',
-                    xhrFields: { responseType: 'blob' },
-                    success: function (data) {
-                        var a = document.createElement('a');
-                        var url = window.URL.createObjectURL(data);
-                        a.href = url;
-                        a.download = 'multiple-scans.zip';
-                        document.body.appendChild(a);
-                        a.click();
-                        window.URL.revokeObjectURL(url);
+                if (selectedIds.length === 1) {
+                    var scanId = selectedIds[0];
+                    var url = "{{ route('second_lab.scans.downloadStl', ':id') }}".replace(':id', scanId);
 
-                        // Refresh the page after download
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', status, error);
-                    }
-                });
-            }
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'stl-files-' + scanId + '.zip';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+
+                            // Refresh the page after download
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', status, error);
+                        }
+                    });
+                } else if (selectedIds.length > 1) {
+                    var url = "{{ route('second_lab.scans.printMultiple') }}";
+
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: JSON.stringify({
+                            ids: selectedIds,
+                            _token: '{{ csrf_token() }}'
+                        }),
+                        contentType: 'application/json',
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        success: function(data) {
+                            var a = document.createElement('a');
+                            var url = window.URL.createObjectURL(data);
+                            a.href = url;
+                            a.download = 'multiple-scans.zip';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+
+                            // Refresh the page after download
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', status, error);
+                        }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush
