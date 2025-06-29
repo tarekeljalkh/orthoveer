@@ -23,9 +23,6 @@
                     href="{{ route('second_lab.scans.index') }}"><i class="fas fa-briefcase"></i>
                     <span>{{ trans('messages.all_scans') }}</span></a></li>
 
-            <li class="{{ request()->routeIs('second_lab.printfiles.index') ? 'active' : '' }}"><a class="nav-link"
-                    href="{{ route('second_lab.printfiles.index') }}"><i class="fas fa-file-upload"></i>
-                    <span>{{ trans('messages.print_files') }}</span></a></li>
 
             <li class="{{ request()->routeIs('second_lab.treatment-plans.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('second_lab.treatment-plans.index') }}">
