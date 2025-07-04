@@ -13,7 +13,7 @@
             font-size: 9px;
         }
         .section-header, .invoice-title, .general-info, .notes, .additional-scans {
-            margin-bottom: 10px;
+            margin-bottom: 50px;
         }
         .table th, .table td {
             padding: 5px;
@@ -46,7 +46,8 @@
             <div class="main-content">
                 <section class="section">
                     <div class="section-header">
-                        <h1>Order ID #{{ $scan->id }}</h1>
+                        <center><img src="{{ asset('assets/logo.png') }}" width="150px"></center>
+                        <center><h2>Order ID #{{ $scan->id }}</h2></center>
                     </div>
 
                     <div class="section-body">
@@ -55,34 +56,34 @@
                                 <div class="row">
                                     <div class="col-lg-8">
                                         <div class="general-info">
-                                            <h5>General Info</h5>
+                                            <h3>General Info</h3>
                                             <table class="table">
                                                 <tr>
-                                                    <td><strong>Patient:</strong> {{ $scan->patient->last_name }}, {{ $scan->patient->first_name }}</td>
-                                                    <td><strong>Chart #:</strong> --</td>
+                                                    <td><h5><strong>Patient:</strong> {{ $scan->patient->last_name }}, {{ $scan->patient->first_name }} </h5></td>
+                                                    <td><h5><strong>Chart #:</strong> -- </h5></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Doctor:</strong> {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }}</td>
-                                                    <td><strong>Procedure:</strong> {{ $scan->typeofwork->name }}</td>
+                                                    <td><h5><strong>Doctor:</strong> {{ $scan->doctor->last_name }}, {{ $scan->doctor->first_name }} </h5></td>
+                                                    <td><h5><strong>Procedure:</strong> {{ $scan->typeofwork->name }} </h5></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Practice:</strong> Orthodontie Exclusive</td>
-                                                    <td><strong>Type:</strong> --</td>
+                                                    <td><h5><strong>Practice:</strong> Orthodontie Exclusive </h5></td>
+                                                    <td><h5><strong>Type:</strong> -- </h5></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Ship to Address:</strong> {{ $scan->doctor->address }}</td>
-                                                    <td><strong>Status:</strong> {{ $scan->latestStatus->status }}</td>
+                                                    <td><h5><strong>Ship to Address:</strong> {{ $scan->doctor->address }} </h5></td>
+                                                    <td><h5><strong>Status:</strong> {{ $scan->latestStatus->status }} </h5></td>
                                                 </tr>
                                             </table>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="notes">
-                                            <h5>Notes</h5>
+                                            <h3>Notes</h3>
                                             @foreach ($scan->status as $status)
-                                                <p>{{ $status->updatedBy->last_name }}, {{ $status->updatedBy->first_name }}<br>
+                                                <h5>{{ $status->updatedBy->last_name }}, {{ $status->updatedBy->first_name }}<br>
                                                 {{ \Carbon\Carbon::parse($status->created_at)->format('d/m/Y, H:i') }}<br>
-                                                {{ $status->note }}</p>
+                                                {{ $status->note }}</h5>
                                             @endforeach
                                         </div>
                                     </div>
