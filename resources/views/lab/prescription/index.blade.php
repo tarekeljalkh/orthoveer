@@ -181,29 +181,29 @@
                     {{-- End Status and Rejection Section --}}
 
 
-                                        {{-- Comple Scan Section --}}
-                                        @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h4>Validate Order</h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <!-- Begin Form Content -->
-                                                <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('post')
+                    {{-- Comple Scan Section --}}
+                    @if ($lastStatus === 'new' || $lastStatus === 'pending' || $lastStatus === 'resubmitted' || $lastStatus === 'downloaded')
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Validate Order</h4>
+                            </div>
+                            <div class="card-body">
+                                <!-- Begin Form Content -->
+                                <form action="{{ route('lab.scans.complete', $scan->id) }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('post')
 
-                                                    <button type="submit" name="action" value="done" class="btn btn-primary">
-                                                        Validate
-                                                    </button>
-                                                </form>
-                                                <!-- End Form Content -->
-                                            </div>
-                                        </div>
-                                    @endif
+                                    <button type="submit" name="action" value="done" class="btn btn-primary">
+                                        Validate
+                                    </button>
+                                </form>
+                                <!-- End Form Content -->
+                            </div>
+                        </div>
+                    @endif
 
-                                    {{-- End Complete Scan Section --}}
+                    {{-- End Complete Scan Section --}}
 
 
                 </div>

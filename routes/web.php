@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/admin/export-db', [DiskController::class, 'exportDatabase'])->name('admin.exportDatabase');
+
 Route::get('/create-storage-link', function () {
     Artisan::call('storage:link');
     return 'The storage link has been created!';
