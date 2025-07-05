@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\DHLController;
-use App\Http\Controllers\LocalizationController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DHLController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\DiskController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LocalizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Route::get('/admin/export-db', [DiskController::class, 'exportDatabase'])->name('admin.exportDatabase');
+Route::get('/export-db', [DiskController::class, 'exportDatabase'])->name('exportDatabase');
 
 Route::get('/create-storage-link', function () {
     Artisan::call('storage:link');
