@@ -194,4 +194,50 @@ return [
     'notes' => 'Remarques',
     'approve' => 'Approuver',
     'reject' => 'Rejeter',
+    // Invoice-related translations
+    'invoice' => 'Facture',
+    'invoices' => 'Factures',
+    'create_invoice' => 'Créer une facture',
+    'edit_invoice' => 'Modifier la facture',
+    'view_invoice' => 'Voir la facture',
+    'invoice_number' => 'Numéro de facture',
+    'invoice_details' => 'Détails de la facture',
+    'invoice_date' => 'Date de la facture',
+    'due_date' => 'Date d\'échéance',
+    'total_amount' => 'Montant total',
+    'status' => 'Statut',
+    'paid' => 'Payée',
+    'unpaid' => 'Impayée',
+    'payment_method' => 'Méthode de paiement',
+    'notes' => 'Remarques',
+    'upload_invoice_pdf' => 'Téléverser le PDF de la facture',
+    'invoice_pdf' => 'Facture PDF',
+    'view_pdf' => 'Voir le PDF',
+    'view_existing_pdf' => 'Voir le PDF existant',
+
+    // User & patient
+    'patient_information' => 'Informations sur le patient',
+    'select_patient' => 'Sélectionner un patient',
+    'patient' => 'Patient',
+    'created_by_user' => 'Créée par',
+    'user' => 'Utilisateur',
+
+    // Scans
+    'attach_scans' => 'Joindre des scans',
+    'attached_scans' => 'Scans joints',
+    'view_file' => 'Voir le fichier',
+
+    // General UI
+    'dashboard' => 'Tableau de bord',
+    'choose' => 'Choisir',
+    'update' => 'Mettre à jour',
+    'create_new' => 'Créer',
+    'edit' => 'Modifier',
+    'delete' => 'Supprimer',
+    'view' => 'Voir',
+    'action' => 'Action',
+    'id' => 'ID',
+    'confirm_delete' => 'Êtes-vous sûr de vouloir supprimer cette facture ?',
+    'download_pdf' => 'Télécharger le PDF',
+
 ];

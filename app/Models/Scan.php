@@ -106,4 +106,10 @@ class Scan extends Model
 
         return $this->typeofwork ? $this->typeofwork->lab_price : null;
     }
+
+    // Scans may belong to many invoices
+    public function invoices()
+    {
+        return $this->belongsToMany(Invoice::class, 'invoice_scan');
+    }
 }

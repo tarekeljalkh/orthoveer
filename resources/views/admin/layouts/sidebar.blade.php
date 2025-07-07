@@ -2,7 +2,7 @@
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
             <a href="{{ route('admin.dashboard') }}"><img style="width: 60px" src="{{ asset(config('settings.logo')) }}"
-                alt="OV"></a>
+                    alt="OV"></a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('admin.dashboard') }}"><img style="width: 65px" src="{{ asset(config('settings.logo')) }}"
@@ -46,6 +46,13 @@
                     href="{{ route('admin.type-of-works.index') }}"><i class="fas fa-vials"></i>
                     <span>{{ trans('messages.type_of_works') }}</span></a></li>
 
+
+            <li class="{{ request()->routeIs('admin.invoices.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.invoices.index') }}">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>{{ trans('messages.invoices') }}</span>
+                </a>
+            </li>
 
             <li class="{{ request()->routeIs('admin.setting.index') ? 'active' : '' }}"><a class="nav-link"
                     href="{{ route('admin.setting.index') }}"><i class="fas fa-cog"></i>

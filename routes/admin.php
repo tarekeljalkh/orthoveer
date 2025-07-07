@@ -9,8 +9,8 @@ use App\Http\Controllers\Admin\SecondLabController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\TranslationController;
 use App\Http\Controllers\Admin\TypeofWorkController;
+use App\Http\Controllers\Admin\InvoiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +46,10 @@ Route::resource('external_labs', ExternalLabController::class);
 
 //TypeofWorks Routes
 Route::resource('type-of-works', TypeofWorkController::class);
+
+// Invoice Routes
+Route::get('admin/invoices/{invoice}/download', [InvoiceController::class, 'downloadPdf'])->name('invoices.download');
+Route::resource('invoices', InvoiceController::class);
 
 /** Setting Routes */
 Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');

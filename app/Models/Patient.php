@@ -22,4 +22,5 @@ class Patient extends Model
     {
         return $this->hasOne(Scan::class)->latest();
     }
+
 }
