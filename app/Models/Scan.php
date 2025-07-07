@@ -94,19 +94,22 @@ class Scan extends Model
     }
 
 
-    public function getEffectivePriceAttribute()
-    {
-        $doctorPrice = DoctorWorkPrice::where('doctor_id', $this->doctor_id)
-            ->where('type_of_work_id', $this->type_id)
-            ->first();
 
-        if ($doctorPrice) {
-            return $doctorPrice->price;
-        }
+public function getEffectivePriceAttribute()
+{
+    $doctorId = $this->doctor_id;
 
-        return $this->typeofwork ? $this->typeofwork->lab_price : null;
+    // Check if the scan has a doctor
+    if (!$doctorId || !$this->type_id) {
+        return 0;
     }
 
+    $doctorPrice = \App\Models\DoctorWorkPrice::where('doctor_id', $doctorId)
+        ->where('type_of_work_id', $this->type_id)
+        ->value('price');
+
+    return $doctorPrice ?? ($this->typeOfWork->my_price ?? 0);
+}
     // Scans may belong to many invoices
     public function invoices()
     {

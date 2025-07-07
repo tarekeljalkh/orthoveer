@@ -48,6 +48,8 @@ Route::resource('external_labs', ExternalLabController::class);
 Route::resource('type-of-works', TypeofWorkController::class);
 
 // Invoice Routes
+Route::get('admin/invoices/calculate-total', [InvoiceController::class, 'calculateTotal'])
+    ->name('invoices.calculateTotal');
 Route::get('admin/invoices/{invoice}/download', [InvoiceController::class, 'downloadPdf'])->name('invoices.download');
 Route::resource('invoices', InvoiceController::class);
 

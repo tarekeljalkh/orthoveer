@@ -71,6 +71,8 @@
                                                         class="btn btn-success">
                                                         {{ trans('messages.download_pdf') }}
                                                     </a>
+                                                    <a href="{{ route('admin.invoices.destroy', $invoice->id) }}"
+                                                        class="btn btn-danger delete-item">{{ trans('messages.delete') }}</a>
 
                                                 </td>
                                             </tr>
@@ -98,7 +100,6 @@
                     ]
                 }
             },
-            select: true
         });
     </script>
 @endpush

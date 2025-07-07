@@ -114,7 +114,7 @@ class LabController extends Controller
             'image' => ['nullable', 'image', 'mimes:png,jpg'],
             'first_name' => ['string', 'max:200'],
             'last_name' => ['string', 'max:200'],
-            'email' => ['required', 'email', 'unique:users,email,'.$lab->id],
+            'email' => ['required', 'email', 'unique:users,email,' . $lab->id],
             'mobile' => ['required', 'numeric'],
         ]);
 
@@ -147,9 +147,13 @@ class LabController extends Controller
             $lab = User::findOrFail($id);
             $this->removeImage($lab->image);
             $lab->delete();
+
+            toastr()->success('Deleted Successfully');
             return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
         } catch (\Exception $e) {
             //return response(['status' => 'error', 'message' =>  $e->getMessage()]);
+
+            toastr()->success('Something went wrong');
             return response(['status' => 'error', 'message' => 'something went wrong!']);
         }
     }

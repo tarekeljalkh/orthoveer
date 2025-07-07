@@ -8,6 +8,8 @@ use App\Models\Invoice;
 use PDF;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DoctorWorkPrice;
+use App\Models\TypeOfWork;
 
 class InvoiceController extends Controller
 {
@@ -16,7 +18,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::with(['user'])->get();
+        $invoices = Invoice::with(['user', 'scans.typeOfWork'])->latest()->get();
         return view('admin.invoices.index', compact('invoices'));
     }
 
@@ -43,32 +45,47 @@ class InvoiceController extends Controller
             'doctor_id' => ['required', 'exists:users,id'],
             'scans' => ['nullable', 'array'],
             'scans.*' => ['exists:scans,id'],
-            'total_amount' => ['required', 'numeric'],
             'status' => ['required', 'in:unpaid,paid,cancelled'],
             'invoice_date' => ['nullable', 'date'],
             'due_date' => ['nullable', 'date'],
-            'payment_method' => ['nullable', 'string', 'max:255'],
+            'payment_method' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],
         ]);
 
-        // Create invoice (invoice_number auto-generated in model)
-        $invoice = Invoice::create($request->only([
-            'user_id',
-            'doctor_id',
-            'total_amount',
-            'status',
-            'invoice_date',
-            'due_date',
-            'payment_method',
-            'notes'
-        ]));
+        $totalAmount = 0;
 
-        // Attach scans to invoice (pivot)
+        if ($request->filled('scans')) {
+            $scans = Scan::with('typeOfWork')->whereIn('id', $request->scans)->get();
+
+            foreach ($scans as $scan) {
+                $defaultPrice = $scan->typeOfWork->my_price ?? 0;
+
+                $doctorPrice = DoctorWorkPrice::where('doctor_id', $request->doctor_id)
+                    ->where('type_of_work_id', $scan->type_id)
+                    ->value('price');
+
+                $price = $doctorPrice ?? $defaultPrice;
+                $totalAmount += $price;
+            }
+        }
+
+        $invoice = Invoice::create([
+            'user_id' => $request->user_id,
+            'doctor_id' => $request->doctor_id,
+            'status' => $request->status,
+            'invoice_date' => $request->invoice_date,
+            'due_date' => $request->due_date,
+            'payment_method' => $request->payment_method,
+            'notes' => $request->notes,
+            'total_amount' => $totalAmount, // ✅ important
+        ]);
+
         $invoice->scans()->attach($request->scans);
 
         toastr()->success('Invoice Created Successfully');
         return redirect()->route('admin.invoices.index');
     }
+
 
     /**
      * Display the specified invoice.
@@ -107,7 +124,6 @@ class InvoiceController extends Controller
             'doctor_id' => ['required', 'exists:users,id'],
             'scans' => ['required', 'array'],
             'scans.*' => ['exists:scans,id'],
-            'total_amount' => ['required', 'numeric'],
             'status' => ['required', 'in:unpaid,paid,cancelled'],
             'invoice_date' => ['nullable', 'date'],
             'due_date' => ['nullable', 'date'],
@@ -115,18 +131,37 @@ class InvoiceController extends Controller
             'notes' => ['nullable', 'string'],
         ]);
 
-        $invoice->update($request->only([
-            'user_id',
-            'doctor_id',
-            'total_amount',
-            'status',
-            'invoice_date',
-            'due_date',
-            'payment_method',
-            'notes'
-        ]));
+        // Recalculate total amount
+        $totalAmount = 0;
 
-        // Sync scans (update pivot table)
+        if ($request->filled('scans')) {
+            $scans = Scan::with('typeOfWork')->whereIn('id', $request->scans)->get();
+
+            foreach ($scans as $scan) {
+                $defaultPrice = $scan->typeOfWork->my_price ?? 0;
+
+                $doctorPrice = DoctorWorkPrice::where('doctor_id', $request->doctor_id)
+                    ->where('type_of_work_id', $scan->type_id)
+                    ->value('price');
+
+                $price = $doctorPrice ?? $defaultPrice;
+                $totalAmount += $price;
+            }
+        }
+
+        // Update invoice with recalculated total
+        $invoice->update([
+            'user_id' => $request->user_id,
+            'doctor_id' => $request->doctor_id,
+            'status' => $request->status,
+            'invoice_date' => $request->invoice_date,
+            'due_date' => $request->due_date,
+            'payment_method' => $request->payment_method,
+            'notes' => $request->notes,
+            'total_amount' => $totalAmount,
+        ]);
+
+        // Sync scans
         $invoice->scans()->sync($request->scans);
 
         toastr()->success('Invoice Updated Successfully');
@@ -138,13 +173,43 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        $invoice = Invoice::findOrFail($id);
-        $invoice->scans()->detach(); // detach relations
-        $invoice->delete();
+        try {
 
-        toastr()->success('Invoice Deleted Successfully');
-        return redirect()->route('admin.invoices.index');
+            $invoice = Invoice::findOrFail($id);
+            $invoice->scans()->detach(); // detach relations
+            $invoice->delete();
+
+            toastr()->success('Deleted Successfully');
+            return response(['status' => 'success', 'message' => 'Deleted Successfully!']);
+        } catch (\Exception $e) {
+            //return response(['status' => 'error', 'message' =>  $e->getMessage()]);
+            toastr()->success('Something went wrong');
+            return response(['status' => 'error', 'message' => 'something went wrong!']);
+        }
     }
+
+
+public function calculateTotal(Request $request)
+{
+    $doctorId = $request->input('doctor_id');
+    $scansIds = $request->input('scans', []);
+
+    $total = 0;
+
+    $scans = Scan::with('typeOfWork')->whereIn('id', $scansIds)->get();
+
+    foreach ($scans as $scan) {
+        $defaultPrice = $scan->typeOfWork->my_price ?? 0;
+
+        $doctorPrice = DoctorWorkPrice::where('doctor_id', $doctorId)
+            ->where('type_of_work_id', $scan->type_id)
+            ->value('price');
+
+        $total += $doctorPrice ?? $defaultPrice;
+    }
+
+    return response()->json(['total' => $total]);
+}
 
     public function downloadPdf(Invoice $invoice)
     {

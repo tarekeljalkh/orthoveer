@@ -44,7 +44,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="doctor_id">{{ __('messages.doctors') }} <span
                                                 class="text-danger">*</span></label>
-                                        <select name="doctor_id" class="form-control select2" required>
+                                        <select id="doctor_id" name="doctor_id" class="form-control select2" required>
                                             <option value="">{{ __('messages.choose') }}</option>
                                             @foreach ($doctors as $doctor)
                                                 <option value="{{ $doctor->id }}">{{ $doctor->first_name }}
@@ -71,8 +71,8 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>{{ __('messages.total_amount') }} <span class="text-danger">*</span></label>
-                                        <input type="number" step="0.01" name="total_amount" class="form-control"
-                                            required>
+                                        <input type="number" step="0.01" name="total_amount" id="totalDisplay"
+                                            class="form-control" readonly required>
                                     </div>
 
                                     <div class="form-group col-md-6">
@@ -120,3 +120,40 @@
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script>
+        function calculateTotal() {
+            const doctorId = $('#doctor_id').val();
+            const scans = $('#scans').val();
+
+            // console.log('Doctor ID:', doctorId);
+            // console.log('Selected scans:', scans);
+
+            if (doctorId && scans && scans.length) {
+                $.ajax({
+                    url: '{{ route('admin.invoices.calculateTotal') }}',
+                    data: {
+                        doctor_id: doctorId,
+                        scans: scans
+                    },
+                    success: function(response) {
+                        $('#totalDisplay').val(response.total !== undefined ? parseFloat(response.total)
+                            .toFixed(2) : '0.00');
+                    },
+                    error: function() {
+                        $('#totalDisplay').val('0.00');
+                    }
+                });
+            } else {
+                $('#totalDisplay').val('0.00');
+            }
+        }
+
+        $(document).ready(function() {
+            $('select.select2').select2();
+            $('#doctor_id, #scans').on('change', calculateTotal);
+            calculateTotal();
+        });
+    </script>
+@endpush
