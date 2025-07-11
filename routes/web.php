@@ -19,6 +19,18 @@ use App\Http\Controllers\LocalizationController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/clear-cache', function () {
+    Artisan::call('config:clear');
+    Artisan::call('route:clear');
+    Artisan::call('view:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('config:cache');
+    Artisan::call('route:cache');
+    Artisan::call('view:cache');
+
+    return '✅ Cache cleared and rebuilt successfully!';
+});
+
 
 Route::get('/export-db', [DiskController::class, 'exportDatabase'])->name('exportDatabase');
 
